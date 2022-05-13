@@ -57,7 +57,7 @@ We will use this <https://pad.riseup.net/p/BRI_Data_Carpentry_2022> for chatting
 ## Schedule
 
 
-### DAY 1: June 13th*
+### DAY 1: June 13th
 
 | Time           | Topic                                | Data Carpentry Curriculum Reference                                                                  |
 |:---------------|:------------------------------------:|:----------------------------------------------------------------------------------------------------:|

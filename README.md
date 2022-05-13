@@ -57,7 +57,7 @@ We will use this <https://pad.riseup.net/p/BRI_Data_Carpentry_2022> for chatting
 ## Schedule
 
 
-- DAY 1: June 13th
+### DAY 1: June 13th*
 
 | Time           | Topic                                | Data Carpentry Curriculum Reference                                                                  |
 |:---------------|:------------------------------------:|:----------------------------------------------------------------------------------------------------:|
@@ -70,13 +70,13 @@ We will use this <https://pad.riseup.net/p/BRI_Data_Carpentry_2022> for chatting
 | 12:00pm        |End of Day 1                          |                                                                                                      |
 
  	
-- DAY2: June 14th 
+### DAY2: June 14th 
 
 | Time           | Topic                                | Data Carpentry Curriculum Reference                                                                  |
 |:---------------|:------------------------------------:|:----------------------------------------------------------------------------------------------------:|
-| 9:00am         |Official Workshop Start/Introduction  | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html>                                 |
-| 9:10am         |Introduction to R                     | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html#Knowing_your_way_around_RStudio> |
-| 10:30am-10:45am|BREAK                                 |                                                                                                      |
-| 10:45am-11:15am|Starting with Data in R               |<https://datacarpentry.org/R-ecology-lesson/02-starting-with-data.html>                               |
-| 11:15am-12:00pm|Starting with Data in R Cont.         |                                                                                                      |
+| 9:00am         |Manipulating Data in R                | <https://datacarpentry.org/R-ecology-lesson/03-dplyr.html#Pipes>                                     |
+| 10:15am-10:30am|BREAK                                 |                                                                                                      |
+| 10:30am-12:00pm|Visualizing Data                      | <https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html>                           |
 | 12:00pm        |End of Day 1                          |                                                                                                      |
+
+### DAY 3: June 15th 

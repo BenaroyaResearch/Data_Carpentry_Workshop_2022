@@ -200,17 +200,111 @@ messages are too generic to diagnose a problem (e.g. “subscript out of
 bounds”). In that case it might help to include the name of the function
 or package you’re using in your query.
 
+### 9:45 - 10:30 am: Introduction to R
+
+#### Creating Objects in R
+
+You can get output from R simply by typing math in the console:
+
 ``` r
-summary(cars)
+3 + 5
 ```
 
-    ##      speed           dist       
-    ##  Min.   : 4.0   Min.   :  2.00  
-    ##  1st Qu.:12.0   1st Qu.: 26.00  
-    ##  Median :15.0   Median : 36.00  
-    ##  Mean   :15.4   Mean   : 42.98  
-    ##  3rd Qu.:19.0   3rd Qu.: 56.00  
-    ##  Max.   :25.0   Max.   :120.00
+    ## [1] 8
+
+``` r
+12 / 7
+```
+
+    ## [1] 1.714286
+
+However to do things with this data we need to save it as an *object* by
+assigning the value to a name using the assignment operator `<-`
+
+In RStudio, typing Alt + - (push Alt at the same time as the - key) will
+write \<- in a single keystroke in a PC, while typing Option + - (push
+Option at the same time as the - key) does the same in a Mac.
+
+``` r
+age <- 50
+```
+
+R doesn’t automatically print the output after you assign data to an
+object, so to view it you need to print the name of the object and run
+it
+
+``` r
+age
+```
+
+    ## [1] 50
+
+Objects can have almost any name you want, they just can’t start with a
+number, have any spaces in them, or be the same name as one of the
+functions in R. R is case sensitive, and being consistent in your naming
+is helpful.
+
+For those of you familiar with any other coding languages, in R and
+`object` is the same thing as a `variable`. They are interchangable.
+
+Now that we have saved our data data as an object we can do math with
+it!
+
+``` r
+age * 2
+```
+
+    ## [1] 100
+
+``` r
+# And we can save this output to a new object
+age_double <- age * 2
+```
+
+You can also change the value by assigning a new one
+
+``` r
+age <- 60
+# Note this rewrites the previous data, but does not affect our doubled age object!
+
+age_double
+```
+
+    ## [1] 100
+
+``` r
+# So if you ever change a bit of code upstream, you need to rerun all the other commands that code depended on in order to update your data 
+```
+
+Let’s do a quick challenge - put the answers to the following in the
+etherpad:
+
+``` r
+time_d <- 180
+total_dosage_mg <- 500
+
+# What is the dosage per day (mg)?
+time_d/total_dosage_mg 
+```
+
+    ## [1] 0.36
+
+Now it’s time to save your code!
+
+#### Functions and their arguments
+
+Functions are canned scripts that automate certain tasks, and all
+functions take arguments, and we can look these up using the help
+function!
+
+``` r
+age_sqrt <- sqrt(50)
+age_sqrt
+```
+
+    ## [1] 7.071068
+
+#### Vectors and Data Types
 
 ## Including Plots
 

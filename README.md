@@ -4,7 +4,7 @@
 
 The Bioinformatics Group is organizing an R programming workshop this June. The workshop is geared towards people that have never programmed or have limited programming experience in R. We will teach how to organize your code, your data, and produce some common plots and figures. 
 
-The workshop curriculum is largely based on the publicly available Data Carpentry workshop "Data Analysis and Visualization in R for Ecologists". However, the curriculum has been tailored to work with the COVID-19 data set provided by Hamid Bolouri and Cate Speake published in [JCI](https://doi.org/10.1172/JCI143648):
+The workshop curriculum is largely based on the publicly available Data Carpentry workshop "Data Analysis and Visualization in R for Ecologists". However, the curriculum has been tailored to work with the COVID-19 CYTOF and clinical metadata data set provided by Hamid Bolouri and Cate Speake published in [JCI](https://doi.org/10.1172/JCI143648):
 
 - Bolouri, H., Speake, C., Skibinski, D., Long, S. A., Hocking, A. M., Campbell, D. J., Hamerman, J. A., Malhotra, U., & Buckner, J. H. (2021). The COVID-19 immune landscape is dynamically and reversibly correlated with disease severity. Journal of Clinical Investigation, 131(3), 1–14. https://doi.org/10.1172/JCI143648`
 

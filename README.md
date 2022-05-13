@@ -30,21 +30,21 @@ For more information regarding the mission and purpose of Data Carpentry visit t
 
 3. Install necessary packages.
 
-**NOTE:** The time required to dowload and install packages can vary. Please download and install these packages prior to the workshop starting! 
+    **NOTE:** The time required to dowload and install packages can vary. Please download and install these packages prior to the workshop starting! 
 
-During the course we will need a number of R packages. Packages contain useful R code written by other people. We will use the packages tidyverse...ADD OTHER PACKAGES HERE
+    During the course we will need a number of R packages. Packages contain useful R code written by other people. We will use the packages tidyverse...ADD OTHER PACKAGES HERE
 
-To install these packages, open RStudio (after R is installed) and copy and paste the following command into the console window (look for a blinking cursor on the bottom left), then press the Enter (Windows and Linux) or Return (MacOS) to execute the command. 
+    To install these packages, open RStudio (after R is installed) and copy and paste the following command into the console window (look for a blinking cursor on the bottom left), then press the Enter (Windows and Linux) or Return (MacOS) to execute the command. 
 
-        `install.packages(c("tidyverse",)` 
+            `install.packages(c("tidyverse",)` 
 
-Alternatively, you can install the packages using RStudio’s graphical user interface by going to `Tools > Install Packages` and typing the names of the packages separated by a comma.
+    Alternatively, you can install the packages using RStudio’s graphical user interface by going to `Tools > Install Packages` and typing the names of the packages separated by a comma.
 
-R tries to download and install the packages on your machine. When the installation has finished, you can try to load the packages by pasting the following code into the console and pressing `run` on the top right of the screen:
+    R tries to download and install the packages on your machine. When the installation has finished, you can try to load the packages by pasting the following code into the console and pressing `run` on the top right of the screen:
 
-        ` library(tidyverse)`
+            ` library(tidyverse)`
 
-If you do not see an error like `there is no package called ‘...’` you are good to go!
+    If you do not see an error like `there is no package called ‘...’` you are good to go!
 
 ## Download the Data
 

@@ -61,6 +61,7 @@ We will use this <https://pad.riseup.net/p/BRI_Data_Carpentry_2022> for chatting
 
 | Time           | Topic                                | Workshop Code Reference                                                                              |
 |:---------------|:------------------------------------:|:----------------------------------------------------------------------------------------------------:|
+| 8:30am         |Pre-Workshop Help (loading software, packages, etc)|                                                                                         |
 | 9:00am         |Official Workshop Start/Introduction  | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html>                                 |
 | 9:10am         |Introduction to R                     | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html#Knowing_your_way_around_RStudio> |
 | 10:30am-10:45am|BREAK                                 |                                                                                                      |
@@ -69,3 +70,13 @@ We will use this <https://pad.riseup.net/p/BRI_Data_Carpentry_2022> for chatting
 | 12:00pm        |End of Day 1                          |                                                                                                      |
 
  	
+- DAY2: June 14th 
+
+| Time           | Topic                                | Workshop Code Reference                                                                              |
+|:---------------|:------------------------------------:|:----------------------------------------------------------------------------------------------------:|
+| 9:00am         |Official Workshop Start/Introduction  | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html>                                 |
+| 9:10am         |Introduction to R                     | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html#Knowing_your_way_around_RStudio> |
+| 10:30am-10:45am|BREAK                                 |                                                                                                      |
+| 10:45am-11:15am|Starting with Data in R               |<https://datacarpentry.org/R-ecology-lesson/02-starting-with-data.html>                               |
+| 11:15am-12:00pm|Starting with Data in R Cont.         |                                                                                                      |
+| 12:00pm        |End of Day 1                          |                                                                                                      |

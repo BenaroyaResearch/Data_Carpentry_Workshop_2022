@@ -59,9 +59,9 @@ We will use this <https://pad.riseup.net/p/BRI_Data_Carpentry_2022> for chatting
 
 - DAY 1: June 13th
 
-| Time           | Topic                                | Workshop Code Reference                                                                              |
+| Time           | Topic                                | Data Carpentry Curriculum Reference                                                                  |
 |:---------------|:------------------------------------:|:----------------------------------------------------------------------------------------------------:|
-| 8:30am         |Pre-Workshop Help (loading software, packages, etc)|                                                                                         |
+| 8:30am         |Pre-Workshop Help                     |                                                                                                      |
 | 9:00am         |Official Workshop Start/Introduction  | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html>                                 |
 | 9:10am         |Introduction to R                     | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html#Knowing_your_way_around_RStudio> |
 | 10:30am-10:45am|BREAK                                 |                                                                                                      |
@@ -72,7 +72,7 @@ We will use this <https://pad.riseup.net/p/BRI_Data_Carpentry_2022> for chatting
  	
 - DAY2: June 14th 
 
-| Time           | Topic                                | Workshop Code Reference                                                                              |
+| Time           | Topic                                | Data Carpentry Curriculum Reference                                                                  |
 |:---------------|:------------------------------------:|:----------------------------------------------------------------------------------------------------:|
 | 9:00am         |Official Workshop Start/Introduction  | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html>                                 |
 | 9:10am         |Introduction to R                     | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html#Knowing_your_way_around_RStudio> |

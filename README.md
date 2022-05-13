@@ -59,24 +59,40 @@ We will use this <https://pad.riseup.net/p/BRI_Data_Carpentry_2022> for chatting
 
 ### DAY 1: June 13th
 
-| Time           | Topic                                | Data Carpentry Curriculum Reference                                                                  |
-|:---------------|:------------------------------------:|:----------------------------------------------------------------------------------------------------:|
-| 8:30am         |Pre-Workshop Help                     |                                                                                                      |
-| 9:00am         |Official Workshop Start/Introduction  | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html>                                 |
-| 9:10am         |Introduction to R                     | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html#Knowing_your_way_around_RStudio> |
-| 10:30am-10:45am|BREAK                                 |                                                                                                      |
-| 10:45am-11:15am|Starting with Data in R               |<https://datacarpentry.org/R-ecology-lesson/02-starting-with-data.html>                               |
-| 11:15am-12:00pm|Starting with Data in R Cont.         |                                                                                                      |
-| 12:00pm        |End of Day 1                          |                                                                                                      |
+| Time           | Topic                                            | Data Carpentry Curriculum Reference                                                                  |
+|:---------------|:------------------------------------------------:|:----------------------------------------------------------------------------------------------------:|
+| 8:30am         |Pre-Workshop Help                                 |                                                                                                      |
+| 9:00am         |Official Workshop Start/Introduction              | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html>                                 |
+| 9:10am         |Introduction to R                                 | <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html#Knowing_your_way_around_RStudio> |
+| 10:30am-10:45am|BREAK                                             |                                                                                                      |
+| 10:45am-11:15am|Starting with Data in R (dataframes)              | <https://datacarpentry.org/R-ecology-lesson/02-starting-with-data.html>                              |
+| 11:15am-12:00pm|Starting with Data in R Cont. (factors, selecting)|                                                                                                      |
+| 12:00pm        |End of Day 1                                      |                                                                                                      |
 
  	
 ### DAY2: June 14th 
 
-| Time           | Topic                                | Data Carpentry Curriculum Reference                                                                  |
-|:---------------|:------------------------------------:|:----------------------------------------------------------------------------------------------------:|
-| 9:00am         |Manipulating Data in R                | <https://datacarpentry.org/R-ecology-lesson/03-dplyr.html#Pipes>                                     |
-| 10:15am-10:30am|BREAK                                 |                                                                                                      |
-| 10:30am-12:00pm|Visualizing Data                      | <https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html>                           |
-| 12:00pm        |End of Day 1                          |                                                                                                      |
+| Time           | Topic                                            | Data Carpentry Curriculum Reference                                                                  |
+|:---------------|:------------------------------------------------:|:----------------------------------------------------------------------------------------------------:|
+| 9:00am         |Manipulating Data in R  (summarizing, reshaping)  | <https://datacarpentry.org/R-ecology-lesson/03-dplyr.html#Pipes>                                     |
+| 10:15am-10:30am|BREAK                                             |                                                                                                      |
+| 10:30am-12:00pm|Visualizing Data (ggplot)                         | <https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html>                           |
+| 12:00pm        |End of Day 2                                      |                                                                                                      |
 
 ### DAY 3: June 15th 
+
+| Time           | Topic                                                         Data Carpentry Curriculum Reference                                                                  |
+|:---------------|:-----------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:|
+| 9:00am         |Visualizing Data Continued (pipes, faceting, themes)         | <https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html#Integrating_the_pipe_operator_with_ggplot2>                               |
+| 10:15am-10:30am|BREAK                                                        |                                                                                                      |
+| 10:30am-12:00pm|Visualizing Data Cont. (customization, arranging, exporting) | <https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html#Customization>                           |
+| 12:00pm        |End of Day 3                                                 |                                                                                                      |
+
+### DAY 4: June 16th 
+
+| Time           | Topic                                                         Data Carpentry Curriculum Reference                                                                  |
+|:---------------|:-----------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:|
+| 9:00am         |Visualizing Data Continued (pipes, faceting, themes)         | <https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html#Integrating_the_pipe_operator_with_ggplot2>                               |
+| 10:15am-10:30am|BREAK                                                        |                                                                                                      |
+| 10:30am-12:00pm|Visualizing Data Cont. (customization, arranging, exporting) | <https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html#Customization>                           |
+| 12:00pm        |End of Day 3                                                 |                                                                                                      |

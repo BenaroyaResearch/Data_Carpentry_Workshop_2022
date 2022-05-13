@@ -24,15 +24,13 @@ For more information regarding the mission and purpose of Data Carpentry visit t
 
 1. Complete the Pre-Workshop survey by **Wednesday June 8th**. INSERT LINK.
 
-2. Dowload R and RStudio on your laptop
-
-3. Install R and RStudio on your machine. Follow the instructions [here](https://datacarpentry.org/R-ecology-lesson/#Install_R_and_RStudio).
+2. Install R and RStudio on your machine. Follow the instructions [here](https://datacarpentry.org/R-ecology-lesson/#Install_R_and_RStudio).
 
     - Note R must be installed prior to installing and using RStudio. 
 
-4. Install necessary packages.
+3. Install necessary packages.
 
-**NOTE:** Time required to dowload and install packages can vary. Please download and install these packages prior to the workshop starting! 
+**NOTE:** The time required to dowload and install packages can vary. Please download and install these packages prior to the workshop starting! 
 
 During the course we will need a number of R packages. Packages contain useful R code written by other people. We will use the packages tidyverse...ADD OTHER PACKAGES HERE
 

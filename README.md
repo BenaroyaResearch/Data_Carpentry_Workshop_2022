@@ -16,9 +16,9 @@ For more information regarding the mission and purpose of Data Carpentry visit t
 
 **When and Where:**: The workshop will run for 4 mornings (9 – 12pm), June 13 to 16 and will be in person in 4N. Though we recognize the commitment of a 4 morning workshop, we ask attendees to attend all sessions as the curriculum is designed to progressively build upon skills from prior days. 
 
-**Requirements:** Participants must bring a personal or BRI-provided laptop with a Mac, Linux, or Windows operating system (not a tablet, Chromebook, etc.) that they have administrative privileges on. They should have a few specific software packages installed (listed below).
+**Requirements:** Participants must bring a personal or BRI-provided laptop with a Mac, Linux, or Windows operating system (not a tablet, Chromebook, etc.) that you have the ability to install software on. You should have a few specific software packages installed (listed below). For any questions regarding installing software please contact the BRI helpdesk.
 
-**Contact**: Please contact Charlie Quinn <CQuinn@benaroyaresearch.org> or Hannah DeBerg <HDeBerg@benaroyaresearch.org> to sign up for the workshop or for any questions regarding hardware/software required. Please contact Erin Witkop <EWitkop@benaroyaresearch.org> for any questions regarding the schedule, workshop goals, or curriculum. 
+**Contact**: Please contact Erin Witkop <EWitkop@benaroyaresearch.org> for any questions regarding the schedule, workshop goals, or curriculum. 
 
 ## Before the Workshop
 
@@ -27,6 +27,7 @@ For more information regarding the mission and purpose of Data Carpentry visit t
 2. Install R and RStudio on your machine. Follow the instructions [here](https://datacarpentry.org/R-ecology-lesson/#Install_R_and_RStudio).
 
     - Note R must be installed prior to installing and using RStudio. 
+    - Please email the BRI helpdesk regarding any issues installing the software. 
 
 3. Install necessary packages.
 
@@ -94,6 +95,5 @@ We will use this <https://pad.riseup.net/p/BRI_Data_Carpentry_2022> for chatting
 |:---------------|:---------------------------------------------------:|:---------------------------------------:|
 | 9:00am         |Specialized Plotting  (PCAs, advanced heatmaps)      |                                         |
 | 10:15am-10:30am|BREAK                                                |                                         |
-| 10:30am-11:15pm|Loading and customizing code from a bioinformatician |                                         |
-| 11:15am-12:00pm|Loading data into the ResearchDB/api                 |                                         |
+| 10:30am-12:00  |Loading and customizing code for your analyses       |                                         |
 | 12:00pm        |End of Workshop!                                     |                                         |

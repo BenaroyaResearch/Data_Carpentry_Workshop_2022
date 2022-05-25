@@ -30,6 +30,9 @@ data_formatted <- data %>% select(-dischargeDate)
 # Keep only patients that received toclizumab
 data_formatted <- data_formatted %>% filter(!is.na(tocilizumab.StartDate))
 
+# Keep only SWB samples
+data_formatted <- data_formatted %>% filter(grepl("SWB",Sample.ID)) %>% filter(drawDate != "NA")
+
 #View(data_formatted)
 
 # Select CBC, CYTOF, and metadata rows to keep
@@ -57,4 +60,22 @@ str(data_formatted) # correct
 
 ## Export cleaned data
 write.csv(data_formatted, file.path(workshop_path, "WORKSHOP_DATA/Bolouri_2021_subset.csv"), row.names = FALSE)
+
+#### Make the data UN-Tidy for the workshop ####
+
+data_messy <- data_formatted
+
+# Make age character
+data_messy$age <- as.character(data_messy$age)
+
+# Make formatting of sex non uniform
+data_messy$sex <- recode(data_messy$sex, "male" = "M")
+
+# Change ever on ventilator NA to zero
+data_messy$Ever.On.Ventilator <- recode(data_messy$Ever.On.Ventilator, "NA"="0")
+
+View(data_messy)
+
+## Export the messy data
+write.csv(data_messy, file.path(workshop_path, "WORKSHOP_DATA/Bolouri_2021_subset_UNTIDY.csv"), row.names = FALSE)
 

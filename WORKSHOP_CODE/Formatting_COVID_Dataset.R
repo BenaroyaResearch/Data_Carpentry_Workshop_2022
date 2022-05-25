@@ -20,3 +20,41 @@ workshop_path <- "/Users/ewitkop/Library/CloudStorage/Box-Box/EW_Bioinformatics_
 
 data <- readxl::read_xlsx(file.path(workshop_path, "WORKSHOP_DATA/postMS_bigTbl_HB14Sept2020.xlsx"))
 
+#### Subsetting the Dataset
+
+## Remove discharge date to help protect PHI
+colnames(data)
+
+data_formatted <- data %>% select(-dischargeDate)
+
+# Keep only patients that received toclizumab
+data_formatted <- data_formatted %>% filter(!is.na(tocilizumab.StartDate))
+
+#View(data_formatted)
+
+# Select CBC, CYTOF, and metadata rows to keep
+CBC_keep <- c("CBC.White.Blood.Cell.Count", "CBC.Absolute.Monocytes","CBC.Absolute.Neutrophils","CBC.Absolute.Lymphocytes")
+CYTOF_keep <- c("FracCD45.Neutrophil","FracCD45.T.cell.CD4","FracCD45.DC", "T.cell.CD8.HLA_DRp__of.CD8"      )
+metadata_keep <- c("Sample.ID", "drawDate","Covid.ID","Score","sex","age","race","bmi","patientType","HighestCare","Ever.On.Ventilator" ,
+                   "Preexisting.Hypertension","eventId","admitDate","deceasedDate","covidId","severity","drawTime" )
+total_keep <- c(metadata_keep, CBC_keep, CYTOF_keep)
+
+# Subset dataset 
+data_formatted <- data_formatted[,total_keep]
+
+# Check class of all columns
+str(data_formatted)
+
+# Change incorrectly formatted chr variables to numeric
+data_formatted[,c("Score","age","bmi","CBC.White.Blood.Cell.Count",
+                  "CBC.Absolute.Monocytes","CBC.Absolute.Neutrophils",
+                  "CBC.Absolute.Lymphocytes")]<- sapply(data_formatted[,c("Score","age","bmi","CBC.White.Blood.Cell.Count",
+                  "CBC.Absolute.Monocytes","CBC.Absolute.Neutrophils",
+                  "CBC.Absolute.Lymphocytes")], as.numeric)
+
+# Recheck st
+str(data_formatted) # correct
+
+## Export cleaned data
+write.csv(data_formatted, file.path(workshop_path, "WORKSHOP_DATA/Bolouri_2021_subset.csv"), row.names = FALSE)
+

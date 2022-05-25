@@ -72,6 +72,7 @@ Let's create a few new folders to hold input and output for us in our repository
   - `/raw_data/`
   - `/scripts/`
   - `/figures/`
+  - `/results/`
 
 #### The working directory
 
@@ -285,6 +286,197 @@ weight_g <- c(10,15,16, NA,25, 30, NA)
 
 #### 10:45-11:15: Starting with Data in R: Dataframes ####
 
+##### Downloading the Data
 
+Now it's time to download a subset version of the COVID-19 data. The data is saved in a csv file and is saved on our Github landing page. https://github.com/BenaroyaResearch/Data_Carpentry_Workshop_2022/blob/main/WORKSHOP_DATA/Bolouri_2021_subset.csv
+
+Let's open the csv table in EXCEL and view it. We have patient metadata, CYTOF data, and initial CBC counts for different cell populations. The data is in different formats also. 
+
+Download the data to your raw_data folder 
+
+```{r read_csv}
+library(tidyverse)
+setwd("/Users/ewitkop/Library/CloudStorage/Box-Box/EW_Bioinformatics_Postdoc_Research/ADMINISTRATIVE/Data_Carpentry_Workshop_June_2022/WORKSHOP_CODE/Data_Carpentry_Workshop_2022/")
+data <- read_csv("raw_data/Bolouri_2021_subset.csv")
+
+```
+
+Note how read csv looks at the data type of each column. 
+
+##### Inspecting data frames
+
+```{r investigate}
+
+# To view whole dataset
+print(data,100)
+
+# To see the first few lines
+head(data)
+head(data, 100)
+
+# To see last few lines
+tail(data)
+
+# To open in R studio
+View(data)
+
+# additional helpful commands
+nrow(data)
+ncol(data)
+rownames(data)
+summary(data)
+
+```
+
+What we just loaded was a dataframe, the typical data structure used in R for tabular data while we will use for statistics and plotting.
+
+In a dataframe columns are vectors of the same length and same type of data. 
+
+```{r challenge_4}
+# Based on the output of str(data), what is the class of our data object? How many rows and columns are there? 
+
+str(data)
+nrow(data) # 299
+ncol(data) # 26
+```
+
+##### Indexing and subsetting data frames
+
+To extract data from a data frame we need to use its coordinates, which are always row number followed by column number.
+
+```{r index }
+# get first row and column
+data[1,1]
+
+# You can save this by assigning it to a variable
+data_subset <- data[1,1]
+
+# get only 5th columns
+data[,5]
+
+# select group of rows and columns
+data[1:2,3:6]
+
+# You can also exclude columns using the minus sign
+data[,-1]
+
+# To get only the head of the dataframe you can do
+data[-(7:nrow(data)),]
+
+# You can also subset by using the name of the column in quotation marks
+data[, "Sample.ID"]
+
+# Finally you can also use the $ to get a column
+data$Sample.ID
+
+```
+
+Challenge time!
+```{r challenge_5}
+#Create a data.frame (surveys_200) containing only the data in row 200 of the surveys dataset.
+
+# Pull out the last row of the data frame and save it
+```
+
+Let's take five minutes for this challenge so you can have a breather before starting the final piece of our first day! 
 
 #### 11:15-12:00pm: Starting with Data in R Cont: 
+
+##### Factors 
+
+Several of our data columns contain character data that are categorical variables. `Factor` is a special class used for working with categorical data. Factors only contain a list of pre-defined levels. Though factors may often look like character vectors, they are actually treated as integer vectors, so you need to be careful when treating them as strings.
+
+```{r factors}
+
+# Use the factor function to convert column levels to factors 
+data$sex <- factor(data$sex) 
+
+# check the conversion worked with summary and class
+summary(data$sex)
+class(data$sex)
+
+# Note that factors are always assigned in alphabetical order. Check the levels of a factor with levels
+levels(data$sex) # see that female comes before male
+
+# Get the number of levels with n level 
+nlevels(data$sex)
+  
+```
+
+Sometimes you may want your levels in specific order.
+
+```{r factor_reorder}
+data$sex <- factor(data$sex, levels = c("male","female"))
+levels(data$sex)
+
+```
+
+Challenge
+```{r challenge_6}
+# Convert the HigestCare column to a factor and put the levels in this order: Neg, Floor, CCU, Outpatient
+
+levels(as.factor(data$HighestCare)) # "CCU"        "Floor"      "Neg"        "Outpatient"
+data$HighestCare <- factor(data$HighestCare, levels = c("Neg","Floor","CCU","Outpatient"))
+```
+
+##### Converting factors
+
+To convert a factor to character vector you can use `as.character(x)`
+
+```{r convert_factor}
+as.character(data$sex)
+```
+
+##### Renaming Factors 
+
+With your data stored as factors you can use the `plot()` function to quickly see the number of observations in each factor level
+
+```{r plot_factor}
+plot(data$HighestCare)
+```
+However say we wanted to rename the Negative group from Neg to Negative.
+
+```{r rename_factor}
+
+levels(data$HighestCare)[1] <- "Negative"
+plot(data$HighestCare)
+```
+We can also use this to rename any NA levels we may have. For example, lets make the `Ever.On.Ventilator` column a factor and plot it.
+
+```{r rename}
+data$Ever.On.Ventilator <- factor(data$Ever.On.Ventilator)
+plot(data$Ever.On.Ventilator)
+
+# But what about the NAs samples that we know are there?
+
+# turn the missing values into a factor levels with the addNA() function
+data$Ever.On.Ventilator <- addNA(data$Ever.On.Ventilator)
+levels(data$Ever.On.Ventilator)
+
+# And rename the NA
+levels(data$Ever.On.Ventilator)[3] <- "Not Applicable"
+
+# now we can replot and see this new added level
+plot(data$Ever.On.Ventilator)
+
+```
+Challenge!
+```{r challenge_7}
+# Now that we have renamed the Ever.On.Ventilator column, can you reorder the levels so that the "Not Applicable" patients are plotted before  the "N" patients?
+data$Ever.On.Ventilator <- factor(data$Ever.On.Ventilator, levels = c("Not Applicable","N","Y"))
+
+plot(data$Ever.On.Ventilator)
+```
+##### Saving and exporting data
+
+Now that we have done a variety of data manipulations, we want to save our output.
+
+```{r write_day}
+
+# lets output in our results folder
+write.csv(data, file="/Users/ewitkop/Library/CloudStorage/Box-Box/EW_Bioinformatics_Postdoc_Research/ADMINISTRATIVE/Data_Carpentry_Workshop_June_2022/WORKSHOP_CODE/Data_Carpentry_Workshop_2022/results/data_day1.csv", row.names = FALSE)
+
+
+```
+
+

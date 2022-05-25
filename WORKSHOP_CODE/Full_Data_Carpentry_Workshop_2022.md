@@ -138,7 +138,7 @@ general, you may create directories (folders) for scripts, data, and
 documents.
 
 Let’s create a few new folders to hold input and output for us in our
-repository - `/raw_data/` - `/scripts/` - `/figures/`
+repository - `/raw_data/` - `/scripts/` - `/figures/` - `/results/`
 
 #### The working directory
 
@@ -469,4 +469,737 @@ weight_g <- c(10,15,16, NA,25, 30, NA)
 
 #### 10:45-11:15: Starting with Data in R: Dataframes
 
+##### Downloading the Data
+
+Now it’s time to download a subset version of the COVID-19 data. The
+data is saved in a csv file and is saved on our Github landing page.
+<https://github.com/BenaroyaResearch/Data_Carpentry_Workshop_2022/blob/main/WORKSHOP_DATA/Bolouri_2021_subset.csv>
+
+Let’s open the csv table in EXCEL and view it. We have patient metadata,
+CYTOF data, and initial CBC counts for different cell populations. The
+data is in different formats also.
+
+Download the data to your raw_data folder
+
+``` r
+library(tidyverse)
+```
+
+    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+
+    ## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+    ## ✓ tibble  3.1.6     ✓ dplyr   1.0.8
+    ## ✓ tidyr   1.2.0     ✓ stringr 1.4.0
+    ## ✓ readr   2.1.2     ✓ forcats 0.5.1
+
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
+setwd("/Users/ewitkop/Library/CloudStorage/Box-Box/EW_Bioinformatics_Postdoc_Research/ADMINISTRATIVE/Data_Carpentry_Workshop_June_2022/WORKSHOP_CODE/Data_Carpentry_Workshop_2022/")
+data <- read_csv("raw_data/Bolouri_2021_subset.csv")
+```
+
+    ## Rows: 299 Columns: 26
+
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (11): Sample.ID, Covid.ID, sex, race, patientType, HighestCare, Ever.On....
+    ## dbl (15): drawDate, Score, age, bmi, admitDate, deceasedDate, drawTime, CBC....
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+Note how read csv looks at the data type of each column.
+
+##### Inspecting data frames
+
+``` r
+# To view whole dataset
+print(data,100)
+```
+
+    ## # A tibble: 299 × 26
+    ##    Sample.ID     drawDate Covid.ID     Score sex     age race    bmi patientType
+    ##    <chr>            <dbl> <chr>        <dbl> <chr> <dbl> <chr> <dbl> <chr>      
+    ##  1 SWB343927719     43978 Covid1366599    NA male     54 whit…  69.0 SARS-COV-2…
+    ##  2 SWB125388248     43971 Covid1395204    NA male     66 nati…  34.4 SARS-COV-2…
+    ##  3 SWB1057697917    43972 Covid1395204    NA male     66 nati…  34.4 SARS-COV-2…
+    ##  4 SWB386069501     43940 Covid1425716    NA male     67 whit…  25.7 SARS-COV-2…
+    ##  5 SWB827655421     43943 Covid1425716    NA male     67 whit…  25.7 SARS-COV-2…
+    ##  6 SWB200026065     43978 Covid1458219    NA fema…    37 whit…  28.4 SARS-COV-2…
+    ##  7 SWB258824496     43940 Covid1472094    NA fema…    65 whit…  29.9 SARS-COV-2…
+    ##  8 SWB733482852     43939 Covid1490037    NA fema…    94 whit…  28.0 SARS-COV-2…
+    ##  9 SWB1084971930    43978 Covid1550447    NA male     79 decl…  25.6 SARS-COV-2…
+    ## 10 SWB1078357262    43971 Covid1584168    NA male     75 whit…  23.3 SARS-COV-2…
+    ##    HighestCare Ever.On.Ventilat… Preexisting.Hyp… eventId admitDate deceasedDate
+    ##    <chr>       <chr>             <chr>            <chr>       <dbl>        <dbl>
+    ##  1 Neg         N                 Y                ce1518…     43976           NA
+    ##  2 Neg         N                 <NA>             ce1326…     43971           NA
+    ##  3 Neg         N                 <NA>             ce1054…     43971           NA
+    ##  4 Neg         N                 <NA>             ce1783…     43927           NA
+    ##  5 Neg         N                 <NA>             ce1838…     43927           NA
+    ##  6 Neg         N                 <NA>             ce1761…     43977           NA
+    ##  7 Neg         N                 <NA>             ce1677…     43937           NA
+    ##  8 Neg         N                 <NA>             ce1573…     43937           NA
+    ##  9 Neg         N                 <NA>             ce1538…     43976           NA
+    ## 10 Neg         N                 <NA>             ce1881…     43969           NA
+    ## # … with 289 more rows, and 11 more variables: covidId <chr>, severity <chr>, drawTime <dbl>,
+    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>,
+    ## #   FracCD45.DC <dbl>, T.cell.CD8.HLA_DRp__of.CD8 <dbl>
+
+``` r
+# To see the first few lines
+head(data)
+```
+
+    ## # A tibble: 6 × 26
+    ##   Sample.ID     drawDate Covid.ID     Score sex      age race    bmi patientType
+    ##   <chr>            <dbl> <chr>        <dbl> <chr>  <dbl> <chr> <dbl> <chr>      
+    ## 1 SWB343927719     43978 Covid1366599    NA male      54 whit…  69.0 SARS-COV-2…
+    ## 2 SWB125388248     43971 Covid1395204    NA male      66 nati…  34.4 SARS-COV-2…
+    ## 3 SWB1057697917    43972 Covid1395204    NA male      66 nati…  34.4 SARS-COV-2…
+    ## 4 SWB386069501     43940 Covid1425716    NA male      67 whit…  25.7 SARS-COV-2…
+    ## 5 SWB827655421     43943 Covid1425716    NA male      67 whit…  25.7 SARS-COV-2…
+    ## 6 SWB200026065     43978 Covid1458219    NA female    37 whit…  28.4 SARS-COV-2…
+    ## # … with 17 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
+    ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
+    ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
+    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
+    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
+    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
+    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>
+
+``` r
+head(data, 100)
+```
+
+    ## # A tibble: 100 × 26
+    ##    Sample.ID     drawDate Covid.ID     Score sex     age race    bmi patientType
+    ##    <chr>            <dbl> <chr>        <dbl> <chr> <dbl> <chr> <dbl> <chr>      
+    ##  1 SWB343927719     43978 Covid1366599    NA male     54 whit…  69.0 SARS-COV-2…
+    ##  2 SWB125388248     43971 Covid1395204    NA male     66 nati…  34.4 SARS-COV-2…
+    ##  3 SWB1057697917    43972 Covid1395204    NA male     66 nati…  34.4 SARS-COV-2…
+    ##  4 SWB386069501     43940 Covid1425716    NA male     67 whit…  25.7 SARS-COV-2…
+    ##  5 SWB827655421     43943 Covid1425716    NA male     67 whit…  25.7 SARS-COV-2…
+    ##  6 SWB200026065     43978 Covid1458219    NA fema…    37 whit…  28.4 SARS-COV-2…
+    ##  7 SWB258824496     43940 Covid1472094    NA fema…    65 whit…  29.9 SARS-COV-2…
+    ##  8 SWB733482852     43939 Covid1490037    NA fema…    94 whit…  28.0 SARS-COV-2…
+    ##  9 SWB1084971930    43978 Covid1550447    NA male     79 decl…  25.6 SARS-COV-2…
+    ## 10 SWB1078357262    43971 Covid1584168    NA male     75 whit…  23.3 SARS-COV-2…
+    ## # … with 90 more rows, and 17 more variables: HighestCare <chr>,
+    ## #   Ever.On.Ventilator <chr>, Preexisting.Hypertension <chr>, eventId <chr>,
+    ## #   admitDate <dbl>, deceasedDate <dbl>, covidId <chr>, severity <chr>,
+    ## #   drawTime <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>,
+    ## #   FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>, …
+
+``` r
+# To see last few lines
+tail(data)
+```
+
+    ## # A tibble: 6 × 26
+    ##   Sample.ID     drawDate Covid.ID     Score sex     age race     bmi patientType
+    ##   <chr>            <dbl> <chr>        <dbl> <chr> <dbl> <chr>  <dbl> <chr>      
+    ## 1 SWB1030641467    43960 Covid1992031     6 male     43 nativ…  49.3 SARS-COV-2…
+    ## 2 SWB250851795     43964 Covid1992031     6 male     43 nativ…  49.3 SARS-COV-2…
+    ## 3 SWB209750009     43968 Covid1992031     6 male     43 nativ…  49.3 SARS-COV-2…
+    ## 4 SWB117690763     43971 Covid1992031     6 male     43 nativ…  49.3 SARS-COV-2…
+    ## 5 SWB1031605803    43977 Covid1992031     6 male     43 nativ…  49.3 SARS-COV-2…
+    ## 6 SWB231587985     43971 Covid1968851     4 male     66 other…  28.3 SARS-COV-2…
+    ## # … with 17 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
+    ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
+    ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
+    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
+    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
+    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
+    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>
+
+``` r
+# To open in R studio
+View(data)
+
+# additional helpful commands
+nrow(data)
+```
+
+    ## [1] 299
+
+``` r
+ncol(data)
+```
+
+    ## [1] 26
+
+``` r
+rownames(data)
+```
+
+    ##   [1] "1"   "2"   "3"   "4"   "5"   "6"   "7"   "8"   "9"   "10"  "11"  "12" 
+    ##  [13] "13"  "14"  "15"  "16"  "17"  "18"  "19"  "20"  "21"  "22"  "23"  "24" 
+    ##  [25] "25"  "26"  "27"  "28"  "29"  "30"  "31"  "32"  "33"  "34"  "35"  "36" 
+    ##  [37] "37"  "38"  "39"  "40"  "41"  "42"  "43"  "44"  "45"  "46"  "47"  "48" 
+    ##  [49] "49"  "50"  "51"  "52"  "53"  "54"  "55"  "56"  "57"  "58"  "59"  "60" 
+    ##  [61] "61"  "62"  "63"  "64"  "65"  "66"  "67"  "68"  "69"  "70"  "71"  "72" 
+    ##  [73] "73"  "74"  "75"  "76"  "77"  "78"  "79"  "80"  "81"  "82"  "83"  "84" 
+    ##  [85] "85"  "86"  "87"  "88"  "89"  "90"  "91"  "92"  "93"  "94"  "95"  "96" 
+    ##  [97] "97"  "98"  "99"  "100" "101" "102" "103" "104" "105" "106" "107" "108"
+    ## [109] "109" "110" "111" "112" "113" "114" "115" "116" "117" "118" "119" "120"
+    ## [121] "121" "122" "123" "124" "125" "126" "127" "128" "129" "130" "131" "132"
+    ## [133] "133" "134" "135" "136" "137" "138" "139" "140" "141" "142" "143" "144"
+    ## [145] "145" "146" "147" "148" "149" "150" "151" "152" "153" "154" "155" "156"
+    ## [157] "157" "158" "159" "160" "161" "162" "163" "164" "165" "166" "167" "168"
+    ## [169] "169" "170" "171" "172" "173" "174" "175" "176" "177" "178" "179" "180"
+    ## [181] "181" "182" "183" "184" "185" "186" "187" "188" "189" "190" "191" "192"
+    ## [193] "193" "194" "195" "196" "197" "198" "199" "200" "201" "202" "203" "204"
+    ## [205] "205" "206" "207" "208" "209" "210" "211" "212" "213" "214" "215" "216"
+    ## [217] "217" "218" "219" "220" "221" "222" "223" "224" "225" "226" "227" "228"
+    ## [229] "229" "230" "231" "232" "233" "234" "235" "236" "237" "238" "239" "240"
+    ## [241] "241" "242" "243" "244" "245" "246" "247" "248" "249" "250" "251" "252"
+    ## [253] "253" "254" "255" "256" "257" "258" "259" "260" "261" "262" "263" "264"
+    ## [265] "265" "266" "267" "268" "269" "270" "271" "272" "273" "274" "275" "276"
+    ## [277] "277" "278" "279" "280" "281" "282" "283" "284" "285" "286" "287" "288"
+    ## [289] "289" "290" "291" "292" "293" "294" "295" "296" "297" "298" "299"
+
+``` r
+summary(data)
+```
+
+    ##   Sample.ID            drawDate       Covid.ID             Score     
+    ##  Length:299         Min.   :43926   Length:299         Min.   :2.00  
+    ##  Class :character   1st Qu.:43939   Class :character   1st Qu.:4.00  
+    ##  Mode  :character   Median :43951   Mode  :character   Median :4.00  
+    ##                     Mean   :43951                      Mean   :4.65  
+    ##                     3rd Qu.:43963                      3rd Qu.:6.00  
+    ##                     Max.   :43978                      Max.   :7.00  
+    ##                                                        NA's   :25    
+    ##      sex                 age         race                bmi       
+    ##  Length:299         Min.   :27   Length:299         Min.   :17.03  
+    ##  Class :character   1st Qu.:55   Class :character   1st Qu.:26.64  
+    ##  Mode  :character   Median :63   Mode  :character   Median :30.04  
+    ##                     Mean   :64                      Mean   :32.44  
+    ##                     3rd Qu.:73                      3rd Qu.:36.80  
+    ##                     Max.   :97                      Max.   :69.03  
+    ##                                                     NA's   :3      
+    ##  patientType        HighestCare        Ever.On.Ventilator
+    ##  Length:299         Length:299         Length:299        
+    ##  Class :character   Class :character   Class :character  
+    ##  Mode  :character   Mode  :character   Mode  :character  
+    ##                                                          
+    ##                                                          
+    ##                                                          
+    ##                                                          
+    ##  Preexisting.Hypertension   eventId            admitDate      deceasedDate  
+    ##  Length:299               Length:299         Min.   :43910   Min.   :43932  
+    ##  Class :character         Class :character   1st Qu.:43931   1st Qu.:43942  
+    ##  Mode  :character         Mode  :character   Median :43945   Median :43944  
+    ##                                              Mean   :43943   Mean   :43953  
+    ##                                              3rd Qu.:43955   3rd Qu.:43950  
+    ##                                              Max.   :43978   Max.   :44003  
+    ##                                                              NA's   :255    
+    ##    covidId            severity            drawTime     
+    ##  Length:299         Length:299         Min.   :0.0000  
+    ##  Class :character   Class :character   1st Qu.:0.2083  
+    ##  Mode  :character   Mode  :character   Median :0.2083  
+    ##                                        Mean   :0.2805  
+    ##                                        3rd Qu.:0.2083  
+    ##                                        Max.   :0.9458  
+    ##                                                        
+    ##  CBC.White.Blood.Cell.Count CBC.Absolute.Monocytes CBC.Absolute.Neutrophils
+    ##  Min.   : 2.100             Min.   :0.000          Min.   : 1.43           
+    ##  1st Qu.: 6.200             1st Qu.:0.400          1st Qu.: 4.29           
+    ##  Median : 8.500             Median :0.600          Median : 6.18           
+    ##  Mean   : 9.028             Mean   :0.651          Mean   : 6.88           
+    ##  3rd Qu.:11.000             3rd Qu.:0.900          3rd Qu.: 8.70           
+    ##  Max.   :26.900             Max.   :1.600          Max.   :24.48           
+    ##  NA's   :10                 NA's   :19             NA's   :19              
+    ##  CBC.Absolute.Lymphocytes FracCD45.Neutrophil FracCD45.T.cell.CD4
+    ##  Min.   :0.100            Min.   :0.3214      Min.   :0.00302    
+    ##  1st Qu.:0.700            1st Qu.:0.6167      1st Qu.:0.03469    
+    ##  Median :1.100            Median :0.7144      Median :0.06768    
+    ##  Mean   :1.205            Mean   :0.7052      Mean   :0.07955    
+    ##  3rd Qu.:1.600            3rd Qu.:0.8010      3rd Qu.:0.11733    
+    ##  Max.   :4.880            Max.   :0.9136      Max.   :0.29809    
+    ##  NA's   :18                                                      
+    ##   FracCD45.DC        T.cell.CD8.HLA_DRp__of.CD8
+    ##  Min.   :0.0001324   Min.   : 1.67             
+    ##  1st Qu.:0.0036658   1st Qu.: 7.90             
+    ##  Median :0.0060225   Median :14.50             
+    ##  Mean   :0.0068292   Mean   :17.82             
+    ##  3rd Qu.:0.0081830   3rd Qu.:23.85             
+    ##  Max.   :0.0358275   Max.   :71.50             
+    ## 
+
+What we just loaded was a dataframe, the typical data structure used in
+R for tabular data while we will use for statistics and plotting.
+
+In a dataframe columns are vectors of the same length and same type of
+data.
+
+``` r
+# Based on the output of str(data), what is the class of our data object? How many rows and columns are there? 
+
+str(data)
+```
+
+    ## spec_tbl_df [299 × 26] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+    ##  $ Sample.ID                 : chr [1:299] "SWB343927719" "SWB125388248" "SWB1057697917" "SWB386069501" ...
+    ##  $ drawDate                  : num [1:299] 43978 43971 43972 43940 43943 ...
+    ##  $ Covid.ID                  : chr [1:299] "Covid1366599" "Covid1395204" "Covid1395204" "Covid1425716" ...
+    ##  $ Score                     : num [1:299] NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ sex                       : chr [1:299] "male" "male" "male" "male" ...
+    ##  $ age                       : num [1:299] 54 66 66 67 67 37 65 94 79 75 ...
+    ##  $ race                      : chr [1:299] "white_caucasian" "native_american_alaska_native" "native_american_alaska_native" "white_caucasian" ...
+    ##  $ bmi                       : num [1:299] 69 34.4 34.4 25.7 25.7 ...
+    ##  $ patientType               : chr [1:299] "SARS-COV-2 Negative" "SARS-COV-2 Negative" "SARS-COV-2 Negative" "SARS-COV-2 Negative" ...
+    ##  $ HighestCare               : chr [1:299] "Neg" "Neg" "Neg" "Neg" ...
+    ##  $ Ever.On.Ventilator        : chr [1:299] "N" "N" "N" "N" ...
+    ##  $ Preexisting.Hypertension  : chr [1:299] "Y" NA NA NA ...
+    ##  $ eventId                   : chr [1:299] "ce1518184" "ce1326419" "ce1054312" "ce1783822" ...
+    ##  $ admitDate                 : num [1:299] 43976 43971 43971 43927 43927 ...
+    ##  $ deceasedDate              : num [1:299] NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ covidId                   : chr [1:299] "Covid1366599" "Covid1395204" "Covid1395204" "Covid1425716" ...
+    ##  $ severity                  : chr [1:299] "Neg" "Neg" "Neg" "Neg" ...
+    ##  $ drawTime                  : num [1:299] 0.208 0.658 0.208 0.208 0.208 ...
+    ##  $ CBC.White.Blood.Cell.Count: num [1:299] 13.6 11.6 9 11.9 14.6 11 6.8 9.6 8.8 22 ...
+    ##  $ CBC.Absolute.Monocytes    : num [1:299] 1 1.2 0.63 0.6 1 1 0.4 1.34 0.7 1.1 ...
+    ##  $ CBC.Absolute.Neutrophils  : num [1:299] 11.8 9.5 7.38 6.43 9.1 ...
+    ##  $ CBC.Absolute.Lymphocytes  : num [1:299] 0.8 0.5 0.72 4.88 4.3 2.6 1.7 2.02 0.3 1.54 ...
+    ##  $ FracCD45.Neutrophil       : num [1:299] 0.841 0.7 0.806 0.481 0.526 ...
+    ##  $ FracCD45.T.cell.CD4       : num [1:299] 0.0197 0.0496 0.0285 0.1197 0.0674 ...
+    ##  $ FracCD45.DC               : num [1:299] 0.00249 0.0052 0.00317 0.00791 0.00626 ...
+    ##  $ T.cell.CD8.HLA_DRp__of.CD8: num [1:299] 9.23 5.01 7.7 10.1 12.4 2.46 4.06 15.6 25.3 2.35 ...
+    ##  - attr(*, "spec")=
+    ##   .. cols(
+    ##   ..   Sample.ID = col_character(),
+    ##   ..   drawDate = col_double(),
+    ##   ..   Covid.ID = col_character(),
+    ##   ..   Score = col_double(),
+    ##   ..   sex = col_character(),
+    ##   ..   age = col_double(),
+    ##   ..   race = col_character(),
+    ##   ..   bmi = col_double(),
+    ##   ..   patientType = col_character(),
+    ##   ..   HighestCare = col_character(),
+    ##   ..   Ever.On.Ventilator = col_character(),
+    ##   ..   Preexisting.Hypertension = col_character(),
+    ##   ..   eventId = col_character(),
+    ##   ..   admitDate = col_double(),
+    ##   ..   deceasedDate = col_double(),
+    ##   ..   covidId = col_character(),
+    ##   ..   severity = col_character(),
+    ##   ..   drawTime = col_double(),
+    ##   ..   CBC.White.Blood.Cell.Count = col_double(),
+    ##   ..   CBC.Absolute.Monocytes = col_double(),
+    ##   ..   CBC.Absolute.Neutrophils = col_double(),
+    ##   ..   CBC.Absolute.Lymphocytes = col_double(),
+    ##   ..   FracCD45.Neutrophil = col_double(),
+    ##   ..   FracCD45.T.cell.CD4 = col_double(),
+    ##   ..   FracCD45.DC = col_double(),
+    ##   ..   T.cell.CD8.HLA_DRp__of.CD8 = col_double()
+    ##   .. )
+    ##  - attr(*, "problems")=<externalptr>
+
+``` r
+nrow(data) # 299
+```
+
+    ## [1] 299
+
+``` r
+ncol(data) # 26
+```
+
+    ## [1] 26
+
+##### Indexing and subsetting data frames
+
+To extract data from a data frame we need to use its coordinates, which
+are always row number followed by column number.
+
+``` r
+# get first row and column
+data[1,1]
+```
+
+    ## # A tibble: 1 × 1
+    ##   Sample.ID   
+    ##   <chr>       
+    ## 1 SWB343927719
+
+``` r
+# You can save this by assigning it to a variable
+data_subset <- data[1,1]
+
+# get only 5th columns
+data[,5]
+```
+
+    ## # A tibble: 299 × 1
+    ##    sex   
+    ##    <chr> 
+    ##  1 male  
+    ##  2 male  
+    ##  3 male  
+    ##  4 male  
+    ##  5 male  
+    ##  6 female
+    ##  7 female
+    ##  8 female
+    ##  9 male  
+    ## 10 male  
+    ## # … with 289 more rows
+
+``` r
+# select group of rows and columns
+data[1:2,3:6]
+```
+
+    ## # A tibble: 2 × 4
+    ##   Covid.ID     Score sex     age
+    ##   <chr>        <dbl> <chr> <dbl>
+    ## 1 Covid1366599    NA male     54
+    ## 2 Covid1395204    NA male     66
+
+``` r
+# You can also exclude columns using the minus sign
+data[,-1]
+```
+
+    ## # A tibble: 299 × 25
+    ##    drawDate Covid.ID     Score sex      age race     bmi patientType HighestCare
+    ##       <dbl> <chr>        <dbl> <chr>  <dbl> <chr>  <dbl> <chr>       <chr>      
+    ##  1    43978 Covid1366599    NA male      54 white…  69.0 SARS-COV-2… Neg        
+    ##  2    43971 Covid1395204    NA male      66 nativ…  34.4 SARS-COV-2… Neg        
+    ##  3    43972 Covid1395204    NA male      66 nativ…  34.4 SARS-COV-2… Neg        
+    ##  4    43940 Covid1425716    NA male      67 white…  25.7 SARS-COV-2… Neg        
+    ##  5    43943 Covid1425716    NA male      67 white…  25.7 SARS-COV-2… Neg        
+    ##  6    43978 Covid1458219    NA female    37 white…  28.4 SARS-COV-2… Neg        
+    ##  7    43940 Covid1472094    NA female    65 white…  29.9 SARS-COV-2… Neg        
+    ##  8    43939 Covid1490037    NA female    94 white…  28.0 SARS-COV-2… Neg        
+    ##  9    43978 Covid1550447    NA male      79 decli…  25.6 SARS-COV-2… Neg        
+    ## 10    43971 Covid1584168    NA male      75 white…  23.3 SARS-COV-2… Neg        
+    ## # … with 289 more rows, and 16 more variables: Ever.On.Ventilator <chr>,
+    ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
+    ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
+    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
+    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
+    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
+    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>
+
+``` r
+# To get only the head of the dataframe you can do
+data[-(7:nrow(data)),]
+```
+
+    ## # A tibble: 6 × 26
+    ##   Sample.ID     drawDate Covid.ID     Score sex      age race    bmi patientType
+    ##   <chr>            <dbl> <chr>        <dbl> <chr>  <dbl> <chr> <dbl> <chr>      
+    ## 1 SWB343927719     43978 Covid1366599    NA male      54 whit…  69.0 SARS-COV-2…
+    ## 2 SWB125388248     43971 Covid1395204    NA male      66 nati…  34.4 SARS-COV-2…
+    ## 3 SWB1057697917    43972 Covid1395204    NA male      66 nati…  34.4 SARS-COV-2…
+    ## 4 SWB386069501     43940 Covid1425716    NA male      67 whit…  25.7 SARS-COV-2…
+    ## 5 SWB827655421     43943 Covid1425716    NA male      67 whit…  25.7 SARS-COV-2…
+    ## 6 SWB200026065     43978 Covid1458219    NA female    37 whit…  28.4 SARS-COV-2…
+    ## # … with 17 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
+    ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
+    ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
+    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
+    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
+    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
+    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>
+
+``` r
+# You can also subset by using the name of the column in quotation marks
+data[, "Sample.ID"]
+```
+
+    ## # A tibble: 299 × 1
+    ##    Sample.ID    
+    ##    <chr>        
+    ##  1 SWB343927719 
+    ##  2 SWB125388248 
+    ##  3 SWB1057697917
+    ##  4 SWB386069501 
+    ##  5 SWB827655421 
+    ##  6 SWB200026065 
+    ##  7 SWB258824496 
+    ##  8 SWB733482852 
+    ##  9 SWB1084971930
+    ## 10 SWB1078357262
+    ## # … with 289 more rows
+
+``` r
+# Finally you can also use the $ to get a column
+data$Sample.ID
+```
+
+    ##   [1] "SWB343927719"  "SWB125388248"  "SWB1057697917" "SWB386069501" 
+    ##   [5] "SWB827655421"  "SWB200026065"  "SWB258824496"  "SWB733482852" 
+    ##   [9] "SWB1084971930" "SWB1078357262" "SWB555276334"  "SWB302673469" 
+    ##  [13] "SWB1035736641" "SWB258122016"  "SWB1055020493" "SWB216698474" 
+    ##  [17] "SWB354119959"  "SWB305043519"  "SWB115252732"  "SWB226044164" 
+    ##  [21] "SWB170917245"  "SWB443953916"  "SWB435038108"  "SWB162851435" 
+    ##  [25] "SWB368283451"  "SWB1090292202" "SWB880578286"  "SWB163956617" 
+    ##  [29] "SWB1094224548" "SWB884509578"  "SWB190448512"  "SWB100000661" 
+    ##  [33] "SWB1040827190" "SWB303821643"  "SWB415598621"  "SWB962108351" 
+    ##  [37] "SWB1089858954" "SWB219264173"  "SWB348671489"  "SWB1046794299"
+    ##  [41] "SWB325327170"  "SWB1089895368" "SWB745411467"  "SWB338302022" 
+    ##  [45] "SWB582266562"  "SWB125385416"  "SWB591094979"  "SWB245378744" 
+    ##  [49] "SWB114841480"  "SWB227009524"  "SWB1069997190" "SWB285599378" 
+    ##  [53] "SWB761460640"  "SWB574139136"  "SWB422393135"  "SWB144127475" 
+    ##  [57] "SWB643844681"  "SWB745306795"  "SWB731501611"  "SWB153987642" 
+    ##  [61] "SWB396519083"  "SWB167833243"  "SWB1032014586" "SWB1064177149"
+    ##  [65] "SWB314377127"  "SWB266114095"  "SWB205168019"  "SWB203056667" 
+    ##  [69] "SWB1005999121" "SWB117509040"  "SWB474988649"  "SWB171918140" 
+    ##  [73] "SWB1006370538" "SWB130003945"  "SWB1007811075" "SWB1042418083"
+    ##  [77] "SWB357683007"  "SWB1067405817" "SWB179050005"  "SWB1094410129"
+    ##  [81] "SWB508500322"  "SWB363667742"  "SWB737563346"  "SWB171855639" 
+    ##  [85] "SWB104438684"  "SWB1004287499" "SWB440771513"  "SWB317858129" 
+    ##  [89] "SWB447361971"  "SWB288065067"  "SWB626016460"  "SWB1061853147"
+    ##  [93] "SWB1006920918" "SWB215787516"  "SWB577399117"  "SWB1032222707"
+    ##  [97] "SWB877788842"  "SWB687061292"  "SWB990382895"  "SWB611717516" 
+    ## [101] "SWB722862172"  "SWB416555296"  "SWB1022471212" "SWB186599700" 
+    ## [105] "SWB614399879"  "SWB257855274"  "SWB327349634"  "SWB554650476" 
+    ## [109] "SWB378534264"  "SWB571713547"  "SWB1072405753" "SWB164838634" 
+    ## [113] "SWB124351461"  "SWB311073107"  "SWB134019181"  "SWB423284233" 
+    ## [117] "SWB1010154113" "SWB333383561"  "SWB196474700"  "SWB227194018" 
+    ## [121] "SWB180135494"  "SWB665730390"  "SWB559628175"  "SWB1021054163"
+    ## [125] "SWB183641980"  "SWB353819528"  "SWB144617885"  "SWB1086588216"
+    ## [129] "SWB311059340"  "SWB694338934"  "SWB606784480"  "SWB506116356" 
+    ## [133] "SWB1032615104" "SWB176872640"  "SWB1062588127" "SWB105325695" 
+    ## [137] "SWB709089639"  "SWB101474884"  "SWB314066371"  "SWB762638766" 
+    ## [141] "SWB110499849"  "SWB1047795090" "SWB396784327"  "SWB490708504" 
+    ## [145] "SWB833793078"  "SWB892604512"  "SWB180292825"  "SWB775107411" 
+    ## [149] "SWB1076871858" "SWB433661764"  "SWB166464933"  "SWB210727695" 
+    ## [153] "SWB1081329726" "SWB235913611"  "SWB184010667"  "SWB364614827" 
+    ## [157] "SWB345936186"  "SWB129835986"  "SWB292962231"  "SWB201676705" 
+    ## [161] "SWB612772517"  "SWB220967189"  "SWB1071913451" "SWB224464193" 
+    ## [165] "SWB347838583"  "SWB470319312"  "SWB592141069"  "SWB1087415338"
+    ## [169] "SWB219290549"  "SWB1043116165" "SWB324145882"  "SWB1040120060"
+    ## [173] "SWB254432726"  "SWB697877130"  "SWB118473016"  "SWB272679954" 
+    ## [177] "SWB419122753"  "SWB1014124823" "SWB334104343"  "SWB753585273" 
+    ## [181] "SWB1053696821" "SWB1091394540" "SWB496086687"  "SWB292145490" 
+    ## [185] "SWB728937188"  "SWB459933167"  "SWB1001584606" "SWB302160471" 
+    ## [189] "SWB161172632"  "SWB288477469"  "SWB758508438"  "SWB348185149" 
+    ## [193] "SWB1029165728" "SWB1084698694" "SWB434379651"  "SWB1055196030"
+    ## [197] "SWB185550711"  "SWB1096675304" "SWB184339182"  "SWB154287237" 
+    ## [201] "SWB1078232855" "SWB159994817"  "SWB1065967402" "SWB303023711" 
+    ## [205] "SWB347236696"  "SWB149021787"  "SWB1035727975" "SWB1000617067"
+    ## [209] "SWB126579584"  "SWB600902908"  "SWB333116474"  "SWB683006749" 
+    ## [213] "SWB344298839"  "SWB127431461"  "SWB426896583"  "SWB1021849359"
+    ## [217] "SWB631575542"  "SWB386540011"  "SWB515562450"  "SWB307415375" 
+    ## [221] "SWB357704928"  "SWB194891159"  "SWB1046935744" "SWB1049921062"
+    ## [225] "SWB1006388106" "SWB196809482"  "SWB1025808848" "SWB1098656440"
+    ## [229] "SWB808115757"  "SWB205655342"  "SWB1009124954" "SWB1049871585"
+    ## [233] "SWB277748518"  "SWB675832338"  "SWB463296017"  "SWB200595533" 
+    ## [237] "SWB1055481611" "SWB492211130"  "SWB309016142"  "SWB512540212" 
+    ## [241] "SWB242544000"  "SWB388237841"  "SWB182970260"  "SWB294693450" 
+    ## [245] "SWB289113826"  "SWB1048855973" "SWB236568486"  "SWB824605621" 
+    ## [249] "SWB166794768"  "SWB302506201"  "SWB1014284337" "SWB235253173" 
+    ## [253] "SWB129267037"  "SWB1029808679" "SWB206593075"  "SWB121298063" 
+    ## [257] "SWB658958485"  "SWB125119422"  "SWB1045425844" "SWB319841991" 
+    ## [261] "SWB131286416"  "SWB1064235283" "SWB423741641"  "SWB1018749596"
+    ## [265] "SWB239036731"  "SWB510654620"  "SWB329767319"  "SWB384619829" 
+    ## [269] "SWB352090153"  "SWB239077602"  "SWB251002135"  "SWB225863457" 
+    ## [273] "SWB701521765"  "SWB218393110"  "SWB153304465"  "SWB809102561" 
+    ## [277] "SWB377713116"  "SWB1053765693" "SWB432212372"  "SWB374852674" 
+    ## [281] "SWB1060014163" "SWB328797939"  "SWB277202346"  "SWB474582059" 
+    ## [285] "SWB1076265469" "SWB220405756"  "SWB1010765728" "SWB108563173" 
+    ## [289] "SWB1087942719" "SWB1007379952" "SWB476353238"  "SWB1093919404"
+    ## [293] "SWB148712746"  "SWB1030641467" "SWB250851795"  "SWB209750009" 
+    ## [297] "SWB117690763"  "SWB1031605803" "SWB231587985"
+
+Challenge time!
+
+``` r
+#Create a data.frame (surveys_200) containing only the data in row 200 of the surveys dataset.
+
+# Pull out the last row of the data frame and save it
+```
+
+Let’s take five minutes for this challenge so you can have a breather
+before starting the final piece of our first day!
+
 #### 11:15-12:00pm: Starting with Data in R Cont:
+
+##### Factors
+
+Several of our data columns contain character data that are categorical
+variables. `Factor` is a special class used for working with categorical
+data. Factors only contain a list of pre-defined levels. Though factors
+may often look like character vectors, they are actually treated as
+integer vectors, so you need to be careful when treating them as
+strings.
+
+``` r
+# Use the factor function to convert column levels to factors 
+data$sex <- factor(data$sex) 
+
+# check the conversion worked with summary and class
+summary(data$sex)
+```
+
+    ## female   male 
+    ##    125    174
+
+``` r
+class(data$sex)
+```
+
+    ## [1] "factor"
+
+``` r
+# Note that factors are always assigned in alphabetical order. Check the levels of a factor with levels
+levels(data$sex) # see that female comes before male
+```
+
+    ## [1] "female" "male"
+
+``` r
+# Get the number of levels with n level 
+nlevels(data$sex)
+```
+
+    ## [1] 2
+
+Sometimes you may want your levels in specific order.
+
+``` r
+data$sex <- factor(data$sex, levels = c("male","female"))
+levels(data$sex)
+```
+
+    ## [1] "male"   "female"
+
+Challenge
+
+``` r
+# Convert the HigestCare column to a factor and put the levels in this order: Neg, Floor, CCU, Outpatient
+
+levels(as.factor(data$HighestCare)) # "CCU"        "Floor"      "Neg"        "Outpatient"
+```
+
+    ## [1] "CCU"        "Floor"      "Neg"        "Outpatient"
+
+``` r
+data$HighestCare <- factor(data$HighestCare, levels = c("Neg","Floor","CCU","Outpatient"))
+```
+
+##### Converting factors
+
+To convert a factor to character vector you can use `as.character(x)`
+
+``` r
+as.character(data$sex)
+```
+
+    ##   [1] "male"   "male"   "male"   "male"   "male"   "female" "female" "female"
+    ##   [9] "male"   "male"   "male"   "female" "male"   "male"   "male"   "female"
+    ##  [17] "female" "female" "male"   "female" "female" "female" "female" "female"
+    ##  [25] "female" "female" "female" "female" "female" "female" "male"   "male"  
+    ##  [33] "male"   "male"   "male"   "male"   "male"   "male"   "male"   "male"  
+    ##  [41] "male"   "male"   "male"   "male"   "male"   "male"   "male"   "female"
+    ##  [49] "female" "female" "female" "female" "female" "female" "female" "female"
+    ##  [57] "female" "female" "male"   "male"   "male"   "female" "male"   "male"  
+    ##  [65] "male"   "male"   "male"   "female" "female" "female" "male"   "male"  
+    ##  [73] "female" "male"   "female" "male"   "female" "male"   "male"   "male"  
+    ##  [81] "female" "female" "female" "female" "male"   "female" "female" "female"
+    ##  [89] "female" "male"   "male"   "male"   "male"   "male"   "male"   "male"  
+    ##  [97] "male"   "male"   "female" "male"   "male"   "male"   "female" "male"  
+    ## [105] "male"   "male"   "male"   "male"   "male"   "male"   "male"   "female"
+    ## [113] "female" "female" "female" "female" "female" "female" "female" "female"
+    ## [121] "female" "female" "male"   "male"   "male"   "male"   "male"   "male"  
+    ## [129] "male"   "male"   "female" "female" "male"   "male"   "male"   "male"  
+    ## [137] "male"   "male"   "male"   "male"   "female" "female" "female" "female"
+    ## [145] "female" "female" "female" "female" "female" "female" "female" "male"  
+    ## [153] "male"   "male"   "female" "male"   "male"   "male"   "male"   "male"  
+    ## [161] "female" "male"   "male"   "female" "female" "female" "female" "female"
+    ## [169] "female" "female" "female" "male"   "male"   "male"   "female" "female"
+    ## [177] "female" "female" "female" "male"   "male"   "male"   "male"   "male"  
+    ## [185] "male"   "female" "female" "male"   "male"   "male"   "male"   "male"  
+    ## [193] "female" "female" "female" "male"   "female" "male"   "male"   "female"
+    ## [201] "female" "female" "female" "male"   "male"   "male"   "male"   "male"  
+    ## [209] "male"   "female" "male"   "male"   "male"   "male"   "male"   "male"  
+    ## [217] "male"   "male"   "male"   "male"   "male"   "male"   "male"   "male"  
+    ## [225] "male"   "male"   "female" "female" "female" "female" "female" "female"
+    ## [233] "female" "female" "male"   "female" "female" "female" "female" "female"
+    ## [241] "female" "female" "male"   "male"   "male"   "male"   "male"   "male"  
+    ## [249] "male"   "male"   "male"   "male"   "male"   "male"   "male"   "male"  
+    ## [257] "male"   "male"   "male"   "female" "female" "female" "female" "female"
+    ## [265] "female" "female" "female" "female" "female" "female" "female" "female"
+    ## [273] "female" "male"   "male"   "male"   "male"   "male"   "male"   "male"  
+    ## [281] "male"   "male"   "male"   "male"   "male"   "male"   "male"   "male"  
+    ## [289] "male"   "male"   "male"   "male"   "male"   "male"   "male"   "male"  
+    ## [297] "male"   "male"   "male"
+
+##### Renaming Factors
+
+With your data stored as factors you can use the `plot()` function to
+quickly see the number of observations in each factor level
+
+``` r
+plot(data$HighestCare)
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/plot_factor-1.png)<!-- -->
+However say we wanted to rename the Negative group from Neg to Negative.
+
+``` r
+levels(data$HighestCare)[1] <- "Negative"
+plot(data$HighestCare)
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/rename_factor-1.png)<!-- -->
+We can also use this to rename any NA levels we may have. For example,
+lets make the `Ever.On.Ventilator` column a factor and plot it.
+
+``` r
+data$Ever.On.Ventilator <- factor(data$Ever.On.Ventilator)
+plot(data$Ever.On.Ventilator)
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/rename-1.png)<!-- -->
+
+``` r
+# But what about the NAs samples that we know are there?
+
+# turn the missing values into a factor levels with the addNA() function
+data$Ever.On.Ventilator <- addNA(data$Ever.On.Ventilator)
+levels(data$Ever.On.Ventilator)
+```
+
+    ## [1] "N" "Y" NA
+
+``` r
+# And rename the NA
+levels(data$Ever.On.Ventilator)[3] <- "Not Applicable"
+
+# now we can replot and see this new added level
+plot(data$Ever.On.Ventilator)
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/rename-2.png)<!-- -->
+Challenge!
+
+``` r
+# Now that we have renamed the Ever.On.Ventilator column, can you reorder the levels so that the "Not Applicable" patients are plotted before  the "N" patients?
+data$Ever.On.Ventilator <- factor(data$Ever.On.Ventilator, levels = c("Not Applicable","N","Y"))
+
+plot(data$Ever.On.Ventilator)
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/challenge_7-1.png)<!-- -->
+##### Saving and exporting data
+
+Now that we have done a variety of data manipulations, we want to save
+our output.
+
+``` r
+# lets output in our results folder
+write.csv(data, file="/Users/ewitkop/Library/CloudStorage/Box-Box/EW_Bioinformatics_Postdoc_Research/ADMINISTRATIVE/Data_Carpentry_Workshop_June_2022/WORKSHOP_CODE/Data_Carpentry_Workshop_2022/results/data_day1.csv", row.names = FALSE)
+```

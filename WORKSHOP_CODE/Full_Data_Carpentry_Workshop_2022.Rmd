@@ -282,11 +282,11 @@ weight_g <- c(10,15,16, NA,25, 30, NA)
 
 ```
 
-#### BREAK: 10:30 - 10:45 ####
+### BREAK: 10:30 - 10:45 ####
 
-#### 10:45-11:15: Starting with Data in R: Dataframes ####
+### 10:45-11:15: Starting with Data in R: Dataframes ####
 
-##### Downloading the Data
+#### Downloading the Data
 
 Now it's time to download a subset version of the COVID-19 data. The data is saved in a csv file and is saved on our Github landing page. https://github.com/BenaroyaResearch/Data_Carpentry_Workshop_2022/blob/main/WORKSHOP_DATA/Bolouri_2021_subset.csv
 
@@ -303,7 +303,7 @@ data <- read_csv("raw_data/Bolouri_2021_subset.csv")
 
 Note how read csv looks at the data type of each column. 
 
-##### Inspecting data frames
+#### Inspecting data frames
 
 ```{r investigate}
 
@@ -340,7 +340,7 @@ nrow(data) # 299
 ncol(data) # 26
 ```
 
-##### Indexing and subsetting data frames
+#### Indexing and subsetting data frames
 
 To extract data from a data frame we need to use its coordinates, which are always row number followed by column number.
 
@@ -380,9 +380,9 @@ Challenge time!
 
 Let's take five minutes for this challenge so you can have a breather before starting the final piece of our first day! 
 
-#### 11:15-12:00pm: Starting with Data in R Cont: 
+### 11:15-12:00pm: Starting with Data in R Cont: 
 
-##### Factors 
+#### Factors 
 
 Several of our data columns contain character data that are categorical variables. `Factor` is a special class used for working with categorical data. Factors only contain a list of pre-defined levels. Though factors may often look like character vectors, they are actually treated as integer vectors, so you need to be careful when treating them as strings.
 
@@ -419,7 +419,7 @@ levels(as.factor(data$HighestCare)) # "CCU"        "Floor"      "Neg"        "Ou
 data$HighestCare <- factor(data$HighestCare, levels = c("Neg","Floor","CCU","Outpatient"))
 ```
 
-##### Converting factors
+#### Converting factors
 
 To convert a factor to character vector you can use `as.character(x)`
 
@@ -427,7 +427,7 @@ To convert a factor to character vector you can use `as.character(x)`
 as.character(data$sex)
 ```
 
-##### Renaming Factors 
+#### Renaming Factors 
 
 With your data stored as factors you can use the `plot()` function to quickly see the number of observations in each factor level
 
@@ -467,16 +467,147 @@ data$Ever.On.Ventilator <- factor(data$Ever.On.Ventilator, levels = c("Not Appli
 
 plot(data$Ever.On.Ventilator)
 ```
-##### Saving and exporting data
+#### Saving and exporting data
 
 Now that we have done a variety of data manipulations, we want to save our output.
 
 ```{r write_day}
 
 # lets output in our results folder
-write.csv(data, file="/Users/ewitkop/Library/CloudStorage/Box-Box/EW_Bioinformatics_Postdoc_Research/ADMINISTRATIVE/Data_Carpentry_Workshop_June_2022/WORKSHOP_CODE/Data_Carpentry_Workshop_2022/results/data_day1.csv", row.names = FALSE)
+write.csv(data, file="Data_Carpentry_Workshop_2022/results/data_day1.csv", row.names = FALSE)
 
 
 ```
 
+When you close out R Studio you will see the option to save your current session objects. I typically do, though sometimes this can get you into troubl as you are approaching the edge of R's memory. 
 
+
+## DAY 2
+
+### 9:00am: Manipulating Data in R
+
+Using brackets to subset data can be cumbersome, so in comes the `dplyr` package which has a set of functions designed for tabular data manipulation. The `tidyverse` package we loaded yesterday already includes this package as well as a few others, like `ggplot2`, `tidyr` which we will use today. The `tidyr` allows for more simple reshaping of the data for plotting and other data analysis tasks. Note that online and in R studio there are helpful cheatsheets that have a list of functions in both `dplyr` and `tidyr` that are very useful references. 
+
+To access go to `Help` > `Cheatsheets`
+
+```{r library}
+# Note that every time you restart R you need to reload your packages
+
+library(tidyverse)
+
+# Let's also load in our data that we exported yesterday at the end of our session
+data2 <- read_csv("Data_Carpentry_Workshop_2022/results/data_day1.csv")
+
+```
+Now we're going to learn some of the most useful `dplyr` data manipulation functions.
+
+  - `select()`: subset columns
+  - `filter()`: subset rows on conditions
+  - `mutate()`: create new columns by using information from other columns
+  - `group_by()` and `summarize()`: create summary statistics on grouped data
+  - `arrange()`: sort results
+  - `count()`: count discrete values
+
+#### Selecting columns and filtering rows
+
+```{r select}
+select(data2, Sample.ID, age, bmi) # put the name of the df first, followed by the columns names
+
+# use the minus "-" symbol to select all except certain columns
+select(data2, -sex, -race)
+
+# you can also select rows based on certain criteria using filter
+filter(data2, HighestCare == "Outpatient")
+filter(data2, age <= 50)
+
+```
+#### Pipes
+
+What if you want to filter and select at the same time? You can either do this in intermediate steps, nesting functions, or running the functions one after the other on the same dataset using pipes. 
+
+```{r pipes}
+
+# Intermediate steps
+data2_subset <- filter(data2, bmi < 30)
+data2_subset <- select(data2_subset, Sample.ID, age, severity)
+
+# Nest the functions
+data2_subset <- select(filter(data2, bmi < 30), Sample.ID, age, severity)
+
+# nesting  can get hard to read
+
+# Use the pipe operator %>% 
+# Pipes in R look like %>% and are made available via the magrittr package, installed automatically with dplyr. If you use RStudio, you can type the pipe with Ctrl + Shift + M if you have a PC or Cmd + Shift + M if you have a Mac.
+
+data2 %>%
+  filter(bmi < 30) %>% 
+  select(Sample.ID, age, severity)
+
+# the pipe passes the data from one operation to another and goes step by step, it is like saying the word "then" at each pipe 
+
+
+# We can create a new object with this filtered data
+data2_sml <- data2 %>%
+  filter(bmi < 30) %>% 
+  select(Sample.ID, age, severity)
+
+data2_sml
+
+```
+Challenge
+```{r challenge_8}
+# Using pipes, subset data2 to keep only patients with a COVID score at or below 4, whose highest care was NOT CCU, and retain only their Sample.ID, age, sex, and bmi.
+
+data2_subset <- data2 %>% 
+  filter(Score <= 4) %>% 
+  filter(HighestCare != "CCU" ) %>%
+  select(Sample.ID, age,sex, bmi)
+
+```
+#### Mutate
+
+It is often the case that you want to perform some manipulation on an existing column and make a new column. You can do this using the function `mutate`
+
+```{r mutate}
+# lets create a new column where we calculate a persons age in months
+data2 %>%
+  mutate(age_months = age*12)
+
+# Can also do multiple mutates one after the other
+data2 %>% 
+  mutate(age_months = age*12,
+         age_d = age_months*30)
+
+# Pipes work with non plyr functions as well. For example, we canAdd head() to view the first #few rows
+data2 %>% 
+  mutate(age_months = age*12,
+         age_d = age_months*30) %>%
+  head()
+
+
+```
+Let's say we now wanted to calculate the mean bmi of measured patients.
+
+```{r mean_bmi}
+
+data2_mean_bmi <- data2 %>% 
+  mutate(mean_bmi = mean(bmi))
+data2_mean_bmi$mean_bmi # this returns all NA's? Why?
+
+# Let's view the original data
+data2$bmi # as we can see there are a few NA's here that are preventing our calculation from running correctly
+
+# we can filter out these NAs and then run the function
+data2 %>%  
+  filter(!is.na(bmi)) %>%
+  mutate(mean_bmi = mean(bmi)) %>%
+  View()
+
+
+```
+
+### 10:15am-10:30am: BREAK
+
+### 10:30-12:00pm: Visualizing Data in R with ggplot
+
+#### STOP FOR THE DAY AT PLOTTING TIME SERIES DATA 

@@ -465,11 +465,11 @@ heights <- na.omit(heights)
 weight_g <- c(10,15,16, NA,25, 30, NA)
 ```
 
-#### BREAK: 10:30 - 10:45
+### BREAK: 10:30 - 10:45
 
-#### 10:45-11:15: Starting with Data in R: Dataframes
+### 10:45-11:15: Starting with Data in R: Dataframes
 
-##### Downloading the Data
+#### Downloading the Data
 
 Now it’s time to download a subset version of the COVID-19 data. The
 data is saved in a csv file and is saved on our Github landing page.
@@ -513,7 +513,7 @@ data <- read_csv("raw_data/Bolouri_2021_subset.csv")
 
 Note how read csv looks at the data type of each column.
 
-##### Inspecting data frames
+#### Inspecting data frames
 
 ``` r
 # To view whole dataset
@@ -816,7 +816,7 @@ ncol(data) # 26
 
     ## [1] 26
 
-##### Indexing and subsetting data frames
+#### Indexing and subsetting data frames
 
 To extract data from a data frame we need to use its coordinates, which
 are always row number followed by column number.
@@ -1025,9 +1025,9 @@ Challenge time!
 Let’s take five minutes for this challenge so you can have a breather
 before starting the final piece of our first day!
 
-#### 11:15-12:00pm: Starting with Data in R Cont:
+### 11:15-12:00pm: Starting with Data in R Cont:
 
-##### Factors
+#### Factors
 
 Several of our data columns contain character data that are categorical
 variables. `Factor` is a special class used for working with categorical
@@ -1090,7 +1090,7 @@ levels(as.factor(data$HighestCare)) # "CCU"        "Floor"      "Neg"        "Ou
 data$HighestCare <- factor(data$HighestCare, levels = c("Neg","Floor","CCU","Outpatient"))
 ```
 
-##### Converting factors
+#### Converting factors
 
 To convert a factor to character vector you can use `as.character(x)`
 
@@ -1137,7 +1137,7 @@ as.character(data$sex)
     ## [289] "male"   "male"   "male"   "male"   "male"   "male"   "male"   "male"  
     ## [297] "male"   "male"   "male"
 
-##### Renaming Factors
+#### Renaming Factors
 
 With your data stored as factors you can use the `plot()` function to
 quickly see the number of observations in each factor level
@@ -1194,12 +1194,386 @@ plot(data$Ever.On.Ventilator)
 ```
 
 ![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/challenge_7-1.png)<!-- -->
-##### Saving and exporting data
+#### Saving and exporting data
 
 Now that we have done a variety of data manipulations, we want to save
 our output.
 
 ``` r
 # lets output in our results folder
-write.csv(data, file="/Users/ewitkop/Library/CloudStorage/Box-Box/EW_Bioinformatics_Postdoc_Research/ADMINISTRATIVE/Data_Carpentry_Workshop_June_2022/WORKSHOP_CODE/Data_Carpentry_Workshop_2022/results/data_day1.csv", row.names = FALSE)
+write.csv(data, file="Data_Carpentry_Workshop_2022/results/data_day1.csv", row.names = FALSE)
 ```
+
+When you close out R Studio you will see the option to save your current
+session objects. I typically do, though sometimes this can get you into
+troubl as you are approaching the edge of R’s memory.
+
+## DAY 2
+
+### 9:00am: Manipulating Data in R
+
+Using brackets to subset data can be cumbersome, so in comes the `dplyr`
+package which has a set of functions designed for tabular data
+manipulation. The `tidyverse` package we loaded yesterday already
+includes this package as well as a few others, like `ggplot2`, `tidyr`
+which we will use today. The `tidyr` allows for more simple reshaping of
+the data for plotting and other data analysis tasks. Note that online
+and in R studio there are helpful cheatsheets that have a list of
+functions in both `dplyr` and `tidyr` that are very useful references.
+
+To access go to `Help` \> `Cheatsheets`
+
+``` r
+# Note that every time you restart R you need to reload your packages
+
+library(tidyverse)
+
+# Let's also load in our data that we exported yesterday at the end of our session
+data2 <- read_csv("Data_Carpentry_Workshop_2022/results/data_day1.csv")
+```
+
+    ## Rows: 299 Columns: 26
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (11): Sample.ID, Covid.ID, sex, race, patientType, HighestCare, Ever.On....
+    ## dbl (15): drawDate, Score, age, bmi, admitDate, deceasedDate, drawTime, CBC....
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+Now we’re going to learn some of the most useful `dplyr` data
+manipulation functions.
+
+-   `select()`: subset columns
+-   `filter()`: subset rows on conditions
+-   `mutate()`: create new columns by using information from other
+    columns
+-   `group_by()` and `summarize()`: create summary statistics on grouped
+    data
+-   `arrange()`: sort results
+-   `count()`: count discrete values
+
+#### Selecting columns and filtering rows
+
+``` r
+select(data2, Sample.ID, age, bmi) # put the name of the df first, followed by the columns names
+```
+
+    ## # A tibble: 299 × 3
+    ##    Sample.ID       age   bmi
+    ##    <chr>         <dbl> <dbl>
+    ##  1 SWB343927719     54  69.0
+    ##  2 SWB125388248     66  34.4
+    ##  3 SWB1057697917    66  34.4
+    ##  4 SWB386069501     67  25.7
+    ##  5 SWB827655421     67  25.7
+    ##  6 SWB200026065     37  28.4
+    ##  7 SWB258824496     65  29.9
+    ##  8 SWB733482852     94  28.0
+    ##  9 SWB1084971930    79  25.6
+    ## 10 SWB1078357262    75  23.3
+    ## # … with 289 more rows
+
+``` r
+# use the minus "-" symbol to select all except certain columns
+select(data2, -sex, -race)
+```
+
+    ## # A tibble: 299 × 24
+    ##    Sample.ID     drawDate Covid.ID     Score   age   bmi patientType HighestCare
+    ##    <chr>            <dbl> <chr>        <dbl> <dbl> <dbl> <chr>       <chr>      
+    ##  1 SWB343927719     43978 Covid1366599    NA    54  69.0 SARS-COV-2… Negative   
+    ##  2 SWB125388248     43971 Covid1395204    NA    66  34.4 SARS-COV-2… Negative   
+    ##  3 SWB1057697917    43972 Covid1395204    NA    66  34.4 SARS-COV-2… Negative   
+    ##  4 SWB386069501     43940 Covid1425716    NA    67  25.7 SARS-COV-2… Negative   
+    ##  5 SWB827655421     43943 Covid1425716    NA    67  25.7 SARS-COV-2… Negative   
+    ##  6 SWB200026065     43978 Covid1458219    NA    37  28.4 SARS-COV-2… Negative   
+    ##  7 SWB258824496     43940 Covid1472094    NA    65  29.9 SARS-COV-2… Negative   
+    ##  8 SWB733482852     43939 Covid1490037    NA    94  28.0 SARS-COV-2… Negative   
+    ##  9 SWB1084971930    43978 Covid1550447    NA    79  25.6 SARS-COV-2… Negative   
+    ## 10 SWB1078357262    43971 Covid1584168    NA    75  23.3 SARS-COV-2… Negative   
+    ## # … with 289 more rows, and 16 more variables: Ever.On.Ventilator <chr>,
+    ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
+    ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
+    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
+    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
+    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
+    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>
+
+``` r
+# you can also select rows based on certain criteria using filter
+filter(data2, HighestCare == "Outpatient")
+```
+
+    ## # A tibble: 8 × 26
+    ##   Sample.ID     drawDate Covid.ID     Score sex      age race    bmi patientType
+    ##   <chr>            <dbl> <chr>        <dbl> <chr>  <dbl> <chr> <dbl> <chr>      
+    ## 1 SWB474988649     43937 Covid1216277     2 male      54 whit…  NA   SARS-COV-2…
+    ## 2 SWB1006370538    43967 Covid1299092     2 female    27 othe…  NA   SARS-COV-2…
+    ## 3 SWB130003945     43962 Covid1414426     2 male      28 asian  NA   SARS-COV-2…
+    ## 4 SWB1042418083    43962 Covid1769995     2 male      76 asian  27.3 SARS-COV-2…
+    ## 5 SWB1094410129    43934 Covid1876926     2 male      56 whit…  37.2 SARS-COV-2…
+    ## 6 SWB508500322     43942 Covid1889889     2 female    28 blac…  22.5 SARS-COV-2…
+    ## 7 SWB363667742     43931 Covid1970770     2 female    67 asian  23.7 SARS-COV-2…
+    ## 8 SWB737563346     43934 Covid1970770     2 female    67 asian  23.7 SARS-COV-2…
+    ## # … with 17 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
+    ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
+    ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
+    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
+    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
+    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
+    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>
+
+``` r
+filter(data2, age <= 50)
+```
+
+    ## # A tibble: 56 × 26
+    ##    Sample.ID     drawDate Covid.ID     Score sex     age race    bmi patientType
+    ##    <chr>            <dbl> <chr>        <dbl> <chr> <dbl> <chr> <dbl> <chr>      
+    ##  1 SWB200026065     43978 Covid1458219    NA fema…    37 whit…  28.4 SARS-COV-2…
+    ##  2 SWB302673469     43939 Covid1601623    NA fema…    30 whit…  31.8 SARS-COV-2…
+    ##  3 SWB435038108     43971 Covid1945628    NA fema…    48 whit…  30.2 SARS-COV-2…
+    ##  4 SWB162851435     43972 Covid1945628    NA fema…    48 whit…  30.2 SARS-COV-2…
+    ##  5 SWB368283451     43971 Covid1240633    NA fema…    43 whit…  25.1 SARS-COV-2…
+    ##  6 SWB1006370538    43967 Covid1299092     2 fema…    27 othe…  NA   SARS-COV-2…
+    ##  7 SWB130003945     43962 Covid1414426     2 male     28 asian  NA   SARS-COV-2…
+    ##  8 SWB1007811075    43951 Covid1701495     2 fema…    41 othe…  54.1 SARS-COV-2…
+    ##  9 SWB508500322     43942 Covid1889889     2 fema…    28 blac…  22.5 SARS-COV-2…
+    ## 10 SWB104438684     43948 Covid1006658     3 male     34 whit…  33.3 SARS-COV-2…
+    ## # … with 46 more rows, and 17 more variables: HighestCare <chr>,
+    ## #   Ever.On.Ventilator <chr>, Preexisting.Hypertension <chr>, eventId <chr>,
+    ## #   admitDate <dbl>, deceasedDate <dbl>, covidId <chr>, severity <chr>,
+    ## #   drawTime <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>,
+    ## #   FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>, …
+
+#### Pipes
+
+What if you want to filter and select at the same time? You can either
+do this in intermediate steps, nesting functions, or running the
+functions one after the other on the same dataset using pipes.
+
+``` r
+# Intermediate steps
+data2_subset <- filter(data2, bmi < 30)
+data2_subset <- select(data2_subset, Sample.ID, age, severity)
+
+# Nest the functions
+data2_subset <- select(filter(data2, bmi < 30), Sample.ID, age, severity)
+
+# nesting  can get hard to read
+
+# Use the pipe operator %>% 
+# Pipes in R look like %>% and are made available via the magrittr package, installed automatically with dplyr. If you use RStudio, you can type the pipe with Ctrl + Shift + M if you have a PC or Cmd + Shift + M if you have a Mac.
+
+data2 %>%
+  filter(bmi < 30) %>% 
+  select(Sample.ID, age, severity)
+```
+
+    ## # A tibble: 146 × 3
+    ##    Sample.ID       age severity
+    ##    <chr>         <dbl> <chr>   
+    ##  1 SWB386069501     67 Neg     
+    ##  2 SWB827655421     67 Neg     
+    ##  3 SWB200026065     37 Neg     
+    ##  4 SWB258824496     65 Neg     
+    ##  5 SWB733482852     94 Neg     
+    ##  6 SWB1084971930    79 Neg     
+    ##  7 SWB1078357262    75 Neg     
+    ##  8 SWB555276334     75 Neg     
+    ##  9 SWB1035736641    88 Neg     
+    ## 10 SWB258122016     88 Neg     
+    ## # … with 136 more rows
+
+``` r
+# the pipe passes the data from one operation to another and goes step by step, it is like saying the word "then" at each pipe 
+
+
+# We can create a new object with this filtered data
+data2_sml <- data2 %>%
+  filter(bmi < 30) %>% 
+  select(Sample.ID, age, severity)
+
+data2_sml
+```
+
+    ## # A tibble: 146 × 3
+    ##    Sample.ID       age severity
+    ##    <chr>         <dbl> <chr>   
+    ##  1 SWB386069501     67 Neg     
+    ##  2 SWB827655421     67 Neg     
+    ##  3 SWB200026065     37 Neg     
+    ##  4 SWB258824496     65 Neg     
+    ##  5 SWB733482852     94 Neg     
+    ##  6 SWB1084971930    79 Neg     
+    ##  7 SWB1078357262    75 Neg     
+    ##  8 SWB555276334     75 Neg     
+    ##  9 SWB1035736641    88 Neg     
+    ## 10 SWB258122016     88 Neg     
+    ## # … with 136 more rows
+
+Challenge
+
+``` r
+# Using pipes, subset data2 to keep only patients with a COVID score at or below 4, whose highest care was NOT CCU, and retain only their Sample.ID, age, sex, and bmi.
+
+data2_subset <- data2 %>% 
+  filter(Score <= 4) %>% 
+  filter(HighestCare != "CCU" ) %>%
+  select(Sample.ID, age,sex, bmi)
+```
+
+#### Mutate
+
+It is often the case that you want to perform some manipulation on an
+existing column and make a new column. You can do this using the
+function `mutate`
+
+``` r
+# lets create a new column where we calculate a persons age in months
+data2 %>%
+  mutate(age_months = age*12)
+```
+
+    ## # A tibble: 299 × 27
+    ##    Sample.ID     drawDate Covid.ID     Score sex     age race    bmi patientType
+    ##    <chr>            <dbl> <chr>        <dbl> <chr> <dbl> <chr> <dbl> <chr>      
+    ##  1 SWB343927719     43978 Covid1366599    NA male     54 whit…  69.0 SARS-COV-2…
+    ##  2 SWB125388248     43971 Covid1395204    NA male     66 nati…  34.4 SARS-COV-2…
+    ##  3 SWB1057697917    43972 Covid1395204    NA male     66 nati…  34.4 SARS-COV-2…
+    ##  4 SWB386069501     43940 Covid1425716    NA male     67 whit…  25.7 SARS-COV-2…
+    ##  5 SWB827655421     43943 Covid1425716    NA male     67 whit…  25.7 SARS-COV-2…
+    ##  6 SWB200026065     43978 Covid1458219    NA fema…    37 whit…  28.4 SARS-COV-2…
+    ##  7 SWB258824496     43940 Covid1472094    NA fema…    65 whit…  29.9 SARS-COV-2…
+    ##  8 SWB733482852     43939 Covid1490037    NA fema…    94 whit…  28.0 SARS-COV-2…
+    ##  9 SWB1084971930    43978 Covid1550447    NA male     79 decl…  25.6 SARS-COV-2…
+    ## 10 SWB1078357262    43971 Covid1584168    NA male     75 whit…  23.3 SARS-COV-2…
+    ## # … with 289 more rows, and 18 more variables: HighestCare <chr>,
+    ## #   Ever.On.Ventilator <chr>, Preexisting.Hypertension <chr>, eventId <chr>,
+    ## #   admitDate <dbl>, deceasedDate <dbl>, covidId <chr>, severity <chr>,
+    ## #   drawTime <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>,
+    ## #   FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>, …
+
+``` r
+# Can also do multiple mutates one after the other
+data2 %>% 
+  mutate(age_months = age*12,
+         age_d = age_months*30)
+```
+
+    ## # A tibble: 299 × 28
+    ##    Sample.ID     drawDate Covid.ID     Score sex     age race    bmi patientType
+    ##    <chr>            <dbl> <chr>        <dbl> <chr> <dbl> <chr> <dbl> <chr>      
+    ##  1 SWB343927719     43978 Covid1366599    NA male     54 whit…  69.0 SARS-COV-2…
+    ##  2 SWB125388248     43971 Covid1395204    NA male     66 nati…  34.4 SARS-COV-2…
+    ##  3 SWB1057697917    43972 Covid1395204    NA male     66 nati…  34.4 SARS-COV-2…
+    ##  4 SWB386069501     43940 Covid1425716    NA male     67 whit…  25.7 SARS-COV-2…
+    ##  5 SWB827655421     43943 Covid1425716    NA male     67 whit…  25.7 SARS-COV-2…
+    ##  6 SWB200026065     43978 Covid1458219    NA fema…    37 whit…  28.4 SARS-COV-2…
+    ##  7 SWB258824496     43940 Covid1472094    NA fema…    65 whit…  29.9 SARS-COV-2…
+    ##  8 SWB733482852     43939 Covid1490037    NA fema…    94 whit…  28.0 SARS-COV-2…
+    ##  9 SWB1084971930    43978 Covid1550447    NA male     79 decl…  25.6 SARS-COV-2…
+    ## 10 SWB1078357262    43971 Covid1584168    NA male     75 whit…  23.3 SARS-COV-2…
+    ## # … with 289 more rows, and 19 more variables: HighestCare <chr>,
+    ## #   Ever.On.Ventilator <chr>, Preexisting.Hypertension <chr>, eventId <chr>,
+    ## #   admitDate <dbl>, deceasedDate <dbl>, covidId <chr>, severity <chr>,
+    ## #   drawTime <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>,
+    ## #   FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>, …
+
+``` r
+# Pipes work with non plyr functions as well. For example, we canAdd head() to view the first #few rows
+data2 %>% 
+  mutate(age_months = age*12,
+         age_d = age_months*30) %>%
+  head()
+```
+
+    ## # A tibble: 6 × 28
+    ##   Sample.ID     drawDate Covid.ID     Score sex      age race    bmi patientType
+    ##   <chr>            <dbl> <chr>        <dbl> <chr>  <dbl> <chr> <dbl> <chr>      
+    ## 1 SWB343927719     43978 Covid1366599    NA male      54 whit…  69.0 SARS-COV-2…
+    ## 2 SWB125388248     43971 Covid1395204    NA male      66 nati…  34.4 SARS-COV-2…
+    ## 3 SWB1057697917    43972 Covid1395204    NA male      66 nati…  34.4 SARS-COV-2…
+    ## 4 SWB386069501     43940 Covid1425716    NA male      67 whit…  25.7 SARS-COV-2…
+    ## 5 SWB827655421     43943 Covid1425716    NA male      67 whit…  25.7 SARS-COV-2…
+    ## 6 SWB200026065     43978 Covid1458219    NA female    37 whit…  28.4 SARS-COV-2…
+    ## # … with 19 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
+    ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
+    ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
+    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
+    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
+    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
+    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>, age_months <dbl>, age_d <dbl>
+
+Let’s say we now wanted to calculate the mean bmi of measured patients.
+
+``` r
+data2_mean_bmi <- data2 %>% 
+  mutate(mean_bmi = mean(bmi))
+data2_mean_bmi$mean_bmi # this returns all NA's? Why?
+```
+
+    ##   [1] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [26] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [51] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [76] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ## [101] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ## [126] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ## [151] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ## [176] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ## [201] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ## [226] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ## [251] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ## [276] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+
+``` r
+# Let's view the original data
+data2$bmi # as we can see there are a few NA's here that are preventing our calculation from running correctly
+```
+
+    ##   [1] 69.03 34.35 34.35 25.74 25.74 28.36 29.86 27.99 25.59 23.33 23.33 31.81
+    ##  [13] 25.80 25.80 25.80 21.21 21.21 21.21 21.13 25.42 22.81 23.01 30.22 30.22
+    ##  [25] 25.12 23.44 23.44 23.44 23.44 23.44 35.80 35.80 35.80 35.80 35.80 45.40
+    ##  [37] 45.40 45.40 45.40 45.40 45.40 45.40 45.40 45.40 45.40 45.40 45.40 31.33
+    ##  [49] 31.33 31.33 31.33 31.33 31.33 31.33 31.33 31.33 31.33 31.33 18.14 18.14
+    ##  [61] 18.14 46.48 27.19 27.19 27.19 27.19 27.19 21.15 21.15 18.49    NA 36.98
+    ##  [73]    NA    NA 54.13 27.33 21.97 26.29 30.04 37.21 22.46 23.71 23.71 29.39
+    ##  [85] 33.33 27.24 27.24 18.49 18.49 33.57 33.57 27.99 27.99 27.99 27.99 27.99
+    ##  [97] 36.98 36.98 29.82 33.81 33.81 33.81 33.61 42.78 17.03 17.03 17.03 17.03
+    ## [109] 17.03 17.03 17.03 40.45 40.45 40.45 40.45 40.45 30.45 30.45 30.45 21.97
+    ## [121] 21.97 21.97 26.29 20.52 20.52 20.52 25.50 26.12 26.12 26.12 27.24 23.63
+    ## [133] 33.57 33.57 33.57 33.57 33.57 33.57 27.99 36.98 27.97 27.97 36.77 36.77
+    ## [145] 36.77 36.77 36.77 36.77 36.77 29.82 24.57 45.24 45.24 45.24 22.10 27.57
+    ## [157] 27.57 27.57 27.57 27.57 34.18 42.78 42.78 31.55 31.55 31.55 22.26 22.26
+    ## [169] 22.26 22.26 40.45 32.84 32.84 32.84 54.13 54.13 54.13 54.13 54.13 21.82
+    ## [181] 21.82 21.82 21.82 26.29 26.29 36.90 36.90 30.04 30.04 30.04 30.04 40.93
+    ## [193] 30.19 30.19 30.19 26.12 27.24 33.57 44.50 29.82 29.82 29.82 29.82 28.30
+    ## [205] 23.51 23.51 26.12 26.12 26.12 27.24 33.57 33.57 33.57 33.57 33.57 33.57
+    ## [217] 33.57 33.57 33.57 33.57 44.50 44.50 44.50 44.50 44.50 44.50 27.97 27.97
+    ## [229] 27.97 27.97 27.97 27.97 27.97 36.77 45.24 48.85 48.85 48.85 48.85 48.85
+    ## [241] 48.85 48.85 28.30 28.30 28.30 28.30 28.30 28.30 28.30 28.30 28.30 28.30
+    ## [253] 28.30 28.30 28.30 28.30 28.30 28.30 28.30 54.53 54.53 54.53 54.53 54.53
+    ## [265] 34.18 34.18 34.18 26.76 26.76 26.76 26.76 30.45 30.45 40.93 40.93 40.93
+    ## [277] 40.93 40.93 40.93 23.51 23.51 23.51 28.31 28.31 28.31 28.31 28.31 28.31
+    ## [289] 28.31 28.31 49.27 49.27 49.27 49.27 49.27 49.27 49.27 49.27 28.31
+
+``` r
+# we can filter out these NAs and then run the function
+data2 %>%  
+  filter(!is.na(bmi)) %>%
+  mutate(mean_bmi = mean(bmi)) %>%
+  View()
+```
+
+### 10:15am-10:30am: BREAK
+
+### 10:30-12:00pm: Visualizing Data in R with ggplot
+
+#### STOP FOR THE DAY AT PLOTTING TIME SERIES DATA

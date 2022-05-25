@@ -179,12 +179,112 @@ age_sqrt
 
 #### Vectors and Data Types 
 
-## Including Plots
+A vector is the most common and basic data type in R, and is the workhorse of R. A vector is composed by a series of values, which can be either numbers or characters. We can assign a series of values to a vector using the c() function. `c` stands for concatenate. However, all the elements in the vector have to be the same type of data.
 
-You can also embed plots, for example:
+```{r age_c}
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+# They can contain numbers
+age_d <- c(50, 100, 150, 200)
+age_d 
+
+# Or characters
+treatments <- c("saline","tetramer","IL-13")
+treatments
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Several functions allow you to inspect a vector. 
+
+``` {r vector_inspect}
+# To view the number of elements
+length(treatments)
+
+# To view the type of data 
+class(age_d) 
+class(treatments)
+
+# view the structure 
+str(treatments)
+str(age_d)
+
+```
+
+There are several other important data structures in R that we will discuss as we move through the course, including `list`, `matrix`, data frames (`data.frame`), factors (`factor`) and arrays (`arrays`).
+
+##### Subsetting Vectors 
+
+To extract a value from a vector you need to provide and index in square brackets.
+
+```{r index_vector}
+
+drug <- c("aspirin","tylenol","sudafed")
+
+# to extract the third and second elements
+drug[c(3,2)]
+
+```
+
+##### Conditional Subsetting
+
+```{r condition}
+weight_g <- c(25,30,35,40)
+
+# Can ask a logical question
+weight_g > 20
+weight_g < 30
+
+# you can also select values that meet a condition
+weight_g[weight_g < 40]
+
+# Or combine multiple tests with AND `&` and OR `|`
+weight_g[weight_g <=30 | weight_g == 40]
+```
+
+You can also search for a list of strings in a vector using the `%in%` function 
+
+```{r search}
+months <- c("Jan","Feb","Mar","Apr")
+
+# Use logical vector to find matches between lists
+months[months %in% c("Jan","Mar","July")]
+
+```
+
+```{r challenge_2}
+
+# can you find values between 100 and 200 in this list?
+weight_lb <- c(55,95,105,187, 201)
+
+```
+
+##### Missing Data
+
+Missing data in vectors is returned as `NA`. In some function you can add `na.rm = TRUE` to remove the `NA`s. 
+
+```{r missing}
+heights <- c(2,4,4,NA,6)
+mean(heights) # why didn't this work?
+mean(heights, na.rm = TRUE)
+
+# You can also select for all values that are not NAs
+heights[!is.na(heights)]
+
+# You can also omit NAs
+heights <- na.omit(heights)
+
+```
+
+```{r challenge_3}
+
+# Can you return this data frame with no NAs?
+
+weight_g <- c(10,15,16, NA,25, 30, NA)
+
+```
+
+#### BREAK: 10:30 - 10:45 ####
+
+#### 10:45-11:15: Starting with Data in R: Dataframes ####
+
+
+
+#### 11:15-12:00pm: Starting with Data in R Cont: 

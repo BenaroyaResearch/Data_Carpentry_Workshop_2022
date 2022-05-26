@@ -2388,10 +2388,13 @@ this figure patients were grouped based on their disease severity, mild
 hospitalized controls (gray).
 
 ``` r
-# Let's start with the same CBC.White.Blood.Cell.Count we plotted before, but change the theme 
-data_day3 %>%  
+# Let's start with the same CBC.White.Blood.Cell.Count we plotted before and save the data
+WBC <- data_day3 %>%  
   filter(CBC == "CBC.White.Blood.Cell.Count") %>%
-  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) 
+
+# Now lets change the theme
+WBC %>% 
   ggplot(aes(x = severity, y = Counts)) + 
   geom_boxplot() +
   # let's also change the theme to bw
@@ -2408,9 +2411,7 @@ see when you start typing theme.. Some of these include
 
 ``` r
 # Now we can add in the points to the boxplot
-data_day3 %>%  
-  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
-  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+WBC %>% 
   ggplot(aes(x = severity, y = Counts)) + 
   geom_boxplot() +
   geom_point() +
@@ -2425,9 +2426,7 @@ data_day3 %>%
 
 ``` r
 # Now let's change the axes and graph titles
-data_day3 %>%  
-  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
-  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+WBC %>% 
   ggplot(aes(x = severity, y = Counts)) + 
   geom_boxplot() +
   geom_point() +
@@ -2466,9 +2465,7 @@ colors depends on the arguments in your aesthetics mapping.
 
 ``` r
 # Remember mild (cyan), moderate (blue), and severe (red), and SARS-CoV-2–negative hospitalized controls (gray)
-data_day3 %>%  
-  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
-  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+WBC %>% 
   # first add the color argument to the mapping 
   ggplot(aes(x = severity, y = Counts, color = severity)) + 
   geom_boxplot() +
@@ -2487,9 +2484,7 @@ data_day3 %>%
 
 ``` r
 # Next up to make our plot more comparable to the publication, lets make the boxplot be filled in with solid colors
-data_day3 %>%  
-  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
-  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+WBC %>% 
   # change the color to fill
   ggplot(aes(x = severity, y = Counts, fill = severity)) + 
   geom_boxplot() +
@@ -2508,9 +2503,7 @@ data_day3 %>%
 
 ``` r
 # however when we do this we lose our point colors, so let's add those back into geom_point
-data_day3 %>%  
-  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
-  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+WBC %>% 
   ggplot(aes(x = severity, y = Counts, fill = severity)) + 
   geom_boxplot() +
   # specify the color in geom_point
@@ -2530,9 +2523,154 @@ data_day3 %>%
 Next let’s add the black trend lines and the gray bar to show the normal
 clinical values.
 
+``` r
+# we can add in horizontal lines by using geom_hline and specifying the y limits
+WBC %>% 
+  ggplot(aes(x = severity, y = Counts, fill = severity)) + 
+  geom_boxplot() +
+  # specify the color in geom_point
+  geom_point(aes(color = severity),alpha = 0.5) +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells") +
+  scale_fill_manual(values = c("cyan","blue", "red","gray")) +
+  # we also need to specify the color here
+  scale_color_manual(values = c("cyan","blue", "red","gray")) +
+  geom_hline(yintercept = 4) + 
+  geom_hline(yintercept = 11)
+```
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+
+    ## Warning: Removed 10 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/lines-1.png)<!-- -->
+
+``` r
+# How can we make the line dashed?
+# google it!
+WBC %>% 
+  ggplot(aes(x = severity, y = Counts, fill = severity)) + 
+  geom_boxplot() +
+  # specify the color in geom_point
+  geom_point(aes(color = severity),alpha = 0.5) +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells") +
+  scale_fill_manual(values = c("cyan","blue", "red","gray")) +
+  # we also need to specify the color here
+  scale_color_manual(values = c("cyan","blue", "red","gray")) +
+  geom_hline(yintercept = 4, linetype = "dashed") + 
+  geom_hline(yintercept = 11, linetype = "dashed")
+```
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+    ## Removed 10 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/lines-2.png)<!-- -->
+
+Finally, let’s change the labels of the legend. There are multiple ways
+to change the labels. We could have changed the labels originally when
+we were changing the Severity to a factor, by specificying the labels as
+an argument there. We can also change them when we are specifying our
+colors.
+
+``` r
+WBC %>% 
+  ggplot(aes(x = severity, y = Counts, fill = severity)) + 
+  geom_boxplot() +
+  # specify the color in geom_point
+  geom_point(aes(color = severity),alpha = 0.5) +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells") +
+  scale_fill_manual(labels = c("Mild COVID-19", "Moderate COVID-19", "Severe COVID-19", "Hospitalized COVID-19 Negative"), values = c("cyan","blue", "red","gray")) +
+  # we also need to specify the color here
+  scale_color_manual(values = c("cyan","blue", "red","gray")) +
+  geom_hline(yintercept = 4, linetype = "dashed") + 
+  geom_hline(yintercept = 11, linetype = "dashed")
+```
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+
+    ## Warning: Removed 10 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/labels-1.png)<!-- -->
+
+``` r
+# Notice now we have two legends now! we don't want this! Let's remove the legend for scale_color_manual
+WBC %>% 
+  ggplot(aes(x = severity, y = Counts, fill = severity)) + 
+  geom_boxplot() +
+  # specify the color in geom_point
+  geom_point(aes(color = severity),alpha = 0.5) +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells") +
+  scale_fill_manual(labels = c("Mild COVID-19", "Moderate COVID-19", "Severe COVID-19", "Hospitalized COVID-19 Negative"), values = c("cyan","blue", "red","gray")) +
+  # we also need to specify the color here
+  scale_color_manual(values = c("cyan","blue", "red","gray"), guide = "none") +
+  geom_hline(yintercept = 4, linetype = "dashed") + 
+  geom_hline(yintercept = 11, linetype = "dashed") 
+```
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+    ## Removed 10 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/labels-2.png)<!-- -->
+
+Finally let’s change our legend title by using the theme function
+
+``` r
+WBC %>% 
+  ggplot(aes(x = severity, y = Counts, fill = severity)) + 
+  geom_boxplot() +
+  # specify the color in geom_point
+  geom_point(aes(color = severity),alpha = 0.5) +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells") +
+  scale_fill_manual(labels = c("Mild COVID-19", "Moderate COVID-19", "Severe COVID-19", "Hospitalized COVID-19 Negative"), values = c("cyan","blue", "red","gray")) +
+  # we also need to specify the color here
+  scale_color_manual(values = c("cyan","blue", "red","gray"), guide = "none") +
+  geom_hline(yintercept = 4, linetype = "dashed") + 
+  geom_hline(yintercept = 11, linetype = "dashed") +
+  theme(legend.title = element_blank())
+```
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+
+    ## Warning: Removed 10 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/theme-1.png)<!-- -->
+Previously we customized the plotting for just the CBCs. Instead of
+plotting one parameter at a time we can also generate a plot that has
+each parameter side by side.
+
+``` r
+facet_CBC <- data_day3 %>%  
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>%
+  ggplot(aes(x = severity, y = Counts, fill = severity)) + 
+  geom_boxplot() +
+  # specify the color in geom_point
+  geom_point(aes(color = severity),alpha = 0.5) +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells") +
+  scale_fill_manual(labels = c("Mild COVID-19", "Moderate COVID-19", "Severe COVID-19", "Hospitalized COVID-19 Negative"), values = c("cyan","blue", "red","gray")) +
+  # we also need to specify the color here
+  scale_color_manual(values = c("cyan","blue", "red","gray"), guide = "none") +
+  theme(legend.title = element_blank()) + 
+  facet_grid(.~CBC)
+```
+
 ### 10:15-10:30: BREAK
 
-### 10:30-12:00pm: Customized Plotting
+### 10:30-12:00pm: Customized plotting cont.:
+
+Let’s start with a challenge to review what we learned this morning.
+
+-   use the CYTOF data this time
 
 # creating figure 10d
 

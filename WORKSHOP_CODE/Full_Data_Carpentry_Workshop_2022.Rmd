@@ -602,12 +602,153 @@ data2 %>%
   filter(!is.na(bmi)) %>%
   mutate(mean_bmi = mean(bmi)) %>%
   View()
+```
+Challenge 
+```{r challenge_9}
 
+# Create a new data frame that contains only the Sample.ID column and a column showing the mean score, and only has contains patients older than 40.  
+
+data_new <- 
+  data2 %>%
+  filter(!is.na(Score)) %>%
+  mutate(mean_score = mean(Score)) %>%
+  filter(age >= 40) %>%
+  select(Sample.ID, mean_score)
+
+```
+#### Split-apply-combine data analysis and the `summarize()` function
+
+Many tasks involve splitting the data to perform a function, applying the function, and then re-combining the data. The key `dplyr` functions for this are `group_by()` and `summarize()`.
+
+The `group_by()` function allows you to group together rows by categorical variables. When used with `summarize()` you can apply a summary function to a specific grouping of the data and output a single result, or summary, per group.
+
+```{r summarize}
+# to compute mean bmi by sex we can do the following
+data2 %>% 
+  group_by(sex) %>%
+  summarize(mean_bmi = mean(bmi, na.rm = TRUE))
+
+# you can also group by multiple columns
+data2 %>%
+  group_by(sex, race) %>%
+  summarize(mean_bmi = mean(bmi, na.rm = TRUE)) %>%
+  #can use tail to look at end of the output
+  tail()
+
+# After the data is grouped you can also summarize multiple variables at the same time
+data2 %>%
+  group_by(sex, race) %>%
+  summarize(mean_bmi = mean(bmi, na.rm = TRUE),
+            max_bmi = max(bmi, na.rm = TRUE))
+
+# You can also rearrange the output to make it more readable
+data2 %>%
+  group_by(sex, race) %>%
+  summarize(mean_bmi = mean(bmi, na.rm = TRUE),
+            max_bmi = max(bmi, na.rm = TRUE)) %>%
+  arrange(max_bmi)
+
+# To sort in descending order you need add the `desc()` function to the `arrange` function
+data2 %>%
+  group_by(sex, race) %>%
+  summarize(mean_bmi = mean(bmi, na.rm = TRUE),
+            max_bmi = max(bmi, na.rm = TRUE)) %>%
+  arrange(desc(max_bmi))
+
+```
+
+#### Counting
+
+It's often useful to know the number of observations in a particular group.
+
+```{r count}
+# if we wanted to count the number of people in each sex
+data2 %>%
+  count(sex)
+
+# The count function behind the scenes is grouping by a variable and then summarizing it by counting the observations in that group
+data2 %>%
+  group_by(sex) %>%
+  summarise(count = n())
+
+# Count also allows you to sort
+data2 %>%
+  count(sex, sort = TRUE)
+
+# Count by a number of factors
+data2 %>% 
+  count(sex, race) 
+
+# next we can arrange this to have a better look, alphabetical by sex, and descending by count
+data2 %>% 
+  count(sex, race) %>%
+  arrange(sex, desc(n))
+
+```
+
+Challenge 10
+```{r challenge_10}
+# How many male patients had severe covid?
+data2 %>%
+  count(sex, severity)
+
+# Use group_by and summarize to find the mean, max and min White Blood cell count of patients by COVID severity group, also add the number of observations
+data2 %>%
+  group_by(severity) %>%
+  filter(!is.na(CBC.White.Blood.Cell.Count)) %>%
+  summarize(mean_WBC = mean(CBC.White.Blood.Cell.Count),
+            max_WBC = max(CBC.White.Blood.Cell.Count),
+            min_WBC = min(CBC.White.Blood.Cell.Count),
+            n = n())
 
 ```
 
 ### 10:15am-10:30am: BREAK
 
-### 10:30-12:00pm: Visualizing Data in R with ggplot
+### 10:30am-12:00am: Reshaping data and Visualizing Data with ggplot2 
+
+#### Reshaping data with pivot_wider and pivot_longer
+
+There are several key principles that we follow to stucture a "tidy" dataset:
+
+  1. Each variable has its own column
+  2. Each observation has its own row
+  3. Each value must have its own cell
+  4. Each type of observational unit forms a table
+
+Our data currently violates principle 2 of this list because the CBC columns and CYTOF panel columns have different observations in each column in a single row. Because of this, these columns are currently in what is known as `wide` format. We can reorganize this data into `long` format so that there is truly one observation per row by using `pivot_longer`. If afterwards we wanted to switch the data back to wide format we could use `pivot_wider()`. 
+
+There are several older, deprecated functions that perform these tasks called `gather()` (`pivot_longer`) and `spread()` (`pivot_wider`). 
+
+```{r pivot_longer}
+
+# let's first look at the man page for this 
+?pivot_longer()
+
+# and get the list of columns we want to convert
+colnames(data2)
+
+# pivot the data
+data_long <- data2 %>%
+  pivot_longer(cols = c("CBC.White.Blood.Cell.Count", "CBC.Absolute.Monocytes",    
+  "CBC.Absolute.Neutrophils", "CBC.Absolute.Lymphocytes"),
+  names_to = "CBC",
+  values_to = "Counts") 
+View(data_long)  
+  
+# now time to pivot the other columns
+data_long <- data_long %>%
+  pivot_longer(cols = c("FracCD45.Neutrophil","FracCD45.T.cell.CD4",       
+  "FracCD45.DC" ),
+  names_to = "CYTOF",
+  values_to = "Fraction")
+
+```
+### Visualizing Data in R with ggplot
+
+
+
+
+
 
 #### STOP FOR THE DAY AT PLOTTING TIME SERIES DATA 

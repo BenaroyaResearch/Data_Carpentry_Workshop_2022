@@ -1208,6 +1208,8 @@ When you close out R Studio you will see the option to save your current
 session objects. I typically do, though sometimes this can get you into
 troubl as you are approaching the edge of R’s memory.
 
+#### END OF DAY 1
+
 ## DAY 2
 
 ### 9:00am: Manipulating Data in R
@@ -1915,14 +1917,14 @@ ggplot graphics are built layer by layer so you continualy add on new
 components.
 
 The basic template for a ggplot is
-`ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) +  <GEOM_FUNCTION>()`
+`ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) + <GEOM_FUNCTION>()`
 
 ``` r
 # start with a dataframe and the mapping
 ggplot(data = data_long, mapping = aes(x = bmi, y = age)) 
 ```
 
-![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot-1.png)<!-- -->
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot_intro-1.png)<!-- -->
 
 ``` r
 # see how we have the outline of the plot, but no plot itself
@@ -1931,10 +1933,150 @@ ggplot(data = data_long, mapping = aes(x = bmi, y = age)) + geom_point()
 
     ## Warning: Removed 36 rows containing missing values (geom_point).
 
-![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot-2.png)<!-- -->
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot_intro-2.png)<!-- -->
 
 ``` r
 # geoms are graphical representations of the data and there are multiple different geoms
+
+# Note that the `+` sign allows you to add new features to your plots
+
+# You can also save your base plot and add features to it after the fact
+data_plot <- ggplot(data = data_long, mapping = aes(x = bmi, y = age))
+
+data_plot + geom_point()
 ```
 
-#### STOP FOR THE DAY AT PLOTTING TIME SERIES DATA
+    ## Warning: Removed 36 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot_intro-3.png)<!-- -->
+
+``` r
+# Note that the correct syntax is to put the `+` sign on the line before you add the new layer
+data_plot +
+  geom_point()
+```
+
+    ## Warning: Removed 36 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot_intro-4.png)<!-- -->
+
+``` r
+data_plot
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot_intro-5.png)<!-- -->
+
+``` r
+#+ geom_point() # this doesn't work
+```
+
+Now we can start modifying the plots!
+
+``` r
+# you can add transparency to the points
+ggplot(data = data_long, mapping = aes(x = bmi, y = age)) + 
+  geom_point(alpha = 0.05) # only affects overlapping points
+```
+
+    ## Warning: Removed 36 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggmodify-1.png)<!-- -->
+
+``` r
+# you can also add color to the points using a few different mechanisms
+ggplot(data = data_long, mapping = aes(x = bmi, y = age)) + 
+  geom_point(alpha = 0.05, color = "blue")
+```
+
+    ## Warning: Removed 36 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggmodify-2.png)<!-- -->
+
+``` r
+# you can also color by group
+ggplot(data = data_long, mapping = aes(x = bmi, y = age, color =sex  )) + 
+  geom_point(alpha = 0.05)
+```
+
+    ## Warning: Removed 36 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggmodify-3.png)<!-- -->
+
+``` r
+# this is equivalent to the following
+ggplot(data = data_long, mapping = aes(x = bmi, y = age  )) + 
+  geom_point(alpha = 0.05, aes(color = sex))
+```
+
+    ## Warning: Removed 36 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggmodify-4.png)<!-- -->
+Challenge
+
+``` r
+# Can you plot relationship between severity and age with points, and color by sex?
+ggplot(data = data_long, mapping = aes(x = severity, y = age, color = sex )) + 
+  geom_point()
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/challenge_11-1.png)<!-- -->
+
+#### Boxplot
+
+A better way to view the data from this example is as a boxplot! Let’s
+try.
+
+``` r
+ggplot(data = data_long, mapping = aes(x = severity, y = age, color = sex )) + 
+  geom_boxplot()
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/boxplot-1.png)<!-- -->
+
+``` r
+# We can also add points to this plot to better view the distribution of the underlying data 
+ggplot(data = data_long, mapping = aes(x = severity, y = age, color = sex)) + 
+  geom_boxplot(alpha = 0) +
+  geom_point(alpha = 0.3) 
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/boxplot-2.png)<!-- -->
+
+``` r
+# But we want to separate the points by group, we can specify this in our point argument
+ggplot(data = data_long, mapping = aes(x = severity, y = age, color = sex)) + 
+  geom_boxplot(alpha = 0) +
+  geom_point(aes(group = sex) ,alpha = 0.3, position = position_dodge(width = 0.75))
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/boxplot-3.png)<!-- -->
+An alternative to the boxplot that allow you to better view the shape of
+the data is a violon plot.
+
+``` r
+ggplot(data = data_long, mapping = aes(x = severity, y = age, color = sex)) + 
+  geom_violin(alpha = 0) +
+  geom_point(aes(group = sex) ,alpha = 0.3, position = position_dodge(width = 0.9))
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/violin-1.png)<!-- -->
+Challenge
+
+``` r
+# Can make a boxplot of bmi by Patient Type and color by Highest Care?
+
+# note that you dont have to say data = or mapping = 
+ggplot(data_long, aes(x = patientType, y = bmi, color = HighestCare)) +
+  geom_boxplot() +
+  geom_point(aes(group = HighestCare), position = position_dodge(width = 0.75))
+```
+
+    ## Warning: Removed 36 rows containing non-finite values (stat_boxplot).
+
+    ## Warning: Removed 36 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/challenge_12-1.png)<!-- -->
+
+#### END OF DAY 2
+
+## DAY 3

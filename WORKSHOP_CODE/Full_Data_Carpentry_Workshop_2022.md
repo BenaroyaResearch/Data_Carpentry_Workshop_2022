@@ -1572,8 +1572,337 @@ data2 %>%
   View()
 ```
 
+Challenge
+
+``` r
+# Create a new data frame that contains only the Sample.ID column and a column showing the mean score, and only has contains patients older than 40.  
+
+data_new <- 
+  data2 %>%
+  filter(!is.na(Score)) %>%
+  mutate(mean_score = mean(Score)) %>%
+  filter(age >= 40) %>%
+  select(Sample.ID, mean_score)
+```
+
+#### Split-apply-combine data analysis and the `summarize()` function
+
+Many tasks involve splitting the data to perform a function, applying
+the function, and then re-combining the data. The key `dplyr` functions
+for this are `group_by()` and `summarize()`.
+
+The `group_by()` function allows you to group together rows by
+categorical variables. When used with `summarize()` you can apply a
+summary function to a specific grouping of the data and output a single
+result, or summary, per group.
+
+``` r
+# to compute mean bmi by sex we can do the following
+data2 %>% 
+  group_by(sex) %>%
+  summarize(mean_bmi = mean(bmi, na.rm = TRUE))
+```
+
+    ## # A tibble: 2 × 2
+    ##   sex    mean_bmi
+    ##   <chr>     <dbl>
+    ## 1 female     32.4
+    ## 2 male       32.4
+
+``` r
+# you can also group by multiple columns
+data2 %>%
+  group_by(sex, race) %>%
+  summarize(mean_bmi = mean(bmi, na.rm = TRUE)) %>%
+  #can use tail to look at end of the output
+  tail()
+```
+
+    ## `summarise()` has grouped output by 'sex'. You can override using the `.groups`
+    ## argument.
+
+    ## # A tibble: 6 × 3
+    ## # Groups:   sex [1]
+    ##   sex   race                          mean_bmi
+    ##   <chr> <chr>                            <dbl>
+    ## 1 male  asian                             34.4
+    ## 2 male  black_african_american            30.2
+    ## 3 male  decline                           43.9
+    ## 4 male  native_american_alaska_native     38.0
+    ## 5 male  other_race                        35.3
+    ## 6 male  white_caucasian                   29.4
+
+``` r
+# After the data is grouped you can also summarize multiple variables at the same time
+data2 %>%
+  group_by(sex, race) %>%
+  summarize(mean_bmi = mean(bmi, na.rm = TRUE),
+            max_bmi = max(bmi, na.rm = TRUE))
+```
+
+    ## `summarise()` has grouped output by 'sex'. You can override using the `.groups`
+    ## argument.
+
+    ## # A tibble: 11 × 4
+    ## # Groups:   sex [2]
+    ##    sex    race                                   mean_bmi max_bmi
+    ##    <chr>  <chr>                                     <dbl>   <dbl>
+    ##  1 female asian                                      26.5    29.8
+    ##  2 female black_african_american                     28.9    46.5
+    ##  3 female native_hawaiian_other_pacific_islander     22.0    22.0
+    ##  4 female other_race                                 36.7    54.1
+    ##  5 female white_caucasian                            32.6    54.5
+    ##  6 male   asian                                      34.4    35.8
+    ##  7 male   black_african_american                     30.2    42.8
+    ##  8 male   decline                                    43.9    45.4
+    ##  9 male   native_american_alaska_native              38.0    49.3
+    ## 10 male   other_race                                 35.3    45.2
+    ## 11 male   white_caucasian                            29.4    69.0
+
+``` r
+# You can also rearrange the output to make it more readable
+data2 %>%
+  group_by(sex, race) %>%
+  summarize(mean_bmi = mean(bmi, na.rm = TRUE),
+            max_bmi = max(bmi, na.rm = TRUE)) %>%
+  arrange(max_bmi)
+```
+
+    ## `summarise()` has grouped output by 'sex'. You can override using the `.groups`
+    ## argument.
+
+    ## # A tibble: 11 × 4
+    ## # Groups:   sex [2]
+    ##    sex    race                                   mean_bmi max_bmi
+    ##    <chr>  <chr>                                     <dbl>   <dbl>
+    ##  1 female native_hawaiian_other_pacific_islander     22.0    22.0
+    ##  2 female asian                                      26.5    29.8
+    ##  3 male   asian                                      34.4    35.8
+    ##  4 male   black_african_american                     30.2    42.8
+    ##  5 male   other_race                                 35.3    45.2
+    ##  6 male   decline                                    43.9    45.4
+    ##  7 female black_african_american                     28.9    46.5
+    ##  8 male   native_american_alaska_native              38.0    49.3
+    ##  9 female other_race                                 36.7    54.1
+    ## 10 female white_caucasian                            32.6    54.5
+    ## 11 male   white_caucasian                            29.4    69.0
+
+``` r
+# To sort in descending order you need add the `desc()` function to the `arrange` function
+data2 %>%
+  group_by(sex, race) %>%
+  summarize(mean_bmi = mean(bmi, na.rm = TRUE),
+            max_bmi = max(bmi, na.rm = TRUE)) %>%
+  arrange(desc(max_bmi))
+```
+
+    ## `summarise()` has grouped output by 'sex'. You can override using the `.groups`
+    ## argument.
+
+    ## # A tibble: 11 × 4
+    ## # Groups:   sex [2]
+    ##    sex    race                                   mean_bmi max_bmi
+    ##    <chr>  <chr>                                     <dbl>   <dbl>
+    ##  1 male   white_caucasian                            29.4    69.0
+    ##  2 female white_caucasian                            32.6    54.5
+    ##  3 female other_race                                 36.7    54.1
+    ##  4 male   native_american_alaska_native              38.0    49.3
+    ##  5 female black_african_american                     28.9    46.5
+    ##  6 male   decline                                    43.9    45.4
+    ##  7 male   other_race                                 35.3    45.2
+    ##  8 male   black_african_american                     30.2    42.8
+    ##  9 male   asian                                      34.4    35.8
+    ## 10 female asian                                      26.5    29.8
+    ## 11 female native_hawaiian_other_pacific_islander     22.0    22.0
+
+#### Counting
+
+It’s often useful to know the number of observations in a particular
+group.
+
+``` r
+# if we wanted to count the number of people in each sex
+data2 %>%
+  count(sex)
+```
+
+    ## # A tibble: 2 × 2
+    ##   sex        n
+    ##   <chr>  <int>
+    ## 1 female   125
+    ## 2 male     174
+
+``` r
+# The count function behind the scenes is grouping by a variable and then summarizing it by counting the observations in that group
+data2 %>%
+  group_by(sex) %>%
+  summarise(count = n())
+```
+
+    ## # A tibble: 2 × 2
+    ##   sex    count
+    ##   <chr>  <int>
+    ## 1 female   125
+    ## 2 male     174
+
+``` r
+# Count also allows you to sort
+data2 %>%
+  count(sex, sort = TRUE)
+```
+
+    ## # A tibble: 2 × 2
+    ##   sex        n
+    ##   <chr>  <int>
+    ## 1 male     174
+    ## 2 female   125
+
+``` r
+# Count by a number of factors
+data2 %>% 
+  count(sex, race) 
+```
+
+    ## # A tibble: 11 × 3
+    ##    sex    race                                       n
+    ##    <chr>  <chr>                                  <int>
+    ##  1 female asian                                     13
+    ##  2 female black_african_american                    21
+    ##  3 female native_hawaiian_other_pacific_islander     4
+    ##  4 female other_race                                45
+    ##  5 female white_caucasian                           42
+    ##  6 male   asian                                      7
+    ##  7 male   black_african_american                    15
+    ##  8 male   decline                                   13
+    ##  9 male   native_american_alaska_native             17
+    ## 10 male   other_race                                25
+    ## 11 male   white_caucasian                           97
+
+``` r
+# next we can arrange this to have a better look, alphabetical by sex, and descending by count
+data2 %>% 
+  count(sex, race) %>%
+  arrange(sex, desc(n))
+```
+
+    ## # A tibble: 11 × 3
+    ##    sex    race                                       n
+    ##    <chr>  <chr>                                  <int>
+    ##  1 female other_race                                45
+    ##  2 female white_caucasian                           42
+    ##  3 female black_african_american                    21
+    ##  4 female asian                                     13
+    ##  5 female native_hawaiian_other_pacific_islander     4
+    ##  6 male   white_caucasian                           97
+    ##  7 male   other_race                                25
+    ##  8 male   native_american_alaska_native             17
+    ##  9 male   black_african_american                    15
+    ## 10 male   decline                                   13
+    ## 11 male   asian                                      7
+
+Challenge 10
+
+``` r
+# How many male patients had severe covid?
+data2 %>%
+  count(sex, severity)
+```
+
+    ## # A tibble: 8 × 3
+    ##   sex    severity     n
+    ##   <chr>  <chr>    <int>
+    ## 1 female Mild         4
+    ## 2 female Moderate    38
+    ## 3 female Neg         13
+    ## 4 female Severe      70
+    ## 5 male   Mild         4
+    ## 6 male   Moderate    54
+    ## 7 male   Neg         12
+    ## 8 male   Severe     104
+
+``` r
+# Use group_by and summarize to find the mean, max and min White Blood cell count of patients by COVID severity group, also add the number of observations
+data2 %>%
+  group_by(severity) %>%
+  filter(!is.na(CBC.White.Blood.Cell.Count)) %>%
+  summarize(mean_WBC = mean(CBC.White.Blood.Cell.Count),
+            max_WBC = max(CBC.White.Blood.Cell.Count),
+            min_WBC = min(CBC.White.Blood.Cell.Count),
+            n = n())
+```
+
+    ## # A tibble: 4 × 5
+    ##   severity mean_WBC max_WBC min_WBC     n
+    ##   <chr>       <dbl>   <dbl>   <dbl> <int>
+    ## 1 Mild         5.79     7.7     4.5     7
+    ## 2 Moderate     7.11    26.9     2.5    88
+    ## 3 Neg         11.1     22       5.4    25
+    ## 4 Severe       9.85    21.5     2.1   169
+
 ### 10:15am-10:30am: BREAK
 
-### 10:30-12:00pm: Visualizing Data in R with ggplot
+### 10:30am-12:00am: Reshaping data and Visualizing Data with ggplot2
+
+#### Reshaping data with pivot_wider and pivot_longer
+
+There are several key principles that we follow to stucture a “tidy”
+dataset:
+
+1.  Each variable has its own column
+2.  Each observation has its own row
+3.  Each value must have its own cell
+4.  Each type of observational unit forms a table
+
+Our data currently violates principle 2 of this list because the CBC
+columns and CYTOF panel columns have different observations in each
+column in a single row. Because of this, these columns are currently in
+what is known as `wide` format. We can reorganize this data into `long`
+format so that there is truly one observation per row by using
+`pivot_longer`. If afterwards we wanted to switch the data back to wide
+format we could use `pivot_wider()`.
+
+There are several older, deprecated functions that perform these tasks
+called `gather()` (`pivot_longer`) and `spread()` (`pivot_wider`).
+
+``` r
+# let's first look at the man page for this 
+?pivot_longer()
+
+# and get the list of columns we want to convert
+colnames(data2)
+```
+
+    ##  [1] "Sample.ID"                  "drawDate"                  
+    ##  [3] "Covid.ID"                   "Score"                     
+    ##  [5] "sex"                        "age"                       
+    ##  [7] "race"                       "bmi"                       
+    ##  [9] "patientType"                "HighestCare"               
+    ## [11] "Ever.On.Ventilator"         "Preexisting.Hypertension"  
+    ## [13] "eventId"                    "admitDate"                 
+    ## [15] "deceasedDate"               "covidId"                   
+    ## [17] "severity"                   "drawTime"                  
+    ## [19] "CBC.White.Blood.Cell.Count" "CBC.Absolute.Monocytes"    
+    ## [21] "CBC.Absolute.Neutrophils"   "CBC.Absolute.Lymphocytes"  
+    ## [23] "FracCD45.Neutrophil"        "FracCD45.T.cell.CD4"       
+    ## [25] "FracCD45.DC"                "T.cell.CD8.HLA_DRp__of.CD8"
+
+``` r
+# pivot the data
+data_long <- data2 %>%
+  pivot_longer(cols = c("CBC.White.Blood.Cell.Count", "CBC.Absolute.Monocytes",    
+  "CBC.Absolute.Neutrophils", "CBC.Absolute.Lymphocytes"),
+  names_to = "CBC",
+  values_to = "Counts") 
+View(data_long)  
+  
+# now time to pivot the other columns
+data_long <- data_long %>%
+  pivot_longer(cols = c("FracCD45.Neutrophil","FracCD45.T.cell.CD4",       
+  "FracCD45.DC" ),
+  names_to = "CYTOF",
+  values_to = "Fraction")
+```
+
+### Visualizing Data in R with ggplot
 
 #### STOP FOR THE DAY AT PLOTTING TIME SERIES DATA

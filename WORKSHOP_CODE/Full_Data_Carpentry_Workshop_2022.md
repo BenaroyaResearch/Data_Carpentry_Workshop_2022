@@ -1905,4 +1905,36 @@ data_long <- data_long %>%
 
 ### Visualizing Data in R with ggplot
 
+The `ggplot2` package has many helpful commands for plotting data in a
+data.frame. Allows you to create publication quality plots by fine
+tuning all the aspects of how the plots appear. `ggplot2` is the name of
+the package itself, while `ggplot` is the name of the plotting function.
+`ggplot` works best with data in long format.
+
+ggplot graphics are built layer by layer so you continualy add on new
+components.
+
+The basic template for a ggplot is
+`ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) +  <GEOM_FUNCTION>()`
+
+``` r
+# start with a dataframe and the mapping
+ggplot(data = data_long, mapping = aes(x = bmi, y = age)) 
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot-1.png)<!-- -->
+
+``` r
+# see how we have the outline of the plot, but no plot itself
+ggplot(data = data_long, mapping = aes(x = bmi, y = age)) + geom_point()
+```
+
+    ## Warning: Removed 36 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot-2.png)<!-- -->
+
+``` r
+# geoms are graphical representations of the data and there are multiple different geoms
+```
+
 #### STOP FOR THE DAY AT PLOTTING TIME SERIES DATA

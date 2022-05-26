@@ -2077,6 +2077,465 @@ ggplot(data_long, aes(x = patientType, y = bmi, color = HighestCare)) +
 
 ![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/challenge_12-1.png)<!-- -->
 
+Before we depart for the day, let’s again save our data for use
+tomorrow.
+
+``` r
+# lets output in our results folder
+write.csv(data_long, file="Data_Carpentry_Workshop_2022/results/data_day2.csv", row.names = FALSE)
+```
+
 #### END OF DAY 2
 
 ## DAY 3
+
+### 9:00am-10:15am: Visualizing Data Continued
+
+Now that we have learned some of the foundational skills for making
+plots, the goal for today is to really expand our skill set for
+modifying plots and build toward trying to recreate some plots that were
+originally published in the Bolouri et al. 2021 paper.
+
+``` r
+library(tidyverse)
+
+data_day3 <- read_csv("Data_Carpentry_Workshop_2022/results/data_day2.csv")
+```
+
+    ## Rows: 3588 Columns: 23
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (13): Sample.ID, Covid.ID, sex, race, patientType, HighestCare, Ever.On....
+    ## dbl (10): drawDate, Score, age, bmi, admitDate, deceasedDate, drawTime, T.ce...
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+# Let's remind ourselves what the data looks like
+View(data_day3)
+```
+
+#### Pipes
+
+As a first way to expand our skill set let’s talk about use of the pipe
+operator with ggplot. Just like with the dplyr commands we learned
+yesterday, we can use the pipe operator to subset and filter data prior
+to plotting.
+
+``` r
+# to demonstrate this lets plot the CBC White Blood Cell Count data by Covid SCORE as a boxplot
+# we'll first view this data
+data_day3 %>%
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>% View()
+
+# Notice that we have duplicates in our CBC column! We need to collapse these duplicates in our plot
+data_day3 %>%
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% View()
+
+# Now we can plot
+#data_day3 %>%
+#  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+#  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+#  ggplot(aes(x = Score, y = Counts)) + 
+#  geom_boxplot()
+
+# This gives us an error, why?
+data_day3$Score # there are a lot of NA's at the beginning of the data, let's remove these
+```
+
+    ##    [1] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##   [25] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##   [49] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##   [73] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##   [97] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [121] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [145] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [169] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [193] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [217] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [241] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [265] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [289] NA NA NA NA NA NA NA NA NA NA NA NA  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [313]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [337]  6  6  6  6  6  6  6  6  6  6  6  6  7  7  7  7  7  7  7  7  7  7  7  7
+    ##  [361]  3  3  3  3  3  3  3  3  3  3  3  3  4  4  4  4  4  4  4  4  4  4  4  4
+    ##  [385]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ##  [409]  4  4  4  4  4  4  4  4  4  4  4  4  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [433]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [457]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [481]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [505]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [529]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [553]  7  7  7  7  7  7  7  7  7  7  7  7  5  5  5  5  5  5  5  5  5  5  5  5
+    ##  [577]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ##  [601]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ##  [625]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ##  [649]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ##  [673]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [697]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ##  [721]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ##  [745]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [769]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [793]  6  6  6  6  6  6  6  6  6  6  6  6  3  3  3  3  3  3  3  3  3  3  3  3
+    ##  [817]  3  3  3  3  3  3  3  3  3  3  3  3  2  2  2  2  2  2  2  2  2  2  2  2
+    ##  [841]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ##  [865]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ##  [889]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ##  [913]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ##  [937]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ##  [961]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ##  [985]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ## [1009]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1033]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1057]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1081]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1105]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1129]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1153]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1177]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1201]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1225]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1249]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1273]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1297]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1321]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1345]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1369]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1393]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1417]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1441]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1465]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1489]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1513]  3  3  3  3  3  3  3  3  3  3  3  3  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1537]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1561]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1585]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1609]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1633]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1657]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1681]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1705]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1729]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1753]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1777]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1801]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1825]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1849]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1873]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1897]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1921]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1945]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1969]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1993]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2017]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2041]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2065]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2089]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2113]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2137]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2161]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2185]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2209]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2233]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2257]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2281]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2305]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2329]  4  4  4  4  4  4  4  4  4  4  4  4  5  5  5  5  5  5  5  5  5  5  5  5
+    ## [2353]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ## [2377]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ## [2401]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ## [2425]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ## [2449]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ## [2473]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2497]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2521]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2545]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2569]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2593]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2617]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2641]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2665]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2689]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2713]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2737]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2761]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2785]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2809]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2833]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2857]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2881]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2905]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2929]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2953]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2977]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3001]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3025]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3049]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3073]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3097]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3121]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3145]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3169]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3193]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3217]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3241]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3265]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3289]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3313]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3337]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3361]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3385]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3409]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3433]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3457]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3481]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3505]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3529]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3553]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3577]  4  4  4  4  4  4  4  4  4  4  4  4
+
+``` r
+data_day3 %>%
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  filter(!is.na(Score)) %>%
+  ggplot(aes(x = Score, y = Counts)) + 
+  geom_boxplot()
+```
+
+    ## Warning: Continuous x aesthetic -- did you forget aes(group=...)?
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot_pipe-1.png)<!-- -->
+
+``` r
+# This give us only one bar across, why? We need to add the grouping
+data_day3 %>%
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  filter(!is.na(Score)) %>%
+  ggplot(aes(x = Score, y = Counts, group = Score)) + 
+  geom_boxplot()
+```
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot_pipe-2.png)<!-- -->
+
+``` r
+# You'll also notice that on our x axis we are only seeing score 2,4, and 6. This indicates that Score is being read as numerical. However, we want it to be viewed as a factor. Let's change this
+class(data_day3$Score)
+```
+
+    ## [1] "numeric"
+
+``` r
+levels(as.factor(data_day3$Score))
+```
+
+    ## [1] "2" "3" "4" "5" "6" "7"
+
+``` r
+# set the factor levels
+data_day3$Score <- factor(data_day3$Score, levels = c("2", "3", "4" ,"5", "6", "7"))
+class(data_day3$Score) # factor
+```
+
+    ## [1] "factor"
+
+``` r
+View(data_day3)
+
+data_day3 %>%
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  filter(!is.na(Score)) %>%
+  ggplot(aes(x = Score, y = Counts, group = Score)) + 
+  geom_boxplot()
+```
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot_pipe-3.png)<!-- -->
+
+``` r
+# now we see every level being represented 
+```
+
+Challenge
+
+``` r
+# Can you produce a boxplot of FracCD45.Neutrophil by Highest Care and also show all the individual data points?
+
+data_day3 %>%
+  filter(CYTOF == "FracCD45.Neutrophil") %>%
+  ggplot(aes(x = HighestCare, y = Fraction, group = HighestCare)) + 
+  geom_boxplot() +
+  geom_point(alpha = 0.1)
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/challenge_13-1.png)<!-- -->
+#### Plot modification: Themes, colors, titles, facets
+
+Now that we can subset our data to make plots, let’s learn how to modify
+the plot aesthetics in order to recreate plots from Figure 5c from the
+Bolouri et al., paper. <https://www.jci.org/articles/view/143648.In>
+this figure patients were grouped based on their disease severity, mild
+(cyan), moderate (blue), and severe (red), and SARS-CoV-2–negative
+hospitalized controls (gray).
+
+``` r
+# Let's start with the same CBC.White.Blood.Cell.Count we plotted before, but change the theme 
+data_day3 %>%  
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  ggplot(aes(x = severity, y = Counts)) + 
+  geom_boxplot() +
+  # let's also change the theme to bw
+  theme_bw()
+```
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot_theme-1.png)<!-- -->
+
+Note that there are a variety of different themes available that you can
+see when you start typing theme.. Some of these include
+`theme_minimal()`, `theme_void()`, and `theme_light()`.
+
+``` r
+# Now we can add in the points to the boxplot
+data_day3 %>%  
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  ggplot(aes(x = severity, y = Counts)) + 
+  geom_boxplot() +
+  geom_point() +
+  theme_bw()
+```
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+
+    ## Warning: Removed 10 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/axes-1.png)<!-- -->
+
+``` r
+# Now let's change the axes and graph titles
+data_day3 %>%  
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  ggplot(aes(x = severity, y = Counts)) + 
+  geom_boxplot() +
+  geom_point() +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells")
+```
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+    ## Removed 10 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/axes-2.png)<!-- -->
+
+Next up we want to change the order of the severity data for plotting.
+We can do this by make Severity a factor and changing the order of the
+levels
+
+``` r
+class(data_day3$severity) # character
+```
+
+    ## [1] "character"
+
+``` r
+# Let's make severity a factor
+data_day3$severity <- factor(data_day3$severity , levels= c("Mild","Moderate","Severe","Neg"))
+
+levels(data_day3$severity)
+```
+
+    ## [1] "Mild"     "Moderate" "Severe"   "Neg"
+
+Next up let’s change the colors of the plot. There are multiple ways
+that colors can be modified and the function you use to modify the
+colors depends on the arguments in your aesthetics mapping.
+
+``` r
+# Remember mild (cyan), moderate (blue), and severe (red), and SARS-CoV-2–negative hospitalized controls (gray)
+data_day3 %>%  
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  # first add the color argument to the mapping 
+  ggplot(aes(x = severity, y = Counts, color = severity)) + 
+  geom_boxplot() +
+  geom_point() +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells") +
+  scale_color_manual(values = c("cyan","blue", "red","gray"))
+```
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+
+    ## Warning: Removed 10 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/plot_colors-1.png)<!-- -->
+
+``` r
+# Next up to make our plot more comparable to the publication, lets make the boxplot be filled in with solid colors
+data_day3 %>%  
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  # change the color to fill
+  ggplot(aes(x = severity, y = Counts, fill = severity)) + 
+  geom_boxplot() +
+  # add specif
+  geom_point() +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells") +
+  scale_fill_manual(values = c("cyan","blue", "red","gray"))
+```
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+    ## Removed 10 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/plot_colors-2.png)<!-- -->
+
+``` r
+# however when we do this we lose our point colors, so let's add those back into geom_point
+data_day3 %>%  
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  ggplot(aes(x = severity, y = Counts, fill = severity)) + 
+  geom_boxplot() +
+  # specify the color in geom_point
+  geom_point(aes(color = severity),alpha = 0.5) +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells") +
+  scale_fill_manual(values = c("cyan","blue", "red","gray")) +
+  # we also need to specify the color here
+  scale_color_manual(values = c("cyan","blue", "red","gray"))
+```
+
+    ## Warning: Removed 10 rows containing non-finite values (stat_boxplot).
+    ## Removed 10 rows containing missing values (geom_point).
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/plot_colors-3.png)<!-- -->
+Next let’s add the black trend lines and the gray bar to show the normal
+clinical values.
+
+### 10:15-10:30: BREAK
+
+### 10:30-12:00pm: Customized Plotting
+
+# creating figure 10d
+
+start with faceting nex try to recreate the CYTOF figure
+
+Add in the statistics for the plot after the break!

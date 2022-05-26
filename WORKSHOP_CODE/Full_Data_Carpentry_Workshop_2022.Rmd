@@ -845,7 +845,213 @@ ggplot(data_long, aes(x = patientType, y = bmi, color = HighestCare)) +
   geom_point(aes(group = HighestCare), position = position_dodge(width = 0.75))
 ```
 
+Before we depart for the day, let's again save our data for use tomorrow.
+
+```{r write2}
+
+# lets output in our results folder
+write.csv(data_long, file="Data_Carpentry_Workshop_2022/results/data_day2.csv", row.names = FALSE)
+
+```
+
 #### END OF DAY 2 
 
 ## DAY 3 
+
+### 9:00am-10:15am: Visualizing Data Continued
+
+Now that we have learned some of the foundational skills for making plots, the goal for today is to really expand our skill set for modifying plots and build toward trying to recreate some plots that were originally published in the Bolouri et al. 2021 paper.
+
+```{r begin_day3}
+library(tidyverse)
+
+data_day3 <- read_csv("Data_Carpentry_Workshop_2022/results/data_day2.csv")
+
+# Let's remind ourselves what the data looks like
+View(data_day3)
+
+```
+
+#### Pipes
+
+As a first way to expand our skill set let's talk about use of the pipe operator with ggplot. Just like with the dplyr commands we learned yesterday, we can use the pipe operator to subset and filter data prior to plotting.
+
+```{r ggplot_pipe}
+
+# to demonstrate this lets plot the CBC White Blood Cell Count data by Covid SCORE as a boxplot
+# we'll first view this data
+data_day3 %>%
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>% View()
+
+# Notice that we have duplicates in our CBC column! We need to collapse these duplicates in our plot
+data_day3 %>%
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% View()
+
+# Now we can plot
+#data_day3 %>%
+#  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+#  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+#  ggplot(aes(x = Score, y = Counts)) + 
+#  geom_boxplot()
+
+# This gives us an error, why?
+data_day3$Score # there are a lot of NA's at the beginning of the data, let's remove these
+data_day3 %>%
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  filter(!is.na(Score)) %>%
+  ggplot(aes(x = Score, y = Counts)) + 
+  geom_boxplot()
+
+# This give us only one bar across, why? We need to add the grouping
+data_day3 %>%
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  filter(!is.na(Score)) %>%
+  ggplot(aes(x = Score, y = Counts, group = Score)) + 
+  geom_boxplot()
+
+# You'll also notice that on our x axis we are only seeing score 2,4, and 6. This indicates that Score is being read as numerical. However, we want it to be viewed as a factor. Let's change this
+class(data_day3$Score)
+levels(as.factor(data_day3$Score))
+
+# set the factor levels
+data_day3$Score <- factor(data_day3$Score, levels = c("2", "3", "4" ,"5", "6", "7"))
+class(data_day3$Score) # factor
+View(data_day3)
+
+data_day3 %>%
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  filter(!is.na(Score)) %>%
+  ggplot(aes(x = Score, y = Counts, group = Score)) + 
+  geom_boxplot()
+# now we see every level being represented 
+
+```
+
+Challenge
+```{r challenge_13}
+# Can you produce a boxplot of FracCD45.Neutrophil by Highest Care and also show all the individual data points?
+
+data_day3 %>%
+  filter(CYTOF == "FracCD45.Neutrophil") %>%
+  ggplot(aes(x = HighestCare, y = Fraction, group = HighestCare)) + 
+  geom_boxplot() +
+  geom_point(alpha = 0.1)
+
+```
+#### Plot modification: Themes, colors, titles, facets 
+
+Now that we can subset our data to make plots, let's learn how to modify the plot aesthetics in order to recreate plots from Figure 5c from the Bolouri et al., paper. https://www.jci.org/articles/view/143648.In this figure patients were grouped based on their disease severity, mild (cyan), moderate (blue), and severe (red), and SARS-CoV-2–negative hospitalized controls (gray). 
+
+```{r ggplot_theme}
+
+# Let's start with the same CBC.White.Blood.Cell.Count we plotted before, but change the theme 
+data_day3 %>%  
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  ggplot(aes(x = severity, y = Counts)) + 
+  geom_boxplot() +
+  # let's also change the theme to bw
+  theme_bw()
+```
+
+Note that there are a variety of different themes available that you can see when you start typing theme.. Some of these include `theme_minimal()`, `theme_void()`, and `theme_light()`. 
+
+```{r axes}
+# Now we can add in the points to the boxplot
+data_day3 %>%  
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  ggplot(aes(x = severity, y = Counts)) + 
+  geom_boxplot() +
+  geom_point() +
+  theme_bw()
+
+# Now let's change the axes and graph titles
+data_day3 %>%  
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  ggplot(aes(x = severity, y = Counts)) + 
+  geom_boxplot() +
+  geom_point() +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells")
+```
+
+Next up we want to change the order of the severity data for plotting. We can do this by make Severity a factor and changing the order of the levels
+
+```{r reorder}
+class(data_day3$severity) # character
+
+# Let's make severity a factor
+data_day3$severity <- factor(data_day3$severity , levels= c("Mild","Moderate","Severe","Neg"))
+
+levels(data_day3$severity)
+                             
+```
+
+Next up let's change the colors of the plot. There are multiple ways that colors can be modified and the function you use to modify the colors depends on the arguments in your aesthetics mapping.
+
+```{r plot_colors}
+
+# Remember mild (cyan), moderate (blue), and severe (red), and SARS-CoV-2–negative hospitalized controls (gray)
+data_day3 %>%  
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  # first add the color argument to the mapping 
+  ggplot(aes(x = severity, y = Counts, color = severity)) + 
+  geom_boxplot() +
+  geom_point() +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells") +
+  scale_color_manual(values = c("cyan","blue", "red","gray"))
+
+# Next up to make our plot more comparable to the publication, lets make the boxplot be filled in with solid colors
+data_day3 %>%  
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  # change the color to fill
+  ggplot(aes(x = severity, y = Counts, fill = severity)) + 
+  geom_boxplot() +
+  # add specif
+  geom_point() +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells") +
+  scale_fill_manual(values = c("cyan","blue", "red","gray"))
+
+# however when we do this we lose our point colors, so let's add those back into geom_point
+data_day3 %>%  
+  filter(CBC == "CBC.White.Blood.Cell.Count") %>%
+  distinct(Counts, CBC, Sample.ID, .keep_all = TRUE) %>% 
+  ggplot(aes(x = severity, y = Counts, fill = severity)) + 
+  geom_boxplot() +
+  # specify the color in geom_point
+  geom_point(aes(color = severity),alpha = 0.5) +
+  theme_bw() + 
+  # you can change the x and y axis labels and the title labels using labs()
+  labs(x = NULL, y = "Absolute Counts", title = "White Blood Cells") +
+  scale_fill_manual(values = c("cyan","blue", "red","gray")) +
+  # we also need to specify the color here
+  scale_color_manual(values = c("cyan","blue", "red","gray"))
+
+```
+Next let's add the black trend lines and the gray bar to show the normal clinical values. 
+
+### 10:15-10:30: BREAK
+
+### 10:30-12:00pm: Customized Plotting 
+
+# creating figure 10d 
+
+start with faceting
+nex try to recreate the CYTOF figure
+
+Add in the statistics for the plot after the break!
+
 

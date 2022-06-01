@@ -373,9 +373,12 @@ data$Sample.ID
 
 Challenge time!
 ```{r challenge_5}
-#Create a data.frame (surveys_200) containing only the data in row 200 of the surveys dataset.
+# Create a data.frame (data_200) containing only the data in row 200 of the surveys dataset.
+data_200 <- data[200]
 
 # Pull out the last row of the data frame and save it
+nrow(data) # 299
+data_last <- data[299,]
 ```
 
 Let's take five minutes for this challenge so you can have a breather before starting the final piece of our first day! 
@@ -545,7 +548,6 @@ data2 %>%
   select(Sample.ID, age, severity)
 
 # the pipe passes the data from one operation to another and goes step by step, it is like saying the word "then" at each pipe 
-
 
 # We can create a new object with this filtered data
 data2_sml <- data2 %>%
@@ -740,7 +742,7 @@ View(data_long)
 # now time to pivot the other columns
 data_long <- data_long %>%
   pivot_longer(cols = c("FracCD45.Neutrophil","FracCD45.T.cell.CD4",       
-  "FracCD45.DC" ),
+  "FracCD45.DC", "T.cell.CD8.HLA_DRp__of.CD8" ),
   names_to = "CYTOF",
   values_to = "Fraction")
 
@@ -984,12 +986,12 @@ WBC %>%
 Next up we want to change the order of the severity data for plotting. We can do this by make Severity a factor and changing the order of the levels
 
 ```{r reorder}
-class(data_day3$severity) # character
+class(WBC$severity) # character
 
 # Let's make severity a factor
-data_day3$severity <- factor(data_day3$severity , levels= c("Mild","Moderate","Severe","Neg"))
+WBC$severity <- factor(WBC$severity , levels= c("Mild","Moderate","Severe","Neg"))
 
-levels(data_day3$severity)
+levels(WBC$severity)
                              
 ```
 
@@ -1147,9 +1149,19 @@ facet_CBC <- data_day3 %>%
 
 ### 10:30-12:00pm: Customized plotting cont.:
 
-Let's start with a challenge to review what we learned this morning.
+For the second part of this morning's session we are going to take what we learned this morning and apply it to recreate another one of the figures from Bolouri et al., specifically Figure 10d. 
 
-- use the CYTOF data this time
+Let's all take a look at the figure. Together we are going to work on correctly subsetting the data for this figure and then it would be great if you could work in groups of 3 or 4 to use the skills we've learned to put together as much of the figures as you can. And remember, if you forget how to do something, google is your friend! Forums like stack overflow usually have excellent answers. 
+
+```{r handson}
+
+# let's remind ourselves of our CYTOF data we have to work with 
+levels(as.factor(data_day3$CYTOF)) # "FracCD45.DC"         "FracCD45.Neutrophil" "FracCD45.T.cell.CD4" we will focus on plotting these! 
+
+# we also want to separate the data measurements by before and after toclizumab
+
+
+```
 
 
 
@@ -1157,8 +1169,6 @@ Let's start with a challenge to review what we learned this morning.
 
 # creating figure 10d 
 
-start with faceting
-nex try to recreate the CYTOF figure
 
 Add in the statistics for the plot after the break!
 

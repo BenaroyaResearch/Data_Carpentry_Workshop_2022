@@ -33,13 +33,14 @@ data_formatted <- data_formatted %>% filter(!is.na(tocilizumab.StartDate))
 # Keep only SWB samples
 data_formatted <- data_formatted %>% filter(grepl("SWB",Sample.ID)) %>% filter(drawDate != "NA")
 
-#View(data_formatted)
+View(data_formatted)
 
 # Select CBC, CYTOF, and metadata rows to keep
 CBC_keep <- c("CBC.White.Blood.Cell.Count", "CBC.Absolute.Monocytes","CBC.Absolute.Neutrophils","CBC.Absolute.Lymphocytes")
 CYTOF_keep <- c("FracCD45.Neutrophil","FracCD45.T.cell.CD4","FracCD45.DC", "T.cell.CD8.HLA_DRp__of.CD8"      )
 metadata_keep <- c("Sample.ID", "drawDate","Covid.ID","Score","sex","age","race","bmi","patientType","HighestCare","Ever.On.Ventilator" ,
-                   "Preexisting.Hypertension","eventId","admitDate","deceasedDate","covidId","severity","drawTime" )
+                   "Preexisting.Hypertension","eventId","admitDate","deceasedDate","covidId","severity","drawTime",
+                    "tocilizumab.StartDate","tocilizumab.EndDate","tocilizumab.TotalDays"  )
 total_keep <- c(metadata_keep, CBC_keep, CYTOF_keep)
 
 # Subset dataset 

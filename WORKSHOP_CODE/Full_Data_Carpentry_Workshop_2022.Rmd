@@ -1260,13 +1260,29 @@ data_day3_10d_DR_CD8 <- data_day3_10d %>%
       
 
 ```
+#### Arranging and Exporting Plots
 
+As a final step to make a publication ready figures, we can arrange and export the plots from R. There are several packages you can use for arranging and exporting plots.
 
+```{r ggsave}
 
+# one of the most commonly used to save ggplots is ggsave
+ggsave(data_day3_10d_DR_CD8, file = "./Data_Carpentry_Workshop_2022/figures/data_day3_10d_DR_CD8.pdf", device = "pdf", height = 5, width = 5)
 
-# creating figure 10d 
+```
 
+The package `ggpubr` with the `ggarrange` function is also extremely useful for allowing combination of multiple plots and adding labels for plotting. 
 
-Add in the statistics for the plot after the break!
+```{r ggarrange}
+install.packages("ggpubr")
+library(ggpubr)
 
+# now we can use ggarrange to combine all the plots
+combined_plots <- ggpubr::ggarrange(data_day3_10d_neutrophils, data_day3_10d_CD4, data_day3_10d_DC, data_day3_10d_DR_CD8,
+                            nrow = 1, labels = c("A","B","C","D"))
+
+ggsave(combined_plots ,  file = "./Data_Carpentry_Workshop_2022/figures/combined_plots.pdf", device = "pdf",
+       height = 3, width = 15)
+
+```
 

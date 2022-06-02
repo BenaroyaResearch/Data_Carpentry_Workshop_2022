@@ -1364,7 +1364,26 @@ ggsave(pcas_comb, file = "./Data_Carpentry_Workshop_2022/figures/pcas.pdf", devi
 
 ```
 
-We can plot this same data now as a heatmap. Both heatmaps and PCAs require their data to be in a matrix format. One of the most popular and highly customizable packages for creating heatmaps is called `ComplexHeatmap`.
+We can plot this same data now as a heatmap. Both heatmaps and PCAs require their data to be in a matrix format. One of the most popular and highly customizable packages for creating heatmaps is called `ComplexHeatmap`. This package is also well documented https://jokergoo.github.io/ComplexHeatmap-reference/book/ and allows you to create figures that are already in `ggplot2` format, which makes it easier to export the plots.
+
+```{r heatmap}
+#if (!require("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+#
+#BiocManager::install("ComplexHeatmap")
+library(ComplexHeatmap)
+
+# Create the complex heatmap
+Heatmap(data_subset_mat) # it's as simple as this since we already have the matrix made!
+
+# Now we can start adding customizations 
+# we can build an annotation object, put in same order as the initial rownames
+ha <- rowAnnotation(Type = c("CBC","CBC", "CBC","CBC","CYTOF","CYTOF","CYTOF","CYTOF"),
+                                 col = list(Type = c("CBC" = "red", "CYTOF" = "blue")))
+
+ComplexHeatmap::Heatmap(data_subset_mat, right_annotation = ha )
+
+```
 
 ### 10:15-10:30: BREAK 
 

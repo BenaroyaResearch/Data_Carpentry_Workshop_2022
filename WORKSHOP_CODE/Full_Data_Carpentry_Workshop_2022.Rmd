@@ -1381,14 +1381,16 @@ Heatmap(data_subset_mat) # it's as simple as this since we already have the matr
 ha <- rowAnnotation(Type = c("CBC","CBC", "CBC","CBC","CYTOF","CYTOF","CYTOF","CYTOF"),
                                  col = list(Type = c("CBC" = "red", "CYTOF" = "blue")))
 
-ComplexHeatmap::Heatmap(data_subset_mat, right_annotation = ha )
+heatmap <- ComplexHeatmap::Heatmap(data_subset_mat, right_annotation = ha )
+class(heatmap)
+
 
 ```
 
-### 10:15-10:30: BREAK 
 
+### 10:15-10:30: BREAK 
 
 ### 10:30-12:00pm: Loading and Customizing Code for your Analyses
 
-This part of the workshop is 
+This part of the workshop is going to be left open for Hannah and Matt Dufort to help participants learn how to customize code for their analyses.
 

@@ -3015,7 +3015,7 @@ BiocManager::install("PCAtools")
     ##   'dplyr', 'DT', 'ellipse', 'fansi', 'fda', 'fitdistrplus', 'FNN', 'formatR',
     ##   'furrr', 'future', 'future.apply', 'gdata', 'gert', 'ggplot2', 'ggpmisc',
     ##   'ggpp', 'glmnet', 'globals', 'gmodels', 'gplots', 'gt', 'gtools', 'hardhat',
-    ##   'haven', 'Hmisc', 'httr', 'ICC', 'igraph', 'knitr', 'ks', 'leaflet',
+    ##   'haven', 'Hmisc', 'httr', 'ICC', 'igraph', 'ipred', 'knitr', 'ks', 'leaflet',
     ##   'leiden', 'leidenbase', 'limma', 'lme4', 'lmtest', 'locfit', 'magrittr',
     ##   'maptools', 'MASS', 'Matching', 'Matrix', 'matrixStats', 'mclust', 'mgcv',
     ##   'mongolite', 'nlme', 'nloptr', 'openssl', 'parallelly', 'pbmcapply', 'pcaPP',
@@ -3141,10 +3141,63 @@ ggsave(pcas_comb, file = "./Data_Carpentry_Workshop_2022/figures/pcas.pdf", devi
 We can plot this same data now as a heatmap. Both heatmaps and PCAs
 require their data to be in a matrix format. One of the most popular and
 highly customizable packages for creating heatmaps is called
-`ComplexHeatmap`.
+`ComplexHeatmap`. This package is also well documented
+<https://jokergoo.github.io/ComplexHeatmap-reference/book/> and allows
+you to create figures that are already in `ggplot2` format, which makes
+it easier to export the plots.
+
+``` r
+#if (!require("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+#
+#BiocManager::install("ComplexHeatmap")
+library(ComplexHeatmap)
+```
+
+    ## Loading required package: grid
+
+    ## ========================================
+    ## ComplexHeatmap version 2.10.0
+    ## Bioconductor page: http://bioconductor.org/packages/ComplexHeatmap/
+    ## Github page: https://github.com/jokergoo/ComplexHeatmap
+    ## Documentation: http://jokergoo.github.io/ComplexHeatmap-reference
+    ## 
+    ## If you use it in published research, please cite:
+    ## Gu, Z. Complex heatmaps reveal patterns and correlations in multidimensional 
+    ##   genomic data. Bioinformatics 2016.
+    ## 
+    ## The new InteractiveComplexHeatmap package can directly export static 
+    ## complex heatmaps into an interactive Shiny app with zero effort. Have a try!
+    ## 
+    ## This message can be suppressed by:
+    ##   suppressPackageStartupMessages(library(ComplexHeatmap))
+    ## ========================================
+
+``` r
+# Create the complex heatmap
+Heatmap(data_subset_mat) # it's as simple as this since we already have the matrix made!
+```
+
+![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/heatmap-1.png)<!-- -->
+
+``` r
+# Now we can start adding customizations 
+# we can build an annotation object, put in same order as the initial rownames
+ha <- rowAnnotation(Type = c("CBC","CBC", "CBC","CBC","CYTOF","CYTOF","CYTOF","CYTOF"),
+                                 col = list(Type = c("CBC" = "red", "CYTOF" = "blue")))
+
+heatmap <- ComplexHeatmap::Heatmap(data_subset_mat, right_annotation = ha )
+class(heatmap)
+```
+
+    ## [1] "Heatmap"
+    ## attr(,"package")
+    ## [1] "ComplexHeatmap"
 
 ### 10:15-10:30: BREAK
 
 ### 10:30-12:00pm: Loading and Customizing Code for your Analyses
 
-This part of the workshop is
+This part of the workshop is going to be left open for Hannah and Matt
+Dufort to help participants learn how to customize code for their
+analyses.

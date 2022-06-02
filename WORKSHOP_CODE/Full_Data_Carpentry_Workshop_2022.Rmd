@@ -1286,3 +1286,92 @@ ggsave(combined_plots ,  file = "./Data_Carpentry_Workshop_2022/figures/combined
 
 ```
 
+
+Challenge 
+```{r challenge_14}
+
+# can you export the plot so that only the neutrophils and DCs and plotted in a single column (one on top of the other)
+neutrophil_DC_plots <- ggpubr::ggarrange(data_day3_10d_neutrophils,  data_day3_10d_DC,  nrow = 2, ncol =1, labels = c("A","B"))
+
+ggsave(neutrophil_DC_plots ,  file = "./Data_Carpentry_Workshop_2022/figures/neutrophil_DC_plots.pdf", device = "pdf",
+       height = 5, width = 3)
+
+```
+
+#### END OF DAY 3 
+
+# DAY 4 
+
+### 9:00am-10:15: Specialized plotting (PCAs, heatmaps)
+
+On this final day of the workshop we are going to delve into some more specialized plotting examples that many of you may encounter in your work. One of the most common of these is generating PCAs and heatmaps. Let's start with a PCA. There are many different packages for generating one. We will work today with the package `PCAtools`.
+
+In order to plot a PCA in R you need to have all your variables of interest set up as a numerical matrix, with data as the samples, and columns as samples  
+
+
+
+```{r PCA}
+
+## Install and load packages
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("PCAtools")
+
+library(PCAtools)
+
+## We will start our original data that has not been pivoted because this has the data we want as the columns
+data <- read_csv("./Data_Carpentry_Workshop_2022/raw_data/Bolouri_2021_subset.csv")
+View(data)
+colnames(data)
+
+## Now subset the data to the numerical columns of interest
+data_subset <- data %>% select(Sample.ID, CBC.White.Blood.Cell.Count, CBC.Absolute.Monocytes, CBC.Absolute.Neutrophils, CBC.Absolute.Lymphocytes, FracCD45.Neutrophil, FracCD45.T.cell.CD4, FracCD45.DC, T.cell.CD8.HLA_DRp__of.CD8) %>% drop_na() 
+# check the class of all our data to make sure it is numerical
+str(data_subset) # we are good!
+
+## Now we need to set the sample.id to be the rownames
+data_subset_rownames <- data_subset %>% column_to_rownames(., var = "Sample.ID")
+
+## now we can transpose and make a matrix
+data_subset_mat <- as.matrix(t(data_subset_rownames))
+
+## Next we can create our metadata matrix to go along with the data
+  
+# create metadata
+metadata_subset = data %>% select(Sample.ID, sex, age, race,patientType, HighestCare, severity) %>%
+  # keep only those sample with No NA data values 
+  filter(Sample.ID %in% data_subset$Sample.ID) %>%
+    # also make the rownames sample.ID
+  column_to_rownames(., var = "Sample.ID")
+  
+# check CYTOF and CBC colnames match metadata rownames
+all(colnames(data_subset_mat ) == rownames(metadata_subset)) # TRUE
+
+# run PCA
+pca <- PCAtools::pca(data_subset_mat,
+                           metadata = metadata_subset)
+
+# These variables don't differentiate the samples
+Var_500_RPKM_pca_sort <- PCAtools::biplot(Var_500_RPKM_pca, colby = "Sort_short", colLegendTitle = "Cell Population", legendPosition = 'right')
+Var_500_RPKM_pca_Donor <- PCAtools::biplot(Var_500_RPKM_pca, colby = "Donor_ID", colLegendTitle = "Donor", legendPosition = 'right')
+Var_500_RPKM_pca_time <- PCAtools::biplot(Var_500_RPKM_pca, colby = "Timepoint", colLegendTitle = "Timepoint", legendPosition = 'right')
+
+pcas_comb <- ggarrange(Var_500_RPKM_pca_sort ,
+                       Var_500_RPKM_pca_Donor,
+                       Var_500_RPKM_pca_time, nrow = 2, ncol = 2 )
+
+ggsave(pcas_comb, file = file.path(plotDir, "Var_500_RPKM_pcas.pdf"), device = "pdf", height = 15, width = 15)
+
+
+
+```
+
+
+### 10:15-10:30: BREAK 
+
+
+### 10:30-12:00pm: Loading and Customizing Code for your Analyses
+
+This part of the workshop is 
+

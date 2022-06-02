@@ -37,7 +37,7 @@ For more information regarding the mission and purpose of Data Carpentry visit t
 
     To install these packages, open RStudio (after R is installed) and copy and paste the following command into the console window (look for a blinking cursor on the bottom left), then press the Enter (Windows and Linux) or Return (MacOS) to execute the command.
 
-            `install.packages(c("tidyverse","ggpubr")` 
+            `install.packages(c("tidyverse","ggpubr"))` 
 
     We will also need to download several packages from the website Bioconductor, which has many helpful packages. Enter the following command in the console and press enter or Return to execute.
 

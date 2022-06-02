@@ -1185,12 +1185,79 @@ data_day3_10d <- data_day3_10d %>% mutate(tocilizumab.timing = case_when(
 
 head(data_day3_10d)
 
+# finally, lets transform the CYTOF data to percentages, lets look at the data
+head(data_day3_10d) # we can see that the CYTOF fields called "frac" start with 
+data_day3_10d <- data_day3_10d %>% mutate(CYTOF_perc = Fraction*100)
+
 ```
 Now we have our data correctly formatt it's time to try to recreate as much of the plot in this figure as you can. Let's start with a timeframe of 20 minutes working in small groups, and then we will come back together to go over the solution. 
 
 ```{r fiure_10d}
-data_day3_10d
+data_day3_10d_neutrophils <- data_day3_10d %>%
+  filter(CYTOF == "FracCD45.Neutrophil") %>%
+  distinct(eventId, .keep_all = TRUE) %>%
+  mutate(percentage = Fraction*100) %>%
+  group_by(Covid.ID, tocilizumab.timing) %>% 
+  summarize(mean_perc = mean(percentage)) %>%
+  ggplot(aes(x = tocilizumab.timing, y = mean_perc, color = tocilizumab.timing)) +
+  geom_boxplot() +
+  geom_point(aes(color = tocilizumab.timing, group = Covid.ID)) +
+  geom_line(aes( group = Covid.ID), color = "grey") +
+  theme_classic() + 
+  scale_y_continuous(limits = c(0,100)) +
+  scale_color_manual(name = NULL, labels = c("After Tocilizumab","Before Tocilizumab"), values = c("#00c7ff", "#fe5750"))+
+  theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
+  labs(x = NULL, y = "% of CD45", title = "Neutrophils")
 
+data_day3_10d_CD4 <- data_day3_10d %>%
+  filter(CYTOF == "FracCD45.T.cell.CD4") %>%
+  distinct(eventId, .keep_all = TRUE) %>%
+  mutate(percentage = Fraction*100) %>%
+  group_by(Covid.ID, tocilizumab.timing) %>% 
+  summarize(mean_perc = mean(percentage)) %>%
+  ggplot(aes(x = tocilizumab.timing, y = mean_perc, color = tocilizumab.timing)) +
+  geom_boxplot() +
+  geom_point(aes(color = tocilizumab.timing, group = Covid.ID)) +
+  geom_line(aes( group = Covid.ID), color = "grey") +
+  theme_classic() + 
+  scale_y_continuous(limits = c(0,15)) +
+  scale_color_manual(name = NULL, labels = c("After Tocilizumab","Before Tocilizumab"), values = c("#00c7ff", "#fe5750"))+
+  theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
+  labs(x = NULL, y = "% of CD45", title = "T cells")
+
+data_day3_10d_DC <- data_day3_10d %>%
+  filter(CYTOF == "FracCD45.DC") %>%
+  distinct(eventId, .keep_all = TRUE) %>%
+  mutate(percentage = Fraction*100) %>%
+  group_by(Covid.ID, tocilizumab.timing) %>% 
+  summarize(mean_perc = mean(percentage)) %>%
+  ggplot(aes(x = tocilizumab.timing, y = mean_perc, color = tocilizumab.timing)) +
+  geom_boxplot() +
+  geom_point(aes(color = tocilizumab.timing, group = Covid.ID)) +
+  geom_line(aes( group = Covid.ID), color = "grey") +
+  theme_classic() + 
+  scale_y_continuous(limits = c(0,2)) +
+  scale_color_manual(name = NULL, labels = c("After Tocilizumab","Before Tocilizumab"), values = c("#00c7ff", "#fe5750"))+
+  theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
+  labs(x = NULL, y = "% of CD45", title = "DCs")
+
+data_day3_10d_DR_CD8 <- data_day3_10d %>%
+  filter(CYTOF == "T.cell.CD8.HLA_DRp__of.CD8") %>%
+  distinct(eventId, .keep_all = TRUE) %>%
+  # it's already a percentage!
+  #mutate(percentage = Fraction*100) %>%
+  group_by(Covid.ID, tocilizumab.timing) %>% 
+  summarize(mean_perc = mean(Fraction)) %>%
+  ggplot(aes(x = tocilizumab.timing, y = mean_perc, color = tocilizumab.timing)) +
+  geom_boxplot() +
+  geom_point(aes(color = tocilizumab.timing, group = Covid.ID)) +
+  geom_line(aes( group = Covid.ID), color = "grey") +
+  theme_classic() + 
+  scale_y_continuous(limits = c(0,50)) +
+  scale_color_manual(name = NULL, labels = c("After Tocilizumab","Before Tocilizumab"), values = c("#00c7ff", "#fe5750"))+
+  theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
+  labs(x = NULL, y = "% of CD8", title = "HLA-DR+ CD8+ T cells")
+      
 
 ```
 

@@ -501,12 +501,12 @@ setwd("/Users/ewitkop/Library/CloudStorage/Box-Box/EW_Bioinformatics_Postdoc_Res
 data <- read_csv("raw_data/Bolouri_2021_subset.csv")
 ```
 
-    ## Rows: 299 Columns: 26
+    ## Rows: 299 Columns: 29
 
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr (11): Sample.ID, Covid.ID, sex, race, patientType, HighestCare, Ever.On....
-    ## dbl (15): drawDate, Score, age, bmi, admitDate, deceasedDate, drawTime, CBC....
+    ## dbl (18): drawDate, Score, age, bmi, admitDate, deceasedDate, drawTime, toci...
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -520,7 +520,7 @@ Note how read csv looks at the data type of each column.
 print(data,100)
 ```
 
-    ## # A tibble: 299 × 26
+    ## # A tibble: 299 × 29
     ##    Sample.ID     drawDate Covid.ID     Score sex     age race    bmi patientType
     ##    <chr>            <dbl> <chr>        <dbl> <chr> <dbl> <chr> <dbl> <chr>      
     ##  1 SWB343927719     43978 Covid1366599    NA male     54 whit…  69.0 SARS-COV-2…
@@ -545,7 +545,8 @@ print(data,100)
     ##  8 Neg         N                 <NA>             ce1573…     43937           NA
     ##  9 Neg         N                 <NA>             ce1538…     43976           NA
     ## 10 Neg         N                 <NA>             ce1881…     43969           NA
-    ## # … with 289 more rows, and 11 more variables: covidId <chr>, severity <chr>, drawTime <dbl>,
+    ## # … with 289 more rows, and 14 more variables: covidId <chr>, severity <chr>, drawTime <dbl>,
+    ## #   tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>, tocilizumab.TotalDays <dbl>,
     ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
     ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>,
     ## #   FracCD45.DC <dbl>, T.cell.CD8.HLA_DRp__of.CD8 <dbl>
@@ -555,7 +556,7 @@ print(data,100)
 head(data)
 ```
 
-    ## # A tibble: 6 × 26
+    ## # A tibble: 6 × 29
     ##   Sample.ID     drawDate Covid.ID     Score sex      age race    bmi patientType
     ##   <chr>            <dbl> <chr>        <dbl> <chr>  <dbl> <chr> <dbl> <chr>      
     ## 1 SWB343927719     43978 Covid1366599    NA male      54 whit…  69.0 SARS-COV-2…
@@ -564,19 +565,19 @@ head(data)
     ## 4 SWB386069501     43940 Covid1425716    NA male      67 whit…  25.7 SARS-COV-2…
     ## 5 SWB827655421     43943 Covid1425716    NA male      67 whit…  25.7 SARS-COV-2…
     ## 6 SWB200026065     43978 Covid1458219    NA female    37 whit…  28.4 SARS-COV-2…
-    ## # … with 17 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
+    ## # … with 20 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
     ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
     ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
-    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
-    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
-    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
-    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>
+    ## #   tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>,
+    ## #   tocilizumab.TotalDays <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>, …
 
 ``` r
 head(data, 100)
 ```
 
-    ## # A tibble: 100 × 26
+    ## # A tibble: 100 × 29
     ##    Sample.ID     drawDate Covid.ID     Score sex     age race    bmi patientType
     ##    <chr>            <dbl> <chr>        <dbl> <chr> <dbl> <chr> <dbl> <chr>      
     ##  1 SWB343927719     43978 Covid1366599    NA male     54 whit…  69.0 SARS-COV-2…
@@ -589,20 +590,20 @@ head(data, 100)
     ##  8 SWB733482852     43939 Covid1490037    NA fema…    94 whit…  28.0 SARS-COV-2…
     ##  9 SWB1084971930    43978 Covid1550447    NA male     79 decl…  25.6 SARS-COV-2…
     ## 10 SWB1078357262    43971 Covid1584168    NA male     75 whit…  23.3 SARS-COV-2…
-    ## # … with 90 more rows, and 17 more variables: HighestCare <chr>,
+    ## # … with 90 more rows, and 20 more variables: HighestCare <chr>,
     ## #   Ever.On.Ventilator <chr>, Preexisting.Hypertension <chr>, eventId <chr>,
     ## #   admitDate <dbl>, deceasedDate <dbl>, covidId <chr>, severity <chr>,
-    ## #   drawTime <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   drawTime <dbl>, tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>,
+    ## #   tocilizumab.TotalDays <dbl>, CBC.White.Blood.Cell.Count <dbl>,
     ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
-    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>,
-    ## #   FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>, …
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>, …
 
 ``` r
 # To see last few lines
 tail(data)
 ```
 
-    ## # A tibble: 6 × 26
+    ## # A tibble: 6 × 29
     ##   Sample.ID     drawDate Covid.ID     Score sex     age race     bmi patientType
     ##   <chr>            <dbl> <chr>        <dbl> <chr> <dbl> <chr>  <dbl> <chr>      
     ## 1 SWB1030641467    43960 Covid1992031     6 male     43 nativ…  49.3 SARS-COV-2…
@@ -611,13 +612,13 @@ tail(data)
     ## 4 SWB117690763     43971 Covid1992031     6 male     43 nativ…  49.3 SARS-COV-2…
     ## 5 SWB1031605803    43977 Covid1992031     6 male     43 nativ…  49.3 SARS-COV-2…
     ## 6 SWB231587985     43971 Covid1968851     4 male     66 other…  28.3 SARS-COV-2…
-    ## # … with 17 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
+    ## # … with 20 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
     ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
     ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
-    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
-    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
-    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
-    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>
+    ## #   tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>,
+    ## #   tocilizumab.TotalDays <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>, …
 
 ``` r
 # To open in R studio
@@ -633,7 +634,7 @@ nrow(data)
 ncol(data)
 ```
 
-    ## [1] 26
+    ## [1] 29
 
 ``` r
 rownames(data)
@@ -701,37 +702,45 @@ summary(data)
     ##                                              3rd Qu.:43955   3rd Qu.:43950  
     ##                                              Max.   :43978   Max.   :44003  
     ##                                                              NA's   :255    
-    ##    covidId            severity            drawTime     
-    ##  Length:299         Length:299         Min.   :0.0000  
-    ##  Class :character   Class :character   1st Qu.:0.2083  
-    ##  Mode  :character   Mode  :character   Median :0.2083  
-    ##                                        Mean   :0.2805  
-    ##                                        3rd Qu.:0.2083  
-    ##                                        Max.   :0.9458  
-    ##                                                        
-    ##  CBC.White.Blood.Cell.Count CBC.Absolute.Monocytes CBC.Absolute.Neutrophils
-    ##  Min.   : 2.100             Min.   :0.000          Min.   : 1.43           
-    ##  1st Qu.: 6.200             1st Qu.:0.400          1st Qu.: 4.29           
-    ##  Median : 8.500             Median :0.600          Median : 6.18           
-    ##  Mean   : 9.028             Mean   :0.651          Mean   : 6.88           
-    ##  3rd Qu.:11.000             3rd Qu.:0.900          3rd Qu.: 8.70           
-    ##  Max.   :26.900             Max.   :1.600          Max.   :24.48           
-    ##  NA's   :10                 NA's   :19             NA's   :19              
-    ##  CBC.Absolute.Lymphocytes FracCD45.Neutrophil FracCD45.T.cell.CD4
-    ##  Min.   :0.100            Min.   :0.3214      Min.   :0.00302    
-    ##  1st Qu.:0.700            1st Qu.:0.6167      1st Qu.:0.03469    
-    ##  Median :1.100            Median :0.7144      Median :0.06768    
-    ##  Mean   :1.205            Mean   :0.7052      Mean   :0.07955    
-    ##  3rd Qu.:1.600            3rd Qu.:0.8010      3rd Qu.:0.11733    
-    ##  Max.   :4.880            Max.   :0.9136      Max.   :0.29809    
-    ##  NA's   :18                                                      
-    ##   FracCD45.DC        T.cell.CD8.HLA_DRp__of.CD8
-    ##  Min.   :0.0001324   Min.   : 1.67             
-    ##  1st Qu.:0.0036658   1st Qu.: 7.90             
-    ##  Median :0.0060225   Median :14.50             
-    ##  Mean   :0.0068292   Mean   :17.82             
-    ##  3rd Qu.:0.0081830   3rd Qu.:23.85             
-    ##  Max.   :0.0358275   Max.   :71.50             
+    ##    covidId            severity            drawTime      tocilizumab.StartDate
+    ##  Length:299         Length:299         Min.   :0.0000   Min.   :43949        
+    ##  Class :character   Class :character   1st Qu.:0.2083   1st Qu.:43955        
+    ##  Mode  :character   Mode  :character   Median :0.2083   Median :43957        
+    ##                                        Mean   :0.2805   Mean   :43960        
+    ##                                        3rd Qu.:0.2083   3rd Qu.:43964        
+    ##                                        Max.   :0.9458   Max.   :43971        
+    ##                                                         NA's   :256          
+    ##  tocilizumab.EndDate tocilizumab.TotalDays CBC.White.Blood.Cell.Count
+    ##  Min.   :43949       Min.   :1             Min.   : 2.100            
+    ##  1st Qu.:43949       1st Qu.:1             1st Qu.: 6.200            
+    ##  Median :43955       Median :1             Median : 8.500            
+    ##  Mean   :43952       Mean   :1             Mean   : 9.028            
+    ##  3rd Qu.:43955       3rd Qu.:1             3rd Qu.:11.000            
+    ##  Max.   :43955       Max.   :1             Max.   :26.900            
+    ##  NA's   :287         NA's   :256           NA's   :10                
+    ##  CBC.Absolute.Monocytes CBC.Absolute.Neutrophils CBC.Absolute.Lymphocytes
+    ##  Min.   :0.000          Min.   : 1.43            Min.   :0.100           
+    ##  1st Qu.:0.400          1st Qu.: 4.29            1st Qu.:0.700           
+    ##  Median :0.600          Median : 6.18            Median :1.100           
+    ##  Mean   :0.651          Mean   : 6.88            Mean   :1.205           
+    ##  3rd Qu.:0.900          3rd Qu.: 8.70            3rd Qu.:1.600           
+    ##  Max.   :1.600          Max.   :24.48            Max.   :4.880           
+    ##  NA's   :19             NA's   :19               NA's   :18              
+    ##  FracCD45.Neutrophil FracCD45.T.cell.CD4  FracCD45.DC       
+    ##  Min.   :0.3214      Min.   :0.00302     Min.   :0.0001324  
+    ##  1st Qu.:0.6167      1st Qu.:0.03469     1st Qu.:0.0036658  
+    ##  Median :0.7144      Median :0.06768     Median :0.0060225  
+    ##  Mean   :0.7052      Mean   :0.07955     Mean   :0.0068292  
+    ##  3rd Qu.:0.8010      3rd Qu.:0.11733     3rd Qu.:0.0081830  
+    ##  Max.   :0.9136      Max.   :0.29809     Max.   :0.0358275  
+    ##                                                             
+    ##  T.cell.CD8.HLA_DRp__of.CD8
+    ##  Min.   : 1.67             
+    ##  1st Qu.: 7.90             
+    ##  Median :14.50             
+    ##  Mean   :17.82             
+    ##  3rd Qu.:23.85             
+    ##  Max.   :71.50             
     ## 
 
 What we just loaded was a dataframe, the typical data structure used in
@@ -746,7 +755,7 @@ data.
 str(data)
 ```
 
-    ## spec_tbl_df [299 × 26] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+    ## spec_tbl_df [299 × 29] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
     ##  $ Sample.ID                 : chr [1:299] "SWB343927719" "SWB125388248" "SWB1057697917" "SWB386069501" ...
     ##  $ drawDate                  : num [1:299] 43978 43971 43972 43940 43943 ...
     ##  $ Covid.ID                  : chr [1:299] "Covid1366599" "Covid1395204" "Covid1395204" "Covid1425716" ...
@@ -765,6 +774,9 @@ str(data)
     ##  $ covidId                   : chr [1:299] "Covid1366599" "Covid1395204" "Covid1395204" "Covid1425716" ...
     ##  $ severity                  : chr [1:299] "Neg" "Neg" "Neg" "Neg" ...
     ##  $ drawTime                  : num [1:299] 0.208 0.658 0.208 0.208 0.208 ...
+    ##  $ tocilizumab.StartDate     : num [1:299] NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ tocilizumab.EndDate       : num [1:299] NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ tocilizumab.TotalDays     : num [1:299] NA NA NA NA NA NA NA NA NA NA ...
     ##  $ CBC.White.Blood.Cell.Count: num [1:299] 13.6 11.6 9 11.9 14.6 11 6.8 9.6 8.8 22 ...
     ##  $ CBC.Absolute.Monocytes    : num [1:299] 1 1.2 0.63 0.6 1 1 0.4 1.34 0.7 1.1 ...
     ##  $ CBC.Absolute.Neutrophils  : num [1:299] 11.8 9.5 7.38 6.43 9.1 ...
@@ -793,6 +805,9 @@ str(data)
     ##   ..   covidId = col_character(),
     ##   ..   severity = col_character(),
     ##   ..   drawTime = col_double(),
+    ##   ..   tocilizumab.StartDate = col_double(),
+    ##   ..   tocilizumab.EndDate = col_double(),
+    ##   ..   tocilizumab.TotalDays = col_double(),
     ##   ..   CBC.White.Blood.Cell.Count = col_double(),
     ##   ..   CBC.Absolute.Monocytes = col_double(),
     ##   ..   CBC.Absolute.Neutrophils = col_double(),
@@ -814,7 +829,7 @@ nrow(data) # 299
 ncol(data) # 26
 ```
 
-    ## [1] 26
+    ## [1] 29
 
 #### Indexing and subsetting data frames
 
@@ -870,7 +885,7 @@ data[1:2,3:6]
 data[,-1]
 ```
 
-    ## # A tibble: 299 × 25
+    ## # A tibble: 299 × 28
     ##    drawDate Covid.ID     Score sex      age race     bmi patientType HighestCare
     ##       <dbl> <chr>        <dbl> <chr>  <dbl> <chr>  <dbl> <chr>       <chr>      
     ##  1    43978 Covid1366599    NA male      54 white…  69.0 SARS-COV-2… Neg        
@@ -883,20 +898,20 @@ data[,-1]
     ##  8    43939 Covid1490037    NA female    94 white…  28.0 SARS-COV-2… Neg        
     ##  9    43978 Covid1550447    NA male      79 decli…  25.6 SARS-COV-2… Neg        
     ## 10    43971 Covid1584168    NA male      75 white…  23.3 SARS-COV-2… Neg        
-    ## # … with 289 more rows, and 16 more variables: Ever.On.Ventilator <chr>,
+    ## # … with 289 more rows, and 19 more variables: Ever.On.Ventilator <chr>,
     ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
     ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
-    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
-    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
-    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
-    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>
+    ## #   tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>,
+    ## #   tocilizumab.TotalDays <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>, …
 
 ``` r
 # To get only the head of the dataframe you can do
 data[-(7:nrow(data)),]
 ```
 
-    ## # A tibble: 6 × 26
+    ## # A tibble: 6 × 29
     ##   Sample.ID     drawDate Covid.ID     Score sex      age race    bmi patientType
     ##   <chr>            <dbl> <chr>        <dbl> <chr>  <dbl> <chr> <dbl> <chr>      
     ## 1 SWB343927719     43978 Covid1366599    NA male      54 whit…  69.0 SARS-COV-2…
@@ -905,13 +920,13 @@ data[-(7:nrow(data)),]
     ## 4 SWB386069501     43940 Covid1425716    NA male      67 whit…  25.7 SARS-COV-2…
     ## 5 SWB827655421     43943 Covid1425716    NA male      67 whit…  25.7 SARS-COV-2…
     ## 6 SWB200026065     43978 Covid1458219    NA female    37 whit…  28.4 SARS-COV-2…
-    ## # … with 17 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
+    ## # … with 20 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
     ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
     ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
-    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
-    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
-    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
-    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>
+    ## #   tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>,
+    ## #   tocilizumab.TotalDays <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>, …
 
 ``` r
 # You can also subset by using the name of the column in quotation marks
@@ -1017,9 +1032,17 @@ data$Sample.ID
 Challenge time!
 
 ``` r
-#Create a data.frame (surveys_200) containing only the data in row 200 of the surveys dataset.
+# Create a data.frame (data_200) containing only the data in row 200 of the surveys dataset.
+data_200 <- data[200,]
 
 # Pull out the last row of the data frame and save it
+nrow(data) # 299
+```
+
+    ## [1] 299
+
+``` r
+data_last <- data[299,]
 ```
 
 Let’s take five minutes for this challenge so you can have a breather
@@ -1234,11 +1257,11 @@ library(tidyverse)
 data2 <- read_csv("Data_Carpentry_Workshop_2022/results/data_day1.csv")
 ```
 
-    ## Rows: 299 Columns: 26
+    ## Rows: 299 Columns: 29
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr (11): Sample.ID, Covid.ID, sex, race, patientType, HighestCare, Ever.On....
-    ## dbl (15): drawDate, Score, age, bmi, admitDate, deceasedDate, drawTime, CBC....
+    ## dbl (18): drawDate, Score, age, bmi, admitDate, deceasedDate, drawTime, toci...
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -1281,7 +1304,7 @@ select(data2, Sample.ID, age, bmi) # put the name of the df first, followed by t
 select(data2, -sex, -race)
 ```
 
-    ## # A tibble: 299 × 24
+    ## # A tibble: 299 × 27
     ##    Sample.ID     drawDate Covid.ID     Score   age   bmi patientType HighestCare
     ##    <chr>            <dbl> <chr>        <dbl> <dbl> <dbl> <chr>       <chr>      
     ##  1 SWB343927719     43978 Covid1366599    NA    54  69.0 SARS-COV-2… Negative   
@@ -1294,20 +1317,20 @@ select(data2, -sex, -race)
     ##  8 SWB733482852     43939 Covid1490037    NA    94  28.0 SARS-COV-2… Negative   
     ##  9 SWB1084971930    43978 Covid1550447    NA    79  25.6 SARS-COV-2… Negative   
     ## 10 SWB1078357262    43971 Covid1584168    NA    75  23.3 SARS-COV-2… Negative   
-    ## # … with 289 more rows, and 16 more variables: Ever.On.Ventilator <chr>,
+    ## # … with 289 more rows, and 19 more variables: Ever.On.Ventilator <chr>,
     ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
     ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
-    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
-    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
-    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
-    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>
+    ## #   tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>,
+    ## #   tocilizumab.TotalDays <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>, …
 
 ``` r
 # you can also select rows based on certain criteria using filter
 filter(data2, HighestCare == "Outpatient")
 ```
 
-    ## # A tibble: 8 × 26
+    ## # A tibble: 8 × 29
     ##   Sample.ID     drawDate Covid.ID     Score sex      age race    bmi patientType
     ##   <chr>            <dbl> <chr>        <dbl> <chr>  <dbl> <chr> <dbl> <chr>      
     ## 1 SWB474988649     43937 Covid1216277     2 male      54 whit…  NA   SARS-COV-2…
@@ -1318,19 +1341,19 @@ filter(data2, HighestCare == "Outpatient")
     ## 6 SWB508500322     43942 Covid1889889     2 female    28 blac…  22.5 SARS-COV-2…
     ## 7 SWB363667742     43931 Covid1970770     2 female    67 asian  23.7 SARS-COV-2…
     ## 8 SWB737563346     43934 Covid1970770     2 female    67 asian  23.7 SARS-COV-2…
-    ## # … with 17 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
+    ## # … with 20 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
     ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
     ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
-    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
-    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
-    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
-    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>
+    ## #   tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>,
+    ## #   tocilizumab.TotalDays <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>, …
 
 ``` r
 filter(data2, age <= 50)
 ```
 
-    ## # A tibble: 56 × 26
+    ## # A tibble: 56 × 29
     ##    Sample.ID     drawDate Covid.ID     Score sex     age race    bmi patientType
     ##    <chr>            <dbl> <chr>        <dbl> <chr> <dbl> <chr> <dbl> <chr>      
     ##  1 SWB200026065     43978 Covid1458219    NA fema…    37 whit…  28.4 SARS-COV-2…
@@ -1343,13 +1366,13 @@ filter(data2, age <= 50)
     ##  8 SWB1007811075    43951 Covid1701495     2 fema…    41 othe…  54.1 SARS-COV-2…
     ##  9 SWB508500322     43942 Covid1889889     2 fema…    28 blac…  22.5 SARS-COV-2…
     ## 10 SWB104438684     43948 Covid1006658     3 male     34 whit…  33.3 SARS-COV-2…
-    ## # … with 46 more rows, and 17 more variables: HighestCare <chr>,
+    ## # … with 46 more rows, and 20 more variables: HighestCare <chr>,
     ## #   Ever.On.Ventilator <chr>, Preexisting.Hypertension <chr>, eventId <chr>,
     ## #   admitDate <dbl>, deceasedDate <dbl>, covidId <chr>, severity <chr>,
-    ## #   drawTime <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   drawTime <dbl>, tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>,
+    ## #   tocilizumab.TotalDays <dbl>, CBC.White.Blood.Cell.Count <dbl>,
     ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
-    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>,
-    ## #   FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>, …
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>, …
 
 #### Pipes
 
@@ -1392,7 +1415,6 @@ data2 %>%
 
 ``` r
 # the pipe passes the data from one operation to another and goes step by step, it is like saying the word "then" at each pipe 
-
 
 # We can create a new object with this filtered data
 data2_sml <- data2 %>%
@@ -1440,7 +1462,7 @@ data2 %>%
   mutate(age_months = age*12)
 ```
 
-    ## # A tibble: 299 × 27
+    ## # A tibble: 299 × 30
     ##    Sample.ID     drawDate Covid.ID     Score sex     age race    bmi patientType
     ##    <chr>            <dbl> <chr>        <dbl> <chr> <dbl> <chr> <dbl> <chr>      
     ##  1 SWB343927719     43978 Covid1366599    NA male     54 whit…  69.0 SARS-COV-2…
@@ -1453,13 +1475,13 @@ data2 %>%
     ##  8 SWB733482852     43939 Covid1490037    NA fema…    94 whit…  28.0 SARS-COV-2…
     ##  9 SWB1084971930    43978 Covid1550447    NA male     79 decl…  25.6 SARS-COV-2…
     ## 10 SWB1078357262    43971 Covid1584168    NA male     75 whit…  23.3 SARS-COV-2…
-    ## # … with 289 more rows, and 18 more variables: HighestCare <chr>,
+    ## # … with 289 more rows, and 21 more variables: HighestCare <chr>,
     ## #   Ever.On.Ventilator <chr>, Preexisting.Hypertension <chr>, eventId <chr>,
     ## #   admitDate <dbl>, deceasedDate <dbl>, covidId <chr>, severity <chr>,
-    ## #   drawTime <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   drawTime <dbl>, tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>,
+    ## #   tocilizumab.TotalDays <dbl>, CBC.White.Blood.Cell.Count <dbl>,
     ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
-    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>,
-    ## #   FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>, …
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>, …
 
 ``` r
 # Can also do multiple mutates one after the other
@@ -1468,7 +1490,7 @@ data2 %>%
          age_d = age_months*30)
 ```
 
-    ## # A tibble: 299 × 28
+    ## # A tibble: 299 × 31
     ##    Sample.ID     drawDate Covid.ID     Score sex     age race    bmi patientType
     ##    <chr>            <dbl> <chr>        <dbl> <chr> <dbl> <chr> <dbl> <chr>      
     ##  1 SWB343927719     43978 Covid1366599    NA male     54 whit…  69.0 SARS-COV-2…
@@ -1481,13 +1503,13 @@ data2 %>%
     ##  8 SWB733482852     43939 Covid1490037    NA fema…    94 whit…  28.0 SARS-COV-2…
     ##  9 SWB1084971930    43978 Covid1550447    NA male     79 decl…  25.6 SARS-COV-2…
     ## 10 SWB1078357262    43971 Covid1584168    NA male     75 whit…  23.3 SARS-COV-2…
-    ## # … with 289 more rows, and 19 more variables: HighestCare <chr>,
+    ## # … with 289 more rows, and 22 more variables: HighestCare <chr>,
     ## #   Ever.On.Ventilator <chr>, Preexisting.Hypertension <chr>, eventId <chr>,
     ## #   admitDate <dbl>, deceasedDate <dbl>, covidId <chr>, severity <chr>,
-    ## #   drawTime <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   drawTime <dbl>, tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>,
+    ## #   tocilizumab.TotalDays <dbl>, CBC.White.Blood.Cell.Count <dbl>,
     ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
-    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>,
-    ## #   FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>, …
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>, …
 
 ``` r
 # Pipes work with non plyr functions as well. For example, we canAdd head() to view the first #few rows
@@ -1497,7 +1519,7 @@ data2 %>%
   head()
 ```
 
-    ## # A tibble: 6 × 28
+    ## # A tibble: 6 × 31
     ##   Sample.ID     drawDate Covid.ID     Score sex      age race    bmi patientType
     ##   <chr>            <dbl> <chr>        <dbl> <chr>  <dbl> <chr> <dbl> <chr>      
     ## 1 SWB343927719     43978 Covid1366599    NA male      54 whit…  69.0 SARS-COV-2…
@@ -1506,13 +1528,13 @@ data2 %>%
     ## 4 SWB386069501     43940 Covid1425716    NA male      67 whit…  25.7 SARS-COV-2…
     ## 5 SWB827655421     43943 Covid1425716    NA male      67 whit…  25.7 SARS-COV-2…
     ## 6 SWB200026065     43978 Covid1458219    NA female    37 whit…  28.4 SARS-COV-2…
-    ## # … with 19 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
+    ## # … with 22 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
     ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
     ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
-    ## #   CBC.White.Blood.Cell.Count <dbl>, CBC.Absolute.Monocytes <dbl>,
-    ## #   CBC.Absolute.Neutrophils <dbl>, CBC.Absolute.Lymphocytes <dbl>,
-    ## #   FracCD45.Neutrophil <dbl>, FracCD45.T.cell.CD4 <dbl>, FracCD45.DC <dbl>,
-    ## #   T.cell.CD8.HLA_DRp__of.CD8 <dbl>, age_months <dbl>, age_d <dbl>
+    ## #   tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>,
+    ## #   tocilizumab.TotalDays <dbl>, CBC.White.Blood.Cell.Count <dbl>,
+    ## #   CBC.Absolute.Monocytes <dbl>, CBC.Absolute.Neutrophils <dbl>,
+    ## #   CBC.Absolute.Lymphocytes <dbl>, FracCD45.Neutrophil <dbl>, …
 
 Let’s say we now wanted to calculate the mean bmi of measured patients.
 
@@ -1883,10 +1905,12 @@ colnames(data2)
     ## [13] "eventId"                    "admitDate"                 
     ## [15] "deceasedDate"               "covidId"                   
     ## [17] "severity"                   "drawTime"                  
-    ## [19] "CBC.White.Blood.Cell.Count" "CBC.Absolute.Monocytes"    
-    ## [21] "CBC.Absolute.Neutrophils"   "CBC.Absolute.Lymphocytes"  
-    ## [23] "FracCD45.Neutrophil"        "FracCD45.T.cell.CD4"       
-    ## [25] "FracCD45.DC"                "T.cell.CD8.HLA_DRp__of.CD8"
+    ## [19] "tocilizumab.StartDate"      "tocilizumab.EndDate"       
+    ## [21] "tocilizumab.TotalDays"      "CBC.White.Blood.Cell.Count"
+    ## [23] "CBC.Absolute.Monocytes"     "CBC.Absolute.Neutrophils"  
+    ## [25] "CBC.Absolute.Lymphocytes"   "FracCD45.Neutrophil"       
+    ## [27] "FracCD45.T.cell.CD4"        "FracCD45.DC"               
+    ## [29] "T.cell.CD8.HLA_DRp__of.CD8"
 
 ``` r
 # pivot the data
@@ -1900,7 +1924,7 @@ View(data_long)
 # now time to pivot the other columns
 data_long <- data_long %>%
   pivot_longer(cols = c("FracCD45.Neutrophil","FracCD45.T.cell.CD4",       
-  "FracCD45.DC" ),
+  "FracCD45.DC", "T.cell.CD8.HLA_DRp__of.CD8" ),
   names_to = "CYTOF",
   values_to = "Fraction")
 ```
@@ -1931,7 +1955,7 @@ ggplot(data = data_long, mapping = aes(x = bmi, y = age))
 ggplot(data = data_long, mapping = aes(x = bmi, y = age)) + geom_point()
 ```
 
-    ## Warning: Removed 36 rows containing missing values (geom_point).
+    ## Warning: Removed 48 rows containing missing values (geom_point).
 
 ![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot_intro-2.png)<!-- -->
 
@@ -1946,7 +1970,7 @@ data_plot <- ggplot(data = data_long, mapping = aes(x = bmi, y = age))
 data_plot + geom_point()
 ```
 
-    ## Warning: Removed 36 rows containing missing values (geom_point).
+    ## Warning: Removed 48 rows containing missing values (geom_point).
 
 ![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot_intro-3.png)<!-- -->
 
@@ -1956,7 +1980,7 @@ data_plot +
   geom_point()
 ```
 
-    ## Warning: Removed 36 rows containing missing values (geom_point).
+    ## Warning: Removed 48 rows containing missing values (geom_point).
 
 ![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggplot_intro-4.png)<!-- -->
 
@@ -1978,7 +2002,7 @@ ggplot(data = data_long, mapping = aes(x = bmi, y = age)) +
   geom_point(alpha = 0.05) # only affects overlapping points
 ```
 
-    ## Warning: Removed 36 rows containing missing values (geom_point).
+    ## Warning: Removed 48 rows containing missing values (geom_point).
 
 ![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggmodify-1.png)<!-- -->
 
@@ -1988,7 +2012,7 @@ ggplot(data = data_long, mapping = aes(x = bmi, y = age)) +
   geom_point(alpha = 0.05, color = "blue")
 ```
 
-    ## Warning: Removed 36 rows containing missing values (geom_point).
+    ## Warning: Removed 48 rows containing missing values (geom_point).
 
 ![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggmodify-2.png)<!-- -->
 
@@ -1998,7 +2022,7 @@ ggplot(data = data_long, mapping = aes(x = bmi, y = age, color =sex  )) +
   geom_point(alpha = 0.05)
 ```
 
-    ## Warning: Removed 36 rows containing missing values (geom_point).
+    ## Warning: Removed 48 rows containing missing values (geom_point).
 
 ![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggmodify-3.png)<!-- -->
 
@@ -2008,7 +2032,7 @@ ggplot(data = data_long, mapping = aes(x = bmi, y = age  )) +
   geom_point(alpha = 0.05, aes(color = sex))
 ```
 
-    ## Warning: Removed 36 rows containing missing values (geom_point).
+    ## Warning: Removed 48 rows containing missing values (geom_point).
 
 ![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/ggmodify-4.png)<!-- -->
 Challenge
@@ -2071,9 +2095,9 @@ ggplot(data_long, aes(x = patientType, y = bmi, color = HighestCare)) +
   geom_point(aes(group = HighestCare), position = position_dodge(width = 0.75))
 ```
 
-    ## Warning: Removed 36 rows containing non-finite values (stat_boxplot).
+    ## Warning: Removed 48 rows containing non-finite values (stat_boxplot).
 
-    ## Warning: Removed 36 rows containing missing values (geom_point).
+    ## Warning: Removed 48 rows containing missing values (geom_point).
 
 ![](Full_Data_Carpentry_Workshop_2022_files/figure-gfm/challenge_12-1.png)<!-- -->
 
@@ -2102,11 +2126,11 @@ library(tidyverse)
 data_day3 <- read_csv("Data_Carpentry_Workshop_2022/results/data_day2.csv")
 ```
 
-    ## Rows: 3588 Columns: 23
+    ## Rows: 4784 Columns: 25
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr (13): Sample.ID, Covid.ID, sex, race, patientType, HighestCare, Ever.On....
-    ## dbl (10): drawDate, Score, age, bmi, admitDate, deceasedDate, drawTime, T.ce...
+    ## dbl (12): drawDate, Score, age, bmi, admitDate, deceasedDate, drawTime, toci...
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -2157,50 +2181,50 @@ data_day3$Score # there are a lot of NA's at the beginning of the data, let's re
     ##  [217] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
     ##  [241] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
     ##  [265] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-    ##  [289] NA NA NA NA NA NA NA NA NA NA NA NA  6  6  6  6  6  6  6  6  6  6  6  6
-    ##  [313]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ##  [337]  6  6  6  6  6  6  6  6  6  6  6  6  7  7  7  7  7  7  7  7  7  7  7  7
-    ##  [361]  3  3  3  3  3  3  3  3  3  3  3  3  4  4  4  4  4  4  4  4  4  4  4  4
-    ##  [385]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ##  [409]  4  4  4  4  4  4  4  4  4  4  4  4  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [289] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [313] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [337] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [361] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+    ##  [385] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA  6  6  6  6  6  6  6  6
+    ##  [409]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
     ##  [433]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ##  [457]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ##  [481]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ##  [505]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ##  [529]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ##  [553]  7  7  7  7  7  7  7  7  7  7  7  7  5  5  5  5  5  5  5  5  5  5  5  5
-    ##  [577]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
-    ##  [601]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
-    ##  [625]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
-    ##  [649]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ##  [457]  6  6  6  6  6  6  6  6  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7
+    ##  [481]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  4  4  4  4  4  4  4  4
+    ##  [505]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ##  [529]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ##  [553]  4  4  4  4  4  4  4  4  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [577]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [601]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [625]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [649]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
     ##  [673]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ##  [697]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ##  [721]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ##  [745]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ##  [769]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ##  [793]  6  6  6  6  6  6  6  6  6  6  6  6  3  3  3  3  3  3  3  3  3  3  3  3
-    ##  [817]  3  3  3  3  3  3  3  3  3  3  3  3  2  2  2  2  2  2  2  2  2  2  2  2
-    ##  [841]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
-    ##  [865]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
-    ##  [889]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
-    ##  [913]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
-    ##  [937]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
-    ##  [961]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
-    ##  [985]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
-    ## [1009]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
-    ## [1033]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
-    ## [1057]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ##  [697]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [721]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  7  7  7  7  7  7  7  7
+    ##  [745]  7  7  7  7  7  7  7  7  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ##  [769]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ##  [793]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ##  [817]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ##  [841]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ##  [865]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ##  [889]  5  5  5  5  5  5  5  5  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ##  [913]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  4  4  4  4  4  4  4  4
+    ##  [937]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ##  [961]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ##  [985]  4  4  4  4  4  4  4  4  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [1009]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [1033]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [1057]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  3  3  3  3  3  3  3  3
     ## [1081]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
-    ## [1105]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
-    ## [1129]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
-    ## [1153]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
-    ## [1177]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
-    ## [1201]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
-    ## [1225]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
-    ## [1249]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
-    ## [1273]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
-    ## [1297]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
-    ## [1321]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1105]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ## [1129]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ## [1153]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ## [1177]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ## [1201]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ## [1225]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ## [1249]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ## [1273]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ## [1297]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
+    ## [1321]  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2
     ## [1345]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
     ## [1369]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
     ## [1393]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
@@ -2208,28 +2232,28 @@ data_day3$Score # there are a lot of NA's at the beginning of the data, let's re
     ## [1441]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
     ## [1465]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
     ## [1489]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
-    ## [1513]  3  3  3  3  3  3  3  3  3  3  3  3  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1537]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1561]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1585]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1609]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1633]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1657]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1681]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1705]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1729]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1753]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1777]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1801]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1825]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1849]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1873]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1897]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1921]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1945]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1969]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [1993]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [2017]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [1513]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1537]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1561]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1585]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1609]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1633]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1657]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1681]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1705]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1729]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1753]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1777]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1801]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1825]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1849]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1873]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1897]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1921]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1945]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1969]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [1993]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3
+    ## [2017]  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  3  4  4  4  4  4  4  4  4
     ## [2041]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
     ## [2065]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
     ## [2089]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
@@ -2242,47 +2266,47 @@ data_day3$Score # there are a lot of NA's at the beginning of the data, let's re
     ## [2257]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
     ## [2281]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
     ## [2305]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
-    ## [2329]  4  4  4  4  4  4  4  4  4  4  4  4  5  5  5  5  5  5  5  5  5  5  5  5
-    ## [2353]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
-    ## [2377]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
-    ## [2401]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
-    ## [2425]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
-    ## [2449]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
-    ## [2473]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2497]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2521]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2545]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2569]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2593]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2617]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2641]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2665]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2689]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2713]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2737]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2761]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2785]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2809]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2833]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2857]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2881]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2905]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2929]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2953]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [2977]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3001]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3025]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3049]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3073]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3097]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3121]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3145]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3169]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3193]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3217]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3241]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3265]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3289]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [2329]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2353]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2377]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2401]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2425]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2449]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2473]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2497]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2521]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2545]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2569]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2593]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2617]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2641]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2665]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2689]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2713]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2737]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2761]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2785]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2809]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2833]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2857]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2881]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2905]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2929]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2953]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [2977]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [3001]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [3025]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [3049]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [3073]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [3097]  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [3121]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ## [3145]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ## [3169]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ## [3193]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ## [3217]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ## [3241]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ## [3265]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
+    ## [3289]  5  5  5  5  5  5  5  5  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
     ## [3313]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
     ## [3337]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
     ## [3361]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
@@ -2294,7 +2318,57 @@ data_day3$Score # there are a lot of NA's at the beginning of the data, let's re
     ## [3505]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
     ## [3529]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
     ## [3553]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
-    ## [3577]  4  4  4  4  4  4  4  4  4  4  4  4
+    ## [3577]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3601]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3625]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3649]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3673]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3697]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3721]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3745]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3769]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3793]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3817]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3841]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3865]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3889]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3913]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3937]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3961]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [3985]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4009]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4033]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4057]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4081]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4105]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4129]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4153]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4177]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4201]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4225]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4249]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4273]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4297]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4321]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4345]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4369]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4393]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4417]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4441]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4465]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4489]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4513]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4537]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4561]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4585]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4609]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4633]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4657]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4681]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4705]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4729]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6
+    ## [4753]  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  6  4  4  4  4  4  4  4  4
+    ## [4777]  4  4  4  4  4  4  4  4
 
 ``` r
 data_day3 %>%
@@ -2445,16 +2519,16 @@ We can do this by make Severity a factor and changing the order of the
 levels
 
 ``` r
-class(data_day3$severity) # character
+class(WBC$severity) # character
 ```
 
     ## [1] "character"
 
 ``` r
 # Let's make severity a factor
-data_day3$severity <- factor(data_day3$severity , levels= c("Mild","Moderate","Severe","Neg"))
+WBC$severity <- factor(WBC$severity , levels= c("Mild","Moderate","Severe","Neg"))
 
-levels(data_day3$severity)
+levels(WBC$severity)
 ```
 
     ## [1] "Mild"     "Moderate" "Severe"   "Neg"
@@ -2668,12 +2742,409 @@ facet_CBC <- data_day3 %>%
 
 ### 10:30-12:00pm: Customized plotting cont.:
 
-Let’s start with a challenge to review what we learned this morning.
+For the second part of this morning’s session we are going to take what
+we learned this morning and apply it to recreate another one of the
+figures from Bolouri et al., specifically Figure 10d.
 
--   use the CYTOF data this time
+Let’s all take a look at the figure. Together we are going to work on
+correctly subsetting the data for this figure and then it would be great
+if you could work in groups of 3 or 4 to use the skills we’ve learned to
+put together as much of the figures as you can. And remember, if you
+forget how to do something, google is your friend! Forums like stack
+overflow usually have excellent answers.
 
-# creating figure 10d
+``` r
+# let's remind ourselves of our CYTOF data we have to work with 
+levels(as.factor(data_day3$CYTOF)) # "FracCD45.DC"                "FracCD45.Neutrophil"        "FracCD45.T.cell.CD4"        "T.cell.CD8.HLA_DRp__of.CD8" we will focus on plotting these! 
+```
 
-start with faceting nex try to recreate the CYTOF figure
+    ## [1] "FracCD45.DC"                "FracCD45.Neutrophil"       
+    ## [3] "FracCD45.T.cell.CD4"        "T.cell.CD8.HLA_DRp__of.CD8"
 
-Add in the statistics for the plot after the break!
+``` r
+# we also want to separate the data measurements by before and after toclizumab
+# How can we find this - lets look at the date columns 
+
+data_day3_10d <- data_day3 %>%
+  # filter for patients that were given tocilizumab and have start and end dates
+  filter(!is.na(tocilizumab.StartDate) & !is.na(tocilizumab.EndDate)) 
+View(data_day3_10d)  
+
+# You can notice that the start date and end dates are the same for all of these measurements
+all(data_day3_10d$tocilizumab.StartDate == data_day3_10d$tocilizumab.EndDate) # TRUE
+```
+
+    ## [1] TRUE
+
+``` r
+# next lets check the class of the date columns
+class(data_day3_10d$tocilizumab.StartDate) # numeric
+```
+
+    ## [1] "numeric"
+
+``` r
+class(data_day3_10d$tocilizumab.EndDate) # numeric
+```
+
+    ## [1] "numeric"
+
+``` r
+class(data_day3_10d$drawDate) # numeric
+```
+
+    ## [1] "numeric"
+
+``` r
+# since they are all numeric formatted we should be able to use numerical logical statements to get our before and after
+
+# next we are going to do a conditional mutate to label the measurements that were before or after tocilizumab
+data_day3_10d <- data_day3_10d %>% mutate(tocilizumab.timing = case_when(
+  drawDate >= tocilizumab.StartDate ~ "after_tocilizumab",
+  drawDate < tocilizumab.StartDate ~ "before_tocilizumab"
+))
+
+head(data_day3_10d)
+```
+
+    ## # A tibble: 6 × 26
+    ##   Sample.ID     drawDate Covid.ID     Score sex      age race    bmi patientType
+    ##   <chr>            <dbl> <chr>        <fct> <chr>  <dbl> <chr> <dbl> <chr>      
+    ## 1 SWB1004287499    43957 Covid1043495 3     female    61 othe…  27.2 SARS-COV-2…
+    ## 2 SWB1004287499    43957 Covid1043495 3     female    61 othe…  27.2 SARS-COV-2…
+    ## 3 SWB1004287499    43957 Covid1043495 3     female    61 othe…  27.2 SARS-COV-2…
+    ## 4 SWB1004287499    43957 Covid1043495 3     female    61 othe…  27.2 SARS-COV-2…
+    ## 5 SWB1004287499    43957 Covid1043495 3     female    61 othe…  27.2 SARS-COV-2…
+    ## 6 SWB1004287499    43957 Covid1043495 3     female    61 othe…  27.2 SARS-COV-2…
+    ## # … with 17 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
+    ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
+    ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
+    ## #   tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>,
+    ## #   tocilizumab.TotalDays <dbl>, CBC <chr>, Counts <dbl>, CYTOF <chr>,
+    ## #   Fraction <dbl>, tocilizumab.timing <chr>
+
+``` r
+# finally, lets transform the CYTOF data to percentages, lets look at the data
+head(data_day3_10d) # we can see that the CYTOF fields called "frac" start with 
+```
+
+    ## # A tibble: 6 × 26
+    ##   Sample.ID     drawDate Covid.ID     Score sex      age race    bmi patientType
+    ##   <chr>            <dbl> <chr>        <fct> <chr>  <dbl> <chr> <dbl> <chr>      
+    ## 1 SWB1004287499    43957 Covid1043495 3     female    61 othe…  27.2 SARS-COV-2…
+    ## 2 SWB1004287499    43957 Covid1043495 3     female    61 othe…  27.2 SARS-COV-2…
+    ## 3 SWB1004287499    43957 Covid1043495 3     female    61 othe…  27.2 SARS-COV-2…
+    ## 4 SWB1004287499    43957 Covid1043495 3     female    61 othe…  27.2 SARS-COV-2…
+    ## 5 SWB1004287499    43957 Covid1043495 3     female    61 othe…  27.2 SARS-COV-2…
+    ## 6 SWB1004287499    43957 Covid1043495 3     female    61 othe…  27.2 SARS-COV-2…
+    ## # … with 17 more variables: HighestCare <chr>, Ever.On.Ventilator <chr>,
+    ## #   Preexisting.Hypertension <chr>, eventId <chr>, admitDate <dbl>,
+    ## #   deceasedDate <dbl>, covidId <chr>, severity <chr>, drawTime <dbl>,
+    ## #   tocilizumab.StartDate <dbl>, tocilizumab.EndDate <dbl>,
+    ## #   tocilizumab.TotalDays <dbl>, CBC <chr>, Counts <dbl>, CYTOF <chr>,
+    ## #   Fraction <dbl>, tocilizumab.timing <chr>
+
+``` r
+data_day3_10d <- data_day3_10d %>% mutate(CYTOF_perc = Fraction*100)
+```
+
+Now we have our data correctly formatt it’s time to try to recreate as
+much of the plot in this figure as you can. Let’s start with a timeframe
+of 20 minutes working in small groups, and then we will come back
+together to go over the solution.
+
+``` r
+data_day3_10d_neutrophils <- data_day3_10d %>%
+  filter(CYTOF == "FracCD45.Neutrophil") %>%
+  distinct(eventId, .keep_all = TRUE) %>%
+  mutate(percentage = Fraction*100) %>%
+  group_by(Covid.ID, tocilizumab.timing) %>% 
+  summarize(mean_perc = mean(percentage)) %>%
+  ggplot(aes(x = tocilizumab.timing, y = mean_perc, color = tocilizumab.timing)) +
+  geom_boxplot() +
+  geom_point(aes(color = tocilizumab.timing, group = Covid.ID)) +
+  geom_line(aes( group = Covid.ID), color = "grey") +
+  theme_classic() + 
+  scale_y_continuous(limits = c(0,100)) +
+  scale_color_manual(name = NULL, labels = c("After Tocilizumab","Before Tocilizumab"), values = c("#00c7ff", "#fe5750"))+
+  theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
+  labs(x = NULL, y = "% of CD45", title = "Neutrophils")
+```
+
+    ## `summarise()` has grouped output by 'Covid.ID'. You can override using the
+    ## `.groups` argument.
+
+``` r
+data_day3_10d_CD4 <- data_day3_10d %>%
+  filter(CYTOF == "FracCD45.T.cell.CD4") %>%
+  distinct(eventId, .keep_all = TRUE) %>%
+  mutate(percentage = Fraction*100) %>%
+  group_by(Covid.ID, tocilizumab.timing) %>% 
+  summarize(mean_perc = mean(percentage)) %>%
+  ggplot(aes(x = tocilizumab.timing, y = mean_perc, color = tocilizumab.timing)) +
+  geom_boxplot() +
+  geom_point(aes(color = tocilizumab.timing, group = Covid.ID)) +
+  geom_line(aes( group = Covid.ID), color = "grey") +
+  theme_classic() + 
+  scale_y_continuous(limits = c(0,15)) +
+  scale_color_manual(name = NULL, labels = c("After Tocilizumab","Before Tocilizumab"), values = c("#00c7ff", "#fe5750"))+
+  theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
+  labs(x = NULL, y = "% of CD45", title = "T cells")
+```
+
+    ## `summarise()` has grouped output by 'Covid.ID'. You can override using the
+    ## `.groups` argument.
+
+``` r
+data_day3_10d_DC <- data_day3_10d %>%
+  filter(CYTOF == "FracCD45.DC") %>%
+  distinct(eventId, .keep_all = TRUE) %>%
+  mutate(percentage = Fraction*100) %>%
+  group_by(Covid.ID, tocilizumab.timing) %>% 
+  summarize(mean_perc = mean(percentage)) %>%
+  ggplot(aes(x = tocilizumab.timing, y = mean_perc, color = tocilizumab.timing)) +
+  geom_boxplot() +
+  geom_point(aes(color = tocilizumab.timing, group = Covid.ID)) +
+  geom_line(aes( group = Covid.ID), color = "grey") +
+  theme_classic() + 
+  scale_y_continuous(limits = c(0,2)) +
+  scale_color_manual(name = NULL, labels = c("After Tocilizumab","Before Tocilizumab"), values = c("#00c7ff", "#fe5750"))+
+  theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
+  labs(x = NULL, y = "% of CD45", title = "DCs")
+```
+
+    ## `summarise()` has grouped output by 'Covid.ID'. You can override using the
+    ## `.groups` argument.
+
+``` r
+data_day3_10d_DR_CD8 <- data_day3_10d %>%
+  filter(CYTOF == "T.cell.CD8.HLA_DRp__of.CD8") %>%
+  distinct(eventId, .keep_all = TRUE) %>%
+  # it's already a percentage!
+  #mutate(percentage = Fraction*100) %>%
+  group_by(Covid.ID, tocilizumab.timing) %>% 
+  summarize(mean_perc = mean(Fraction)) %>%
+  ggplot(aes(x = tocilizumab.timing, y = mean_perc, color = tocilizumab.timing)) +
+  geom_boxplot() +
+  geom_point(aes(color = tocilizumab.timing, group = Covid.ID)) +
+  geom_line(aes( group = Covid.ID), color = "grey") +
+  theme_classic() + 
+  scale_y_continuous(limits = c(0,50)) +
+  scale_color_manual(name = NULL, labels = c("After Tocilizumab","Before Tocilizumab"), values = c("#00c7ff", "#fe5750"))+
+  theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
+  labs(x = NULL, y = "% of CD8", title = "HLA-DR+ CD8+ T cells")
+```
+
+    ## `summarise()` has grouped output by 'Covid.ID'. You can override using the
+    ## `.groups` argument.
+
+#### Arranging and Exporting Plots
+
+As a final step to make a publication ready figures, we can arrange and
+export the plots from R. There are several packages you can use for
+arranging and exporting plots.
+
+``` r
+# one of the most commonly used to save ggplots is ggsave
+ggsave(data_day3_10d_DR_CD8, file = "./Data_Carpentry_Workshop_2022/figures/data_day3_10d_DR_CD8.pdf", device = "pdf", height = 5, width = 5)
+```
+
+The package `ggpubr` with the `ggarrange` function is also extremely
+useful for allowing combination of multiple plots and adding labels for
+plotting.
+
+``` r
+#install.packages("ggpubr")
+library(ggpubr)
+
+# now we can use ggarrange to combine all the plots
+combined_plots <- ggpubr::ggarrange(data_day3_10d_neutrophils, data_day3_10d_CD4, data_day3_10d_DC, data_day3_10d_DR_CD8,
+                            nrow = 1, labels = c("A","B","C","D"))
+
+ggsave(combined_plots ,  file = "./Data_Carpentry_Workshop_2022/figures/combined_plots.pdf", device = "pdf",
+       height = 3, width = 15)
+```
+
+Challenge
+
+``` r
+# can you export the plot so that only the neutrophils and DCs and plotted in a single column (one on top of the other)
+neutrophil_DC_plots <- ggpubr::ggarrange(data_day3_10d_neutrophils,  data_day3_10d_DC,  nrow = 2, ncol =1, labels = c("A","B"))
+
+ggsave(neutrophil_DC_plots ,  file = "./Data_Carpentry_Workshop_2022/figures/neutrophil_DC_plots.pdf", device = "pdf",
+       height = 5, width = 3)
+```
+
+#### END OF DAY 3
+
+# DAY 4
+
+### 9:00am-10:15: Specialized plotting (PCAs, heatmaps)
+
+On this final day of the workshop we are going to delve into some more
+specialized plotting examples that many of you may encounter in your
+work. One of the most common of these is generating PCAs and heatmaps.
+Let’s start with a PCA. There are many different packages for generating
+one. We will work today with the package `PCAtools`.
+
+In order to plot a PCA in R you need to have all your variables of
+interest set up as a numerical matrix, with data as the samples, and
+columns as samples
+
+``` r
+## Install and load packages
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+```
+
+    ## Bioconductor version '3.14' is out-of-date; the current release version '3.15'
+    ##   is available with R version '4.2'; see https://bioconductor.org/install
+
+``` r
+BiocManager::install("PCAtools")
+```
+
+    ## Bioconductor version 3.14 (BiocManager 1.30.16), R 4.1.2 (2021-11-01)
+
+    ## Warning: package(s) not installed when version(s) same as current; use `force = TRUE` to
+    ##   re-install: 'PCAtools'
+
+    ## Old packages: 'ade4', 'bbmle', 'bigmemory', 'bigtabulate', 'BiocManager',
+    ##   'blob', 'broom', 'Cairo', 'car', 'caret', 'checkmate', 'circlize', 'cli',
+    ##   'clue', 'cluster', 'commonmark', 'conquer', 'crayon', 'desc', 'deSolve',
+    ##   'dplyr', 'DT', 'ellipse', 'fansi', 'fda', 'fitdistrplus', 'FNN', 'formatR',
+    ##   'furrr', 'future', 'future.apply', 'gdata', 'gert', 'ggplot2', 'ggpmisc',
+    ##   'ggpp', 'glmnet', 'globals', 'gmodels', 'gplots', 'gt', 'gtools', 'hardhat',
+    ##   'haven', 'Hmisc', 'httr', 'ICC', 'igraph', 'knitr', 'ks', 'leaflet',
+    ##   'leiden', 'leidenbase', 'limma', 'lme4', 'lmtest', 'locfit', 'magrittr',
+    ##   'maptools', 'MASS', 'Matching', 'Matrix', 'matrixStats', 'mclust', 'mgcv',
+    ##   'mongolite', 'nlme', 'nloptr', 'openssl', 'parallelly', 'pbmcapply', 'pcaPP',
+    ##   'plyr', 'polynom', 'processx', 'ps', 'quantreg', 'randomForest',
+    ##   'RColorBrewer', 'Rcpp', 'RcppArmadillo', 'RcppEigen', 'readxl', 'reshape',
+    ##   'reticulate', 'rgdal', 'rhdf5', 'rlang', 'rly', 'rmarkdown', 'roxygen2',
+    ##   'rprojroot', 'rrcov', 'RSpectra', 'RSQLite', 'Rtsne', 'S4Vectors', 'sass',
+    ##   'scales', 'Seurat', 'SeuratObject', 'sf', 'sp', 'spatstat.core',
+    ##   'spatstat.data', 'spatstat.geom', 'spatstat.random', 'spatstat.sparse',
+    ##   'spatstat.utils', 'spdep', 'testthat', 'tibble', 'tinytex', 'tzdb', 'umap',
+    ##   'usethis', 'uuid', 'V8', 'vctrs', 'vegan', 'VennDiagram', 'waldo', 'webshot',
+    ##   'WGCNA', 'withr', 'xfun', 'zoo'
+
+``` r
+library(PCAtools)
+```
+
+    ## Loading required package: ggrepel
+
+    ## 
+    ## Attaching package: 'PCAtools'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     biplot, screeplot
+
+``` r
+## We will start our original data that has not been pivoted because this has the data we want as the columns
+data <- read_csv("./Data_Carpentry_Workshop_2022/raw_data/Bolouri_2021_subset.csv")
+```
+
+    ## Rows: 299 Columns: 29
+
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (11): Sample.ID, Covid.ID, sex, race, patientType, HighestCare, Ever.On....
+    ## dbl (18): drawDate, Score, age, bmi, admitDate, deceasedDate, drawTime, toci...
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+View(data)
+colnames(data)
+```
+
+    ##  [1] "Sample.ID"                  "drawDate"                  
+    ##  [3] "Covid.ID"                   "Score"                     
+    ##  [5] "sex"                        "age"                       
+    ##  [7] "race"                       "bmi"                       
+    ##  [9] "patientType"                "HighestCare"               
+    ## [11] "Ever.On.Ventilator"         "Preexisting.Hypertension"  
+    ## [13] "eventId"                    "admitDate"                 
+    ## [15] "deceasedDate"               "covidId"                   
+    ## [17] "severity"                   "drawTime"                  
+    ## [19] "tocilizumab.StartDate"      "tocilizumab.EndDate"       
+    ## [21] "tocilizumab.TotalDays"      "CBC.White.Blood.Cell.Count"
+    ## [23] "CBC.Absolute.Monocytes"     "CBC.Absolute.Neutrophils"  
+    ## [25] "CBC.Absolute.Lymphocytes"   "FracCD45.Neutrophil"       
+    ## [27] "FracCD45.T.cell.CD4"        "FracCD45.DC"               
+    ## [29] "T.cell.CD8.HLA_DRp__of.CD8"
+
+``` r
+## Now subset the data to the numerical columns of interest
+data_subset <- data %>% select(Sample.ID, CBC.White.Blood.Cell.Count, CBC.Absolute.Monocytes, CBC.Absolute.Neutrophils, CBC.Absolute.Lymphocytes, FracCD45.Neutrophil, FracCD45.T.cell.CD4, FracCD45.DC, T.cell.CD8.HLA_DRp__of.CD8) %>% drop_na() 
+# check the class of all our data to make sure it is numerical
+str(data_subset) # we are good!
+```
+
+    ## tibble [280 × 9] (S3: tbl_df/tbl/data.frame)
+    ##  $ Sample.ID                 : chr [1:280] "SWB343927719" "SWB125388248" "SWB1057697917" "SWB386069501" ...
+    ##  $ CBC.White.Blood.Cell.Count: num [1:280] 13.6 11.6 9 11.9 14.6 11 6.8 9.6 8.8 22 ...
+    ##  $ CBC.Absolute.Monocytes    : num [1:280] 1 1.2 0.63 0.6 1 1 0.4 1.34 0.7 1.1 ...
+    ##  $ CBC.Absolute.Neutrophils  : num [1:280] 11.8 9.5 7.38 6.43 9.1 ...
+    ##  $ CBC.Absolute.Lymphocytes  : num [1:280] 0.8 0.5 0.72 4.88 4.3 2.6 1.7 2.02 0.3 1.54 ...
+    ##  $ FracCD45.Neutrophil       : num [1:280] 0.841 0.7 0.806 0.481 0.526 ...
+    ##  $ FracCD45.T.cell.CD4       : num [1:280] 0.0197 0.0496 0.0285 0.1197 0.0674 ...
+    ##  $ FracCD45.DC               : num [1:280] 0.00249 0.0052 0.00317 0.00791 0.00626 ...
+    ##  $ T.cell.CD8.HLA_DRp__of.CD8: num [1:280] 9.23 5.01 7.7 10.1 12.4 2.46 4.06 15.6 25.3 2.35 ...
+
+``` r
+## Now we need to set the sample.id to be the rownames
+data_subset_rownames <- data_subset %>% column_to_rownames(., var = "Sample.ID")
+
+## now we can transpose and make a matrix
+data_subset_mat <- as.matrix(t(data_subset_rownames))
+
+## Next we can create our metadata matrix to go along with the data
+  
+# create metadata
+metadata_subset = data %>% select(Sample.ID, sex, age, race,patientType, HighestCare, severity) %>%
+  # keep only those sample with No NA data values 
+  filter(Sample.ID %in% data_subset$Sample.ID) %>%
+    # also make the rownames sample.ID
+  column_to_rownames(., var = "Sample.ID")
+  
+# check CYTOF and CBC colnames match metadata rownames
+all(colnames(data_subset_mat ) == rownames(metadata_subset)) # TRUE
+```
+
+    ## [1] TRUE
+
+``` r
+# run PCA
+pca <- PCAtools::pca(data_subset_mat,
+                           metadata = metadata_subset)
+
+# Plot PCA by different variable
+pca_secerity <- PCAtools::biplot(pca, colby = "severity", colLegendTitle = "Severity", legendPosition = 'right')
+pca_patient_type <- PCAtools::biplot(pca, colby = "patientType", colLegendTitle = "Patient Type", legendPosition = 'right')
+
+pcas_comb <- ggarrange(pca_secerity ,  pca_patient_type, nrow = 1, ncol = 2 )
+
+ggsave(pcas_comb, file = "./Data_Carpentry_Workshop_2022/figures/pcas.pdf", device = "pdf", height = 5, width = 12)
+```
+
+    ## Warning: ggrepel: 266 unlabeled data points (too many overlaps). Consider
+    ## increasing max.overlaps
+
+    ## Warning: ggrepel: 271 unlabeled data points (too many overlaps). Consider
+    ## increasing max.overlaps
+
+We can plot this same data now as a heatmap. Both heatmaps and PCAs
+require their data to be in a matrix format. One of the most popular and
+highly customizable packages for creating heatmaps is called
+`ComplexHeatmap`.
+
+### 10:15-10:30: BREAK
+
+### 10:30-12:00pm: Loading and Customizing Code for your Analyses
+
+This part of the workshop is

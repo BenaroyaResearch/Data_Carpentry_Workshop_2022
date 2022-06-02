@@ -374,7 +374,7 @@ data$Sample.ID
 Challenge time!
 ```{r challenge_5}
 # Create a data.frame (data_200) containing only the data in row 200 of the surveys dataset.
-data_200 <- data[200]
+data_200 <- data[200,]
 
 # Pull out the last row of the data frame and save it
 nrow(data) # 299
@@ -428,6 +428,7 @@ To convert a factor to character vector you can use `as.character(x)`
 
 ```{r convert_factor}
 as.character(data$sex)
+
 ```
 
 #### Renaming Factors 
@@ -1156,13 +1157,42 @@ Let's all take a look at the figure. Together we are going to work on correctly 
 ```{r handson}
 
 # let's remind ourselves of our CYTOF data we have to work with 
-levels(as.factor(data_day3$CYTOF)) # "FracCD45.DC"         "FracCD45.Neutrophil" "FracCD45.T.cell.CD4" we will focus on plotting these! 
+levels(as.factor(data_day3$CYTOF)) # "FracCD45.DC"                "FracCD45.Neutrophil"        "FracCD45.T.cell.CD4"        "T.cell.CD8.HLA_DRp__of.CD8" we will focus on plotting these! 
 
 # we also want to separate the data measurements by before and after toclizumab
+# How can we find this - lets look at the date columns 
+
+data_day3_10d <- data_day3 %>%
+  # filter for patients that were given tocilizumab and have start and end dates
+  filter(!is.na(tocilizumab.StartDate) & !is.na(tocilizumab.EndDate)) 
+View(data_day3_10d)  
+
+# You can notice that the start date and end dates are the same for all of these measurements
+all(data_day3_10d$tocilizumab.StartDate == data_day3_10d$tocilizumab.EndDate) # TRUE
+
+# next lets check the class of the date columns
+class(data_day3_10d$tocilizumab.StartDate) # numeric
+class(data_day3_10d$tocilizumab.EndDate) # numeric
+class(data_day3_10d$drawDate) # numeric
+
+# since they are all numeric formatted we should be able to use numerical logical statements to get our before and after
+
+# next we are going to do a conditional mutate to label the measurements that were before or after tocilizumab
+data_day3_10d <- data_day3_10d %>% mutate(tocilizumab.timing = case_when(
+  drawDate >= tocilizumab.StartDate ~ "after_tocilizumab",
+  drawDate < tocilizumab.StartDate ~ "before_tocilizumab"
+))
+
+head(data_day3_10d)
+
+```
+Now we have our data correctly formatt it's time to try to recreate as much of the plot in this figure as you can. Let's start with a timeframe of 20 minutes working in small groups, and then we will come back together to go over the solution. 
+
+```{r fiure_10d}
+data_day3_10d
 
 
 ```
-
 
 
 

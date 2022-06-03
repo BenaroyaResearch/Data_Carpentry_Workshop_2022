@@ -13,11 +13,12 @@ Bioinformatics Postdoctoral Research Associate in Peter Linsley’s lab
 and I started last October. I started coding in R as a undergrad and now
 have about 8 years of experience and about three years ago I became a
 certified Data Carpentry instructor, which means I have taken several of
-their courses, taught several prior courses, and have taken a course in
-the pedagogical style of the Carpentries. I really enjoy teaching and
-working with data and I’m excited to be teaching this course along with
-several fellow intructors Hannah DeBerg and Matt Dufort who are going to
-step in toward the end of the course.
+their courses, taught several prior courses, contributed to the
+curriculum, and have taken a course in the pedagogical style of the
+Carpentries. I really enjoy teaching and working with data and I’m
+excited to be teaching this course along with several fellow intructors
+Hannah DeBerg and Matt Dufort who are going to step in toward the end of
+the course.
 
 This course is designed to start out with the assumption that you have
 no prior experience coding at all in any language and the curriculum is
@@ -62,7 +63,7 @@ that you find answers to your own questions.
         tools, R is interdiscipinary and extensible, its free, is open
         source, R produces high quality graphics, large helpful
         community
-        -   Stack overflow, R studio community
+    -   Stack overflow, R studio community
 
 #### Knowing your way around R and R studio
 
@@ -3019,7 +3020,7 @@ BiocManager::install("PCAtools")
     ##   'leiden', 'leidenbase', 'limma', 'lme4', 'lmtest', 'locfit', 'magrittr',
     ##   'maptools', 'MASS', 'Matching', 'Matrix', 'matrixStats', 'mclust', 'mgcv',
     ##   'mongolite', 'nlme', 'nloptr', 'openssl', 'parallelly', 'pbmcapply', 'pcaPP',
-    ##   'plyr', 'polynom', 'processx', 'ps', 'quantreg', 'randomForest',
+    ##   'plyr', 'polynom', 'processx', 'progressr', 'ps', 'quantreg', 'randomForest',
     ##   'RColorBrewer', 'Rcpp', 'RcppArmadillo', 'RcppEigen', 'readxl', 'reshape',
     ##   'reticulate', 'rgdal', 'rhdf5', 'rlang', 'rly', 'rmarkdown', 'roxygen2',
     ##   'rprojroot', 'rrcov', 'RSpectra', 'RSQLite', 'Rtsne', 'S4Vectors', 'sass',

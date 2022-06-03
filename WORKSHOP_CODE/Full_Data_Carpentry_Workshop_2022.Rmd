@@ -9,7 +9,7 @@ output: github_document
 
 ### 9:00 am Introduction 
 
-Welcome to the second data carpentry style workshop that the Bioinformatics group has hosted. My name is Erin Witkop, I am a Bioinformatics Postdoctoral Research Associate in Peter Linsley's lab and I started last October. I started coding in R as a undergrad and now have about 8 years of experience and about three years ago I became a certified Data Carpentry instructor, which means I have taken several of their courses, taught several prior courses, and have taken a course in the pedagogical style of the Carpentries. I really enjoy teaching and working with data and I'm excited to be teaching this course along with several fellow intructors Hannah DeBerg and Matt Dufort who are going to step in toward the end of the course.
+Welcome to the second data carpentry style workshop that the Bioinformatics group has hosted. My name is Erin Witkop, I am a Bioinformatics Postdoctoral Research Associate in Peter Linsley's lab and I started last October. I started coding in R as a undergrad and now have about 8 years of experience and about three years ago I became a certified Data Carpentry instructor, which means I have taken several of their courses, taught several prior courses, contributed to the curriculum, and have taken a course in the pedagogical style of the Carpentries. I really enjoy teaching and working with data and I'm excited to be teaching this course along with several fellow intructors Hannah DeBerg and Matt Dufort who are going to step in toward the end of the course.
 
 This course is designed to start out with the assumption that you have no prior experience coding at all in any language and the curriculum is designed to build on itself throughout the course. Our main goals for the course are that in the future when you have your own data you will be able to load it into R, calculate some standard statisitcs, and do some exploratory plotting that you can share with your colleagues. 
 
@@ -26,11 +26,11 @@ I do want to point out that there are a lot of things to know about R, but the g
 ### 9:10 am - 9:45am: Intro to R 
 
 - What is R? What is RStudio?
-  - The term “R” is used to refer to both the programming language and the software that          interprets the scripts written using it.
+  - The term “R” is used to refer to both the programming language and the software that interprets the scripts written using it.
 
 - Why learn R?
   - R is great for reproducibility, R can integrate new and existing tools, R is interdiscipinary and extensible, its free, is open source, R produces high quality graphics, large helpful community 
-    - Stack overflow, R studio community
+  - Stack overflow, R studio community
     
 #### Knowing your way around R and R studio 
 

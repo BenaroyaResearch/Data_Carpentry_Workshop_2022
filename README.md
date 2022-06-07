@@ -4,9 +4,9 @@
 
 The Bioinformatics Group is organizing an R programming workshop this June. The workshop is geared towards people that have never programmed or have limited programming experience in R. We will teach how to organize your code, your data, and produce some common plots and figures.
 
-The workshop curriculum is largely based on the publicly available Data Carpentry workshop "Data Analysis and Visualization in R for Ecologists". However, the curriculum has been tailored to work with the COVID-19 CYTOF and clinical metadata data set provided by Hamid Bolouri and Cate Speake published in [JCI](https://doi.org/10.1172/JCI143648):
+The workshop curriculum is largely based on the publicly available Data Carpentry workshop ["Data Analysis and Visualization in R for Ecologists"](https://datacarpentry.org/R-ecology-lesson/). However, the curriculum has been tailored to work with the COVID-19 CYTOF and clinical metadata data set provided by Hamid Bolouri and Cate Speake published in [JCI](https://doi.org/10.1172/JCI143648):
 
-- Bolouri, H., Speake, C., Skibinski, D., Long, S. A., Hocking, A. M., Campbell, D. J., Hamerman, J. A., Malhotra, U., & Buckner, J. H. (2021). The COVID-19 immune landscape is dynamically and reversibly correlated with disease severity. Journal of Clinical Investigation, 131(3), 1–14. https://doi.org/10.1172/JCI143648`
+- Bolouri, H., Speake, C., Skibinski, D., Long, S. A., Hocking, A. M., Campbell, D. J., Hamerman, J. A., Malhotra, U., & Buckner, J. H. (2021). The COVID-19 immune landscape is dynamically and reversibly correlated with disease severity. Journal of Clinical Investigation, 131(3), 1–14. https://doi.org/10.1172/JCI143648.
 
 This repository houses the schedule, code, and resources for the workshop.
 
@@ -14,7 +14,7 @@ For more information regarding the mission and purpose of Data Carpentry visit t
 
 ## Details
 
-**When and Where:**: The workshop will run for 4 mornings (9 – 12pm), June 13 to 16 and will be in person in 4N. Though we recognize the commitment of a 4 morning workshop, we ask attendees to attend all sessions as the curriculum is designed to progressively build upon skills from prior days.
+**When and Where:** The workshop will run for 4 mornings (9 – 12pm), June 13 to 16 and will be in person in 4N. Though we recognize the commitment of a 4 morning workshop, we ask attendees to attend all sessions as the curriculum is designed to progressively build upon skills from prior days.
 
 **Requirements:** Participants must bring a personal or BRI-provided laptop with a Mac, Linux, or Windows operating system (not a tablet, Chromebook, etc.) that you have the ability to install software on. You should have a few specific software packages installed (listed below). For any questions regarding installing software please contact the BRI helpdesk.
 
@@ -22,7 +22,7 @@ For more information regarding the mission and purpose of Data Carpentry visit t
 
 ## Before the Workshop
 
-1. Complete the Pre-Workshop survey by **Wednesday June 8th**. INSERT LINK.
+1. Complete the Pre-Workshop survey by **Wednesday June 8th**. [Click here to take the google survey](https://forms.gle/wSS6KNQkGq3kjUCZ6).
 
 2. Install R and RStudio on your machine. Follow the instructions [here](https://datacarpentry.org/R-ecology-lesson/#Install_R_and_RStudio).
 
@@ -33,34 +33,41 @@ For more information regarding the mission and purpose of Data Carpentry visit t
 
     **NOTE:** The time required to dowload and install packages can vary. Please download and install these packages prior to the workshop starting!
 
-    During the course we will need a number of R packages. Packages contain useful R code written by other people. We will use the packages tidyverse...ADD OTHER PACKAGES HERE
+    During the course we will need a number of R packages. Packages contain useful R code written by other people.
 
-    To install these packages, open RStudio (after R is installed) and copy and paste the following command into the console window (look for a blinking cursor on the bottom left), then press the Enter (Windows and Linux) or Return (MacOS) to execute the command.
+    To install these packages, open RStudio (after R is installed) and copy and paste the following command into the console window (look for a blinking cursor on the bottom left), then press Enter (Windows and Linux) or Return (MacOS) to execute the command.
 
-            `install.packages(c("tidyverse","ggpubr"))` 
+            ```r
+            install.packages(c("tidyverse","ggpubr"))
+            ``` 
 
-    We will also need to download several packages from the website Bioconductor, which has many helpful packages. Enter the following command in the console and press enter or Return to execute.
+    We will also need to download several packages from the website Bioconductor, which has many helpful packages for biological data analysis. Enter the following command in the console and press enter or Return to execute.
 
-            `if (!require("BiocManager", quietly = TRUE))
+            ```r
+            if (!require("BiocManager", quietly = TRUE))
               install.packages("BiocManager")
 
-              BiocManager::install(c("ComplexHeatmap", "PCAtools"))`
+              BiocManager::install(c("ComplexHeatmap", "PCAtools"))
+            ```
 
-    Alternatively, you can install the packages using RStudio’s graphical user interface by going to `Tools > Install Packages` and typing the names of the packages separated by a comma.
+    Alternatively, you can install the packages using RStudio’s graphical user interface by going to `Tools > Install Packages` and typing the names of the packages separated by a comma. When the installation has finished, you can try to load the packages by pasting the following code into the console and pressing `run` on the top right of the screen:
 
-    R tries to download and install the packages on your machine. When the installation has finished, you can try to load the packages by pasting the following code into the console and pressing `run` on the top right of the screen:
-
-            ` library(tidyverse)`
+            ```r
+             library(tidyverse)
+             library(ggpubr)
+             library(ComplexHeatmap)
+             library(PCAtools)
+             ```
 
     If you do not see an error like `there is no package called ‘...’` you are good to go!
 
 ## Download the Data
 
-Download a subsampled version of the publically available Bolouri et al., (2021) COVID-19 CYTOF and clinical metadata dataset here:
+Download a subsampled version of the publically available Bolouri et al., (2021) COVID-19 CYTOF and clinical metadata dataset [here](https://github.com/BenaroyaResearch/Data_Carpentry_Workshop_2022/blob/main/WORKSHOP_DATA/Bolouri_2021_subset.csv).
 
 ## Collaborative Notes
 
-We will use this <https://pad.riseup.net/p/BRI_Data_Carpentry_2022> for chatting, taking notes, and sharing URLs and bits of code. This collaborative document will expire 60 days from it's creation (May 13th)
+We will use this public, collaborative document <https://pad.riseup.net/p/BRI_Data_Carpentry_2022> for chatting, taking notes, and sharing URLs and bits of code. This collaborative document will expire 60 days from it's creation (May 13th, 2022).
 
 ## Schedule
 

@@ -38,16 +38,20 @@ For more information regarding the mission and purpose of Data Carpentry visit t
     To install these packages, open RStudio (after R is installed) and copy and paste the following command into the console window (look for a blinking cursor on the bottom left), then press Enter (Windows and Linux) or Return (MacOS) to execute the command.
 
             ```
+
             install.packages(c("tidyverse","ggpubr"))
+
             ```
 
     We will also need to download several packages from the website Bioconductor, which has many helpful packages for biological data analysis. Enter the following command in the console and press enter or Return to execute.
 
             ```
-            if (!require("BiocManager", quietly = TRUE))
-              install.packages("BiocManager")
 
-              BiocManager::install(c("ComplexHeatmap", "PCAtools"))
+            if (!require("BiocManager", quietly = TRUE))
+            install.packages("BiocManager")
+
+             BiocManager::install(c("ComplexHeatmap", "PCAtools"))
+
             ```
 
     Alternatively, you can install the packages using RStudio’s graphical user interface by going to `Tools > Install Packages` and typing the names of the packages separated by a comma. When the installation has finished, you can try to load the packages by pasting the following code into the console and pressing `run` on the top right of the screen:
@@ -57,6 +61,7 @@ For more information regarding the mission and purpose of Data Carpentry visit t
              library(ggpubr)
              library(ComplexHeatmap)
              library(PCAtools)
+             
             ```
 
     If you do not see an error like `there is no package called ‘...’` you are good to go!

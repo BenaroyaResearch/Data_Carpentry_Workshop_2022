@@ -57,7 +57,7 @@ For more information regarding the mission and purpose of Data Carpentry visit t
              library(ggpubr)
              library(ComplexHeatmap)
              library(PCAtools)
-             ```
+            ```
 
     If you do not see an error like `there is no package called ‘...’` you are good to go!
 
